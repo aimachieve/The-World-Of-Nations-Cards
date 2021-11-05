@@ -184,11 +184,11 @@ exports.getAllDays = async (req, res) => {
     Day.find({event_id: event._id})
       .populate('room')
       .then((data) => {
-        return res.status(200).json(data)
+        return res.json(data)
       })
       .catch((error) => res.status(500).send('Server Error'))
   } else {
-    return res.status(200).json([])
+    return res.json([])
   }
 }
 
