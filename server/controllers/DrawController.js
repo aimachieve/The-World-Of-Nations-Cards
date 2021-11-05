@@ -10,6 +10,7 @@ const { otplibAuthenticator } = require('../config/otplib')
 const { mailgunHelper } = require('../config/mailgun')
 
 const User = require('../models/User')
+const Winner = require('../models/Winner')
 const Avatar = require('../models/Avatar')
 const Event = require('../models/Event')
 const MainTicket = require('../models/MainTicket')
@@ -50,6 +51,9 @@ exports.getRandomTables = async (req, res) => {
 }
 
 exports.getRandomTablesByUserId = async (req, res) => {
+  let event = await Event.findOne({status: {$lt : 3}});
+  let day = await Day.find({event_id: event._id});
+
   const resTables = []
   const { userId } = req.params
   const tables = await Table.aggregate([
@@ -65,11 +69,13 @@ exports.getRandomTablesByUserId = async (req, res) => {
     {
       $match: {
         'seat.user_id': mongoose.Types.ObjectId(userId),
-        'seat.status': true,
       },
     },
     { $sample: { size: 10 } },
   ])
+
+  let maxDay = await MainTicket.findOne({user_id: userId}).sort({day: -1})
+
   for (let i = 0; i < tables.length; i += 1) {
     let table = await Table.findById(tables[i]._id).populate({
       path: 'seat',
@@ -77,7 +83,7 @@ exports.getRandomTablesByUserId = async (req, res) => {
     })
     await resTables.push(table)
   }
-  return res.status(200).json(resTables)
+  return res.status(200).json({table: resTables, maxDay: maxDay.day})
 }
 
 /**
@@ -833,6 +839,7 @@ exports.finalRoom = async (req, res) => {
       )
 
       temp.splice(rand, 1)
+      i--
       total++
     }
     console.log('temp-length----->', i)
@@ -942,7 +949,7 @@ exports.getFinalWinner = async (req, res) => {
   let event = await Event.findOne({status: 2});
   if(event) {
     Winner.find({event})
-      .populate("user_id")
+      .populate("user")
       .then(data => {
         res.json(data)
       })
@@ -1077,39 +1084,68 @@ exports.createMockData = async (req, res) => {
   let newUser = {}
   let avatars = await Avatar.find()
 
-  for (var i = 0; i < Number(mockUsernum); i++) {
-    newUser = new User({
-      name: 'fake user' + i,
-      email: 'fake' + i + 'gmail.com',
-      username: 'fake user' + i,
-      address: 'fake address' + i,
-      town: 'fake town' + i,
-      province: 'fake province' + i,
-      postalcode: 'fake postalcode' + i,
-      phone: 'fake phone' + i,
-      avatar: mongoose.Types.ObjectId(avatars[i % 20]._id)
-    })
-    await newUser.save()
-    console.log(i)
+  let existFakeuser = await User.findOne({name: 'fake user1'})
+  if(existFakeuser == null){
+    for (var i = 0; i < Number(mockUsernum); i++) {
+      newUser = new User({
+        name: 'fake user' + i,
+        email: 'fake' + i + 'gmail.com',
+        username: 'fake user' + i,
+        address: 'fake address' + i,
+        town: 'fake town' + i,
+        province: 'fake province' + i,
+        postalcode: 'fake postalcode' + i,
+        phone: 'fake phone' + i,
+        avatar: mongoose.Types.ObjectId(avatars[i % 20]._id)
+      })
+      await newUser.save()
+      console.log(i)
+    }
   }
+
 
   let event = await Event.findOne({status: {$lt : 2}});
 
   let newMainTicket = {}
 
+  let existFaketicket = await MainTicket.find();
+
   let users = await User.find({password: null});
 
-  for (var i = 0; i < users.length; i++) {
-    for (var j = 0; j < Number(mockMainNum); j++) {
-      console.log(users[i]._id + '-----'+ i +'-----' + j)
-      newMainTicket = new MainTicket({
-        user_id: mongoose.Types.ObjectId(users[i]._id),
-        username: users[i].username,
-        event: mongoose.Types.ObjectId(event._id)
-      })
-      await newMainTicket.save()
+  if(existFaketicket.length == 0) {
+    for (var i = 0; i < users.length; i++) {
+      for (var j = 0; j < Number(mockMainNum); j++) {
+        console.log(users[i]._id + '-----'+ i +'-----' + j)
+        newMainTicket = new MainTicket({
+          user_id: mongoose.Types.ObjectId(users[i]._id),
+          username: users[i].username,
+          event: mongoose.Types.ObjectId(event._id)
+        })
+        await newMainTicket.save()
+      }
     }
   }
-  res.json("OK");
+
+  var newSatelliteTicket = {}
+
+  User.find({password: null}).then(async (users) => {
+    var i = 0;
+    var sat = event.satellite.filter(item => item.status == true);
+    for (var ii = 0; ii < sat.length; ii++) {
+      for (i = ii*200; i < 200*(ii+1); i++) {
+        for (var j = 0; j < 5; j++) {
+          newSatelliteTicket = new SatelliteTicket({
+            user_id: users[i]._id,
+            username: users[i].username,
+            eventId: event._id,
+            satelliteId: sat[ii]._id,
+          })
+          await newSatelliteTicket.save()
+          console.log(i + '-----' + j)
+        }
+      }
+    }
+    res.json("OK")
+  })
 }
 /*========================================================================*/

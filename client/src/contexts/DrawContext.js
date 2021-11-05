@@ -242,7 +242,8 @@ function DrawProvider({ children }) {
       dispatch({
         type: 'SET_TABLES',
         payload: {
-          tables: data,
+          tables: data.table,
+          currentDay: data.maxDay
         },
       })
     }

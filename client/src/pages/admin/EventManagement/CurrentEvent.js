@@ -48,7 +48,7 @@ export default function CurrentEvent() {
   const handleClose = () => setOpen(false);
 
   const [formData, setFormData] = useState({
-    roomNum: ''
+    roomNum: 0
   });
   const { roomNum } = formData;
   const onChange = (e) =>

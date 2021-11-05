@@ -27,7 +27,8 @@ export default function TicketTable({ table }) {
   for (var i = 0; i < table.seat.length; i++) {
     if(table.seat[i].day > currentDay) card.push(i+1);
   }
-
+console.log(currentDay)
+console.log(table.seat)
   return (
     <Box position="relative">
       <Box ref={tableImage}>
@@ -127,6 +128,14 @@ export default function TicketTable({ table }) {
                         SERVER_UPLOAD_URL + matchedTicket.user_id.avatar.name
                       }
                       alt={matchedTicket.user_id.avatar.name}
+                      sx={{
+                        bgcolor: '#000',
+                        color: 'white',
+                        border:
+                          matchedTicket.day > currentDay &&
+                          '2px solid yellow',
+                        // border: matchedTicket.status && '1px solid red',
+                      }}
                     />
                   ) : (
                     <Avatar
@@ -134,8 +143,8 @@ export default function TicketTable({ table }) {
                         bgcolor: '#000',
                         color: 'white',
                         border:
-                          matchedTicket.history.length > currentDay &&
-                          '1px solid red',
+                          matchedTicket.day > currentDay &&
+                          '1px solid yellow',
                         // border: matchedTicket.status && '1px solid red',
                       }}
                     >
