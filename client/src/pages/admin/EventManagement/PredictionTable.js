@@ -108,7 +108,7 @@ export default function PredictionTable() {
           </TableHead>
           <TableBody>
             {
-              days.map((item, index) => (
+              days.length > 0 && days.map((item, index) => (
                 <>
                   <TableRow>
                     <TableCell>Day {index+1}</TableCell>

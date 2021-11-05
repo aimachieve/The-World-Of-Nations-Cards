@@ -455,6 +455,7 @@ exports.create_sEvent = async (req, res) => {
     { _id: req.body.id },
     { $set: {'satellite': current_satellite } }
   );
+  
 
   const updated_event = await Event.findById(req.body.id);
 
