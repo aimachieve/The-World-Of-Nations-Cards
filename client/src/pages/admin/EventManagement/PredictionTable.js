@@ -70,7 +70,7 @@ export default function PredictionTable() {
   };
 
   let roomname = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
-
+console.log(days)
   let finalWinner = days.length > 0 ? days[days.length - 1].entry : 1;
 
   const startFlag = (item) => {
