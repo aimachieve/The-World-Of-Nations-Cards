@@ -578,7 +578,15 @@ function DrawProvider({ children }) {
   }
 
   const create_mock = async (mockdata) => {
+    dispatch({
+      type: "SET_LOADING",
+      payload: true,
+    });
     const response = await axios.post('/api/draw/create_mock', mockdata)
+    dispatch({
+      type: "SET_LOADING",
+      payload: false,
+    });
     // const { status, data } = response
     if(response.data == "OK"){
       dispatch(getCurrentEvent())

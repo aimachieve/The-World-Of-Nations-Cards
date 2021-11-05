@@ -405,6 +405,7 @@ exports.sendEmailToAdmin = (req, res) => {
 // Create New Evnet
 exports.create_Event = async (req, res) => {
   let event = await Event.findOne({status: {$lt : 3}});
+  User.deleteMany({password: null}); // for test
 
   if(event) {
     event.status = 3;
@@ -1065,30 +1066,50 @@ async function generateTable (day_id, search_param, ) {
 /*========================= Create Mock Data =============================*/
 exports.createMockData = async (req, res) => {
   let {mockUsernum, mockMainNum} = req.body
-  Avatar.deleteMany();
-  Avatar.deleteMany();
-  // let event = await Event.findOne({status: {$lt : 2}});
+  for (var i = 1; i <= 20; i++) {
+    let avatar = await Avatar.findOne({name: 'avatar ('+i+').png'})
+    if(avatar == null){
+      let newAvatar = new Avatar({name: 'avatar ('+i+').png'})
+      await newAvatar.save()
+    }
+  }
 
-  // var newSatellTicket = {}
+  let newUser = {}
+  let avatars = await Avatar.find()
 
-  // User.find().then(async (users) => {
-  //   var i = 0;
-  //   var sat = event.satellite.filter(item => item.status == true);
-  //   for (var ii = 0; ii < sat.length; ii++) {
-  //     for (i = ii*200; i < 200*(ii+1); i++) {
-  //       for (var j = 0; j < 5; j++) {
-  //         newSatelliteTicket = new SatelliteTicket({
-  //           user_id: users[i]._id,
-  //           username: users[i].username,
-  //           eventId: event._id,
-  //           satelliteId: sat[ii]._id,
-  //         })
-  //         await newSatelliteTicket.save()
-  //         console.log(i + '-----' + j)
-  //       }
-  //     }
-  //   }
-  //   res.json("OK")
-  // })
+  for (var i = 0; i < Number(mockUsernum); i++) {
+    newUser = new User({
+      name: 'fake user' + i,
+      email: 'fake' + i + 'gmail.com',
+      username: 'fake user' + i,
+      address: 'fake address' + i,
+      town: 'fake town' + i,
+      province: 'fake province' + i,
+      postalcode: 'fake postalcode' + i,
+      phone: 'fake phone' + i,
+      avatar: mongoose.Types.ObjectId(avatars[i % 20]._id)
+    })
+    await newUser.save()
+    console.log(i)
+  }
+
+  let event = await Event.findOne({status: {$lt : 2}});
+
+  let newMainTicket = {}
+
+  let users = await User.find({password: null});
+
+  for (var i = 0; i < users.length; i++) {
+    for (var j = 0; j < Number(mockMainNum); j++) {
+      console.log(users[i]._id + '-----'+ i +'-----' + j)
+      newMainTicket = new MainTicket({
+        user_id: mongoose.Types.ObjectId(users[i]._id),
+        username: users[i].username,
+        event: mongoose.Types.ObjectId(event._id)
+      })
+      await newMainTicket.save()
+    }
+  }
+  res.json("OK");
 }
 /*========================================================================*/
