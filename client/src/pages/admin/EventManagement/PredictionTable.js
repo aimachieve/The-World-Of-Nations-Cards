@@ -82,7 +82,11 @@ export default function PredictionTable() {
   }
 
   const drawRoomFlag = (roomitem, dayitem) => {
-    return dayitem.status == 0 || roomitem.status || loading;
+    if(dayitem.status == 0 || dayitem.status == 2) {
+      return true;
+    } else if(dayitem.status == 1){
+      return roomitem.status || loading
+    }
   }
 
   return (

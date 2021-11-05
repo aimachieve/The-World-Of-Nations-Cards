@@ -76,7 +76,7 @@ export default function RoomStatus() {
                           <TableRow key={index}>
                             <TableCell>{item.user.name}</TableCell>
                             <TableCell>{item.tickets.length}</TableCell>
-                            <TableCell>{item.tickets}</TableCell>
+                            <TableCell>{item.tickets.map((i, index) => <span key={index}>{index+1 == item.tickets.length ? i : i + ', '}</span>)}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>

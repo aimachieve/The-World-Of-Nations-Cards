@@ -411,7 +411,7 @@ exports.sendEmailToAdmin = (req, res) => {
 // Create New Evnet
 exports.create_Event = async (req, res) => {
   let event = await Event.findOne({status: {$lt : 3}});
-  User.deleteMany({password: null}); // for test
+  await User.deleteMany({password: 'fake'}); // for test
 
   if(event) {
     event.status = 3;
@@ -828,7 +828,7 @@ exports.finalRoom = async (req, res) => {
   for (var i = tables.length - 1; i >= 0 && total <= finalwinner; i--) {
     let temp = tables[i].seat
 
-    let randomlimit = Math.ceil(Math.random() * 100) % 3;
+    let randomlimit = Math.ceil(Math.random() * 100) % 10;
 
     for (var j = temp.length - 1; j > randomlimit; j--) {
       let rand = Math.ceil(Math.random() * 100) % temp.length
@@ -856,7 +856,7 @@ exports.finalRoom = async (req, res) => {
   await day.save();
   let entry = await MainTicket.find().count();
 
-  let winners = await MainTicket.find({day: day.daynumber + 1});
+  let winners = await MainTicket.find({day: day.daynumber});
 
   for (var i = winners.length - 1; i >= 0; i--) {
     let winnerItem = await Winner.findOne({user: winners[i].user_id})
@@ -1084,8 +1084,8 @@ exports.createMockData = async (req, res) => {
   let newUser = {}
   let avatars = await Avatar.find()
 
-  let existFakeuser = await User.findOne({name: 'fake user1'})
-  if(existFakeuser == null){
+  let existFakeuser = await User.find({password: 'fake'})
+  if(existFakeuser.length == 0){
     for (var i = 0; i < Number(mockUsernum); i++) {
       newUser = new User({
         name: 'fake user' + i,
@@ -1110,7 +1110,7 @@ exports.createMockData = async (req, res) => {
 
   let existFaketicket = await MainTicket.find();
 
-  let users = await User.find({password: null});
+  let users = await User.find({password: 'fake'});
 
   if(existFaketicket.length == 0) {
     for (var i = 0; i < users.length; i++) {
@@ -1128,24 +1128,22 @@ exports.createMockData = async (req, res) => {
 
   var newSatelliteTicket = {}
 
-  User.find({password: null}).then(async (users) => {
-    var i = 0;
-    var sat = event.satellite.filter(item => item.status == true);
-    for (var ii = 0; ii < sat.length; ii++) {
-      for (i = ii*200; i < 200*(ii+1); i++) {
-        for (var j = 0; j < 5; j++) {
-          newSatelliteTicket = new SatelliteTicket({
-            user_id: users[i]._id,
-            username: users[i].username,
-            eventId: event._id,
-            satelliteId: sat[ii]._id,
-          })
-          await newSatelliteTicket.save()
-          console.log(i + '-----' + j)
-        }
+  var i = 0;
+  var sat = event.satellite.filter(item => item.status == true);
+  for (var ii = 0; ii < sat.length; ii++) {
+    for (i = ii*200; i < 200*(ii+1); i++) {
+      for (var j = 0; j < 5; j++) {
+        newSatelliteTicket = new SatelliteTicket({
+          user_id: users[i]._id,
+          username: users[i].username,
+          eventId: event._id,
+          satelliteId: sat[ii]._id,
+        })
+        await newSatelliteTicket.save()
+        console.log(i + '-----' + j)
       }
     }
-    res.json("OK")
-  })
+  }
+  res.json("OK")
 }
 /*========================================================================*/
