@@ -206,7 +206,7 @@ function DrawProvider({ children }) {
    * Get 12 random tables
    */
   const getRandomTables = async () => {
-    const response = await axios.post('/api/draw/getRandomTables', {})
+    const response = await axios.post('/api/draw/getRandomTables')
     const { status, data } = response
     if (status === 200) {
       dispatch(getAllDays())
@@ -225,7 +225,8 @@ function DrawProvider({ children }) {
    */
   const getRandomTablesByUserId = async (userId) => {
     const response = await axios.post(
-      `/api/draw/getRandomTablesByUserId/${userId}`,{})
+      `/api/draw/getRandomTablesByUserId/${userId}`,
+    )
     const { status, data } = response
 
     if (status === 200) {
@@ -295,7 +296,7 @@ function DrawProvider({ children }) {
   }
 
   const getAllDays = async () => {
-    const response = await axios.post('/api/draw/getAllDays', {})
+    const response = await axios.post('/api/draw/getAllDays')
     const { status, data } = response
 
     if (status === 200) {
@@ -309,7 +310,7 @@ function DrawProvider({ children }) {
   }
 
   const getProducts = async () => {
-    const response = await axios.post('/api/draw/products', {})
+    const response = await axios.post('/api/draw/products')
     const { products } = response.data
 
     dispatch({
@@ -332,7 +333,7 @@ function DrawProvider({ children }) {
   }
 
   const getCurrentEvent = async () => {
-    const response = await axios.post('/api/draw/current_event', {})
+    const response = await axios.post('/api/draw/current_event')
     const { current_event } = response.data
     const firstData = current_event
 
@@ -367,15 +368,16 @@ function DrawProvider({ children }) {
       type: 'SET_LOADING',
       payload: true,
     })
-    const response = await axios.post('/api/draw/makeTable', {})
+    const response = await axios.post('/api/draw/makeTable')
     dispatch({
       type: 'SET_LOADING',
       payload: false,
     })
-
     if (response.data === 'OK') {
       dispatch(getAllDays())
       dispatch(getCurrentEvent())
+    } else {
+      window.alert(response.data);
     }
   }
 
@@ -385,7 +387,8 @@ function DrawProvider({ children }) {
       payload: true,
     })
     const response = await axios.post(
-      '/api/draw/roomDraw/' + roomId + '/' + daynumber,{})
+      '/api/draw/roomDraw/' + roomId + '/' + daynumber,
+    )
     dispatch({
       type: 'SET_LOADING',
       payload: false,
@@ -402,7 +405,7 @@ function DrawProvider({ children }) {
       type: 'SET_LOADING',
       payload: true,
     })
-    const response = await axios.post('/api/draw/endDay/' + daynumber, {})
+    const response = await axios.post('/api/draw/endDay/' + daynumber)
     dispatch({
       type: 'SET_LOADING',
       payload: false,
@@ -419,7 +422,7 @@ function DrawProvider({ children }) {
       type: 'SET_LOADING',
       payload: true,
     })
-    const response = await axios.post('/api/draw/finalRoom/' + winner, {})
+    const response = await axios.post('/api/draw/finalRoom/' + winner)
     dispatch({
       type: 'SET_LOADING',
       payload: false,
@@ -432,7 +435,7 @@ function DrawProvider({ children }) {
   }
 
   const getFinalWinner = async () => {
-    const response = await axios.post('/api/draw/getFinalWinner', {})
+    const response = await axios.post('/api/draw/getFinalWinner')
 
     if (response.data) {
       dispatch({
@@ -495,7 +498,7 @@ function DrawProvider({ children }) {
   }
 
   const getEventById = async (eventId) => {
-    const response = await axios.post(`/api/draw/getEventById/${eventId}`, {})
+    const response = await axios.post(`/api/draw/getEventById/${eventId}`)
     const { status, data } = response
     if (status === 200) {
       await dispatch({
@@ -549,7 +552,7 @@ function DrawProvider({ children }) {
   }
 
   const getAllAvatars = async () => {
-    const response = await axios.post('/api/account/getAllAvatars', {})
+    const response = await axios.post('/api/account/getAllAvatars')
     const { status, data } = response
     if (status === 200) {
       dispatch({
@@ -562,7 +565,7 @@ function DrawProvider({ children }) {
   }
 
   const getTicketsByUserId = async (userId) => {
-    const response = await axios.post(`/api/draw/getTicketsByUserId/${userId}`, {})
+    const response = await axios.post(`/api/draw/getTicketsByUserId/${userId}`)
     const { status, data } = response
     if (status === 200) {
       dispatch({
