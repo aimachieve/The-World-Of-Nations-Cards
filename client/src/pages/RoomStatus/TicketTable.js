@@ -27,8 +27,7 @@ export default function TicketTable({ table }) {
   for (var i = 0; i < table.seat.length; i++) {
     if(table.seat[i].day > currentDay) card.push(i+1);
   }
-console.log(currentDay)
-console.log(table.seat)
+
   return (
     <Box position="relative">
       <Box ref={tableImage}>

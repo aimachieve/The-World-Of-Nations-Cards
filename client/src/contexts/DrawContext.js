@@ -210,6 +210,7 @@ function DrawProvider({ children }) {
     const { status, data } = response
     if (status === 200) {
       dispatch(getAllDays())
+      dispatch(getFinalWinner())
       dispatch({
         type: 'SET_TABLES',
         payload: {
@@ -230,6 +231,7 @@ function DrawProvider({ children }) {
 
     if (status === 200) {
       dispatch(getAllDays())
+      dispatch(getFinalWinner())
       dispatch({
         type: 'SET_TABLES',
         payload: {
@@ -291,6 +293,8 @@ function DrawProvider({ children }) {
         },
       })
       dispatch(getAllDays())
+      dispatch(getCurrentEvent())
+      dispatch(getFinalWinner())
     }
   }
 
@@ -355,6 +359,10 @@ function DrawProvider({ children }) {
     if (response.data === 'OK') {
       dispatch(getAllDays())
       dispatch(getCurrentEvent())
+    } else if('not exist') {
+      window.alert(
+        'There is no this ticket.',
+      )
     } else {
       window.alert(
         'This room is ' + response.data + '. Please choose another room.',
@@ -376,6 +384,8 @@ function DrawProvider({ children }) {
     if (response.data === 'OK') {
       dispatch(getAllDays())
       dispatch(getCurrentEvent())
+    } else {
+      window.alert(response.data)
     }
   }
 

@@ -44,14 +44,12 @@ export default function MainEventTab({ eventId }) {
   }
 
   const getTablesByUser = (user) => {
-    console.log(user)
     setSelectedUserId(user._id)
     getRandomTablesByUserId(user._id)
   }
 
   const fetchNextData = () => {
     if (users.length !== expectedUsersAmount) {
-      console.log(users.length, expectedUsersAmount)
       setPageSize(pageSize + 10)
       setPageNumber(pageNumber + 1)
       getSearchData(searchKey, { pageSize, pageNumber, eventId })

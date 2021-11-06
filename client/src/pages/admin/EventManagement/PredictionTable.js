@@ -113,7 +113,7 @@ export default function PredictionTable() {
                   <TableRow>
                     <TableCell>Day {index+1}</TableCell>
                     <TableCell>{item.entry}</TableCell>
-                    <TableCell>{item.winner}</TableCell>
+                    <TableCell>{item.winner == 0 ? "next: " + Math.ceil(item.entry * 0.3) : item.winner}</TableCell>
                     <TableCell>
                       <ButtonGroup variant="contained" aria-label="outlined primary button group">
                         <Button variant="contained" sx={{
