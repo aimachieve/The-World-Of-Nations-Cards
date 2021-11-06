@@ -6,13 +6,12 @@ const User = require('../models/User')
 
 const { otplibAuthenticator } = require('../config/otplib')
 const { mailgunHelper } = require('../config/mailgun')
-const { SERVER_ERROR } = require('../utils/constants')
+const { SERVER_ERROR, ADMIN_EMAIL } = require('../utils/constants')
 const Avatar = require('../models/Avatar')
 
 let otp
 
 exports.register = (req, res) => {
-  console.log(req.body)
   const {
     firstName,
     lastName,
@@ -25,7 +24,7 @@ exports.register = (req, res) => {
     postalcode,
     phone,
   } = req.body
-  // otp = otplibAuthenticator.generate(email);
+  // otp = otplibAuthenticator.generate(email)
 
   User.findOne({ email }).then((user) => {
     if (user) {
@@ -80,18 +79,18 @@ exports.register = (req, res) => {
               )
 
               // const mailData = {
-              //   from: "no-reply@gearmobile.com",
+              //   from: ADMIN_EMAIL,
               //   to: email,
               //   subject: `Your OTP is ${otp}`,
-              //   text: `Please verify your email for GearMobile. verify-code: ${otp} `,
-              // };
+              //   text: `Please verify your email. verify-code: ${otp} `,
+              // }
 
               // mailgunHelper
               //   .messages()
               //   .send(mailData)
               //   .then((res) => console.log(res))
-              //   .catch((err) => console.log(err));
-              // console.log("Email Sent: ", otp);
+              //   .catch((err) => console.log(err))
+              // console.log('Email Sent: ', otp)
             })
             .catch((err) => console.log(err))
         })

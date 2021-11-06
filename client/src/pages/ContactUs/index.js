@@ -19,6 +19,7 @@ import { MIconButton } from '../../components/@material-extend'
 import Banner from 'customComponents/Banner'
 import SignUpCTA from 'customComponents/SignUpCTA'
 import useDraw from 'hooks/useDraw'
+import { SAMPLE_USER_EMAIL, SAMPLE_USER_EMAIL_PASSWORD } from 'utils/constants'
 
 const RootStyle = styled('div')(({ theme }) => ({
   width: '100%',
@@ -45,7 +46,8 @@ export default function ContactUs() {
   const [messageData, setMessageData] = useState({
     firstName: '',
     lastName: '',
-    email: '',
+    email: SAMPLE_USER_EMAIL,
+    password: SAMPLE_USER_EMAIL_PASSWORD,
     subject: '',
     message: '',
   })
@@ -60,6 +62,7 @@ export default function ContactUs() {
   }
 
   const onSubmit = async () => {
+    console.log(messageData)
     const response = await sendEmailToAdmin(messageData)
     console.log(response)
     const { status } = response
@@ -127,6 +130,16 @@ export default function ContactUs() {
                       sx={{ mt: 3 }}
                       name="email"
                       value={messageData.email}
+                      onChange={(e) => onChange(e)}
+                    />
+                    <TextField
+                      fullWidth
+                      autoComplete="password"
+                      type="password"
+                      label="Password"
+                      sx={{ mt: 3 }}
+                      name="password"
+                      value={messageData.password}
                       onChange={(e) => onChange(e)}
                     />
                     <TextField
