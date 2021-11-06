@@ -1,7 +1,6 @@
 import { createContext, useEffect, useReducer } from 'react'
 // utils
 import axios from '../utils/axios'
-import { isValidToken, setSession } from '../utils/jwt'
 
 // ----------------------------------------------------------------------
 
@@ -159,13 +158,6 @@ function DrawProvider({ children }) {
     initialize()
   }, [])
 
-  const set_loading = (data) => {
-    dispatch({
-      type: 'SET_LOADING',
-      payload: data,
-    })
-  }
-
   // Create Events
 
   const create_event = async (data) => {
@@ -179,7 +171,7 @@ function DrawProvider({ children }) {
       payload: false,
     })
 
-    if (response.data == 'OK') {
+    if (response.data === 'OK') {
       dispatch(getCurrentEvent())
       dispatch(getAllDays())
     }
@@ -243,7 +235,7 @@ function DrawProvider({ children }) {
         type: 'SET_TABLES',
         payload: {
           tables: data.table,
-          currentDay: data.maxDay
+          currentDay: data.maxDay,
         },
       })
     }
@@ -333,7 +325,7 @@ function DrawProvider({ children }) {
     let cart = JSON.parse(localStorage.getItem('cart'))
     const response = await axios.post('/api/draw/payment', { cart, user })
 
-    if (response.data.xStatus == 'Approved') {
+    if (response.data.xStatus === 'Approved') {
       window.localStorage.removeItem('products')
       window.localStorage.removeItem('cart')
       window.location.href = '/thanks'
@@ -361,7 +353,7 @@ function DrawProvider({ children }) {
       roomnumber: roomNum,
     })
 
-    if (response.data == 'OK') {
+    if (response.data === 'OK') {
       dispatch(getAllDays())
       dispatch(getCurrentEvent())
     } else {
@@ -382,7 +374,7 @@ function DrawProvider({ children }) {
       payload: false,
     })
 
-    if (response.data == 'OK') {
+    if (response.data === 'OK') {
       dispatch(getAllDays())
       dispatch(getCurrentEvent())
     }
@@ -401,7 +393,7 @@ function DrawProvider({ children }) {
       payload: false,
     })
 
-    if (response.data == 'OK') {
+    if (response.data === 'OK') {
       dispatch(getCurrentEvent())
       dispatch(getAllDays())
     }
@@ -418,7 +410,7 @@ function DrawProvider({ children }) {
       payload: false,
     })
 
-    if (response.data == 'OK') {
+    if (response.data === 'OK') {
       dispatch(getCurrentEvent())
       dispatch(getAllDays())
     }
@@ -435,7 +427,7 @@ function DrawProvider({ children }) {
       payload: false,
     })
     window.alert('Event Finished')
-    if (response.data == 'OK') {
+    if (response.data === 'OK') {
       dispatch(getCurrentEvent())
       dispatch(getAllDays())
     }
@@ -584,16 +576,16 @@ function DrawProvider({ children }) {
 
   const create_mock = async (mockdata) => {
     dispatch({
-      type: "SET_LOADING",
+      type: 'SET_LOADING',
       payload: true,
-    });
+    })
     const response = await axios.post('/api/draw/create_mock', mockdata)
     dispatch({
-      type: "SET_LOADING",
+      type: 'SET_LOADING',
       payload: false,
-    });
+    })
     // const { status, data } = response
-    if (response.data == 'OK') {
+    if (response.data === 'OK') {
       dispatch(getCurrentEvent())
       dispatch(getAllDays())
     }

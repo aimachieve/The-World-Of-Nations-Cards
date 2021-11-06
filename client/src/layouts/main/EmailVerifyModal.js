@@ -1,5 +1,6 @@
+import React from 'react'
 // material
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from '@material-ui/icons/Close'
 import {
   Button,
   Dialog,
@@ -7,22 +8,19 @@ import {
   DialogContent,
   Typography,
   IconButton,
-} from "@material-ui/core";
-import useAuth from "hooks/useAuth";
-import Logo from "components/Logo";
-import { VerifyCodeForm } from "components/authentication/verify-code";
+} from '@material-ui/core'
+import useAuth from 'hooks/useAuth'
+import Logo from 'components/Logo'
+import { VerifyCodeForm } from 'components/authentication/verify-code'
 
 export default function LoginButton() {
-  const { authModal, setAuthModal } = useAuth();
+  const { authModal, setAuthModal } = useAuth()
 
-  const handleClickOpen = () => {
-    setAuthModal("verify");
-  };
   const handleClose = () => {
-    setAuthModal(null);
-  };
+    setAuthModal(null)
+  }
 
-  const open = Boolean(authModal === "verify");
+  const open = Boolean(authModal === 'verify')
 
   return (
     <Dialog
@@ -35,7 +33,7 @@ export default function LoginButton() {
           aria-label="close"
           onClick={handleClose}
           sx={{
-            position: "absolute",
+            position: 'absolute',
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500],
@@ -45,15 +43,15 @@ export default function LoginButton() {
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ px: 10, pb: 5 }}>
-        <Logo sx={{ mx: "auto" }} />
+        <Logo sx={{ mx: 'auto' }} />
         <Typography
           variant="h2"
           color="black"
           sx={{
             fontWeight: 400,
             mb: 5,
-            fontFamily: "Abril Fatface, cursive",
-            textAlign: "center",
+            fontFamily: 'Abril Fatface, cursive',
+            textAlign: 'center',
           }}
         >
           Verify Your Email
@@ -64,8 +62,8 @@ export default function LoginButton() {
           <Button
             variant="outlined"
             size="large"
-            sx={{ ml: 2, borderColor: "#131025", color: "#131025" }}
-            onClick={() => setAuthModal("login")}
+            sx={{ ml: 2, borderColor: '#131025', color: '#131025' }}
+            onClick={() => setAuthModal('login')}
           >
             Send again
           </Button>
@@ -77,17 +75,17 @@ export default function LoginButton() {
           color="grey.500"
           sx={{ px: 5, mt: 3 }}
         >
-          This site is protected by reCAPTCHA and the Google{" "}
+          This site is protected by reCAPTCHA and the Google{' '}
           <Typography variant="span" color="black">
             Privacy Policy
-          </Typography>{" "}
-          and{" "}
+          </Typography>{' '}
+          and{' '}
           <Typography variant="span" color="black">
             Terms and Service
-          </Typography>{" "}
+          </Typography>{' '}
           apply
         </Typography>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

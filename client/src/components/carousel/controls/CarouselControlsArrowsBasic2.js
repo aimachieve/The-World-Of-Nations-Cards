@@ -1,26 +1,22 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
-import { Icon } from '@iconify/react';
-import arrowLeftFill from '@iconify/icons-eva/arrow-left-fill';
-import arrowRightFill from '@iconify/icons-eva/arrow-right-fill';
-import roundKeyboardArrowLeft from '@iconify/icons-ic/round-keyboard-arrow-left';
-import roundKeyboardArrowRight from '@iconify/icons-ic/round-keyboard-arrow-right';
-import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
-import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
+import { Icon } from '@iconify/react'
+import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill'
+import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill'
 // material
-import { useTheme, styled } from '@material-ui/core/styles';
-import { Box } from '@material-ui/core';
+import { useTheme, styled } from '@material-ui/core/styles'
+import { Box } from '@material-ui/core'
 //
-import { MIconButton } from '../../@material-extend';
+import { MIconButton } from '../../@material-extend'
 
 // ----------------------------------------------------------------------
 
-const SIZE = 64;
+const SIZE = 64
 
 const ICON_SIZE = {
   width: 40,
-  height: 40
-};
+  height: 40,
+}
 
 const RootStyle = styled(Box)(({ theme }) => ({
   top: 0,
@@ -32,8 +28,8 @@ const RootStyle = styled(Box)(({ theme }) => ({
   margin: 'auto',
   display: 'flex',
   position: 'absolute',
-  justifyContent: 'space-between'
-}));
+  justifyContent: 'space-between',
+}))
 
 const ArrowStyle = styled(MIconButton)(({ theme }) => ({
   width: SIZE,
@@ -49,40 +45,57 @@ const ArrowStyle = styled(MIconButton)(({ theme }) => ({
   transition: theme.transitions.create('opacity'),
   boxShadow: '0px 2px 28px rgba(0, 0, 0, 0.27)',
   '&:hover': {
-    opacity: 1
+    opacity: 1,
     // background: theme.palette.grey[900]
-  }
-}));
+  },
+}))
 
 // ----------------------------------------------------------------------
 
 CarouselControlsArrowsBasic2.propTypes = {
   arrowLine: PropTypes.bool,
   onNext: PropTypes.func,
-  onPrevious: PropTypes.func
-};
+  onPrevious: PropTypes.func,
+}
 
-export default function CarouselControlsArrowsBasic2({ arrowLine, onNext, onPrevious, ...other }) {
-  const theme = useTheme();
-  const isRTL = theme.direction === 'rtl';
+export default function CarouselControlsArrowsBasic2({
+  arrowLine,
+  onNext,
+  onPrevious,
+  ...other
+}) {
+  const theme = useTheme()
+  const isRTL = theme.direction === 'rtl'
 
   return (
     <RootStyle {...other}>
       <ArrowStyle size="small" onClick={onPrevious} sx={{ marginLeft: 8 }}>
         {arrowLine ? (
-          <Icon icon={isRTL ? arrowIosForwardFill : arrowIosBackFill} {...ICON_SIZE} />
+          <Icon
+            icon={isRTL ? arrowIosForwardFill : arrowIosBackFill}
+            {...ICON_SIZE}
+          />
         ) : (
-          <Icon icon={isRTL ? arrowIosForwardFill : arrowIosBackFill} {...ICON_SIZE} />
+          <Icon
+            icon={isRTL ? arrowIosForwardFill : arrowIosBackFill}
+            {...ICON_SIZE}
+          />
         )}
       </ArrowStyle>
 
       <ArrowStyle size="small" onClick={onNext} sx={{ marginRight: 8 }}>
         {arrowLine ? (
-          <Icon icon={isRTL ? arrowIosBackFill : arrowIosForwardFill} {...ICON_SIZE} />
+          <Icon
+            icon={isRTL ? arrowIosBackFill : arrowIosForwardFill}
+            {...ICON_SIZE}
+          />
         ) : (
-          <Icon icon={isRTL ? arrowIosBackFill : arrowIosForwardFill} {...ICON_SIZE} />
+          <Icon
+            icon={isRTL ? arrowIosBackFill : arrowIosForwardFill}
+            {...ICON_SIZE}
+          />
         )}
       </ArrowStyle>
     </RootStyle>
-  );
+  )
 }

@@ -1,16 +1,11 @@
-import { useRef } from 'react';
-import Slider from 'react-slick';
-import PropTypes from 'prop-types';
-import { Icon } from '@iconify/react';
-import { Link as RouterLink } from 'react-router-dom';
-import arrowForwardFill from '@iconify/icons-eva/arrow-forward-fill';
+import React, { useRef } from 'react'
+import Slider from 'react-slick'
+import PropTypes from 'prop-types'
 // material
-import { alpha, useTheme, styled } from '@material-ui/core/styles';
-import { Box, Paper, Link, Typography, CardContent, Stack } from '@material-ui/core';
-// utils
-import mockData from '../../utils/mock-data';
+import { styled } from '@material-ui/core/styles'
+import { Box, CardContent } from '@material-ui/core'
 //
-import { CarouselControlsArrowsBasic3 } from './controls';
+import { CarouselControlsArrowsBasic3 } from './controls'
 
 // ----------------------------------------------------------------------
 
@@ -18,30 +13,28 @@ const MOCK_CAROUSELS = [...Array(8)].map((_, index) => ({
   id: index,
   title: 'Musical',
   image: '/images/city1.png',
-  description: 'Instruments'
-}));
+  description: 'Instruments',
+}))
 
 const RootStyle = styled('div')(({ theme }) => ({
   // overflow: 'hidden',
   position: 'relative',
   '& .slick-slide': {
     opacity: 0.2,
-    transition: 'all .5s'
+    transition: 'all .5s',
   },
   '& .slick-center': {
     transform: 'scale(1.3)',
-    opacity: 1
-  }
-}));
+    opacity: 1,
+  },
+}))
 // ----------------------------------------------------------------------
 
 CarouselItem.propTypes = {
-  item: PropTypes.object
-};
+  item: PropTypes.object,
+}
 
 function CarouselItem({ item }) {
-  const { image, title } = item;
-
   return (
     <Box
       sx={{
@@ -54,7 +47,7 @@ function CarouselItem({ item }) {
         boxShadow: '0px 4px 31px rgba(0, 0, 0, 0.11)',
         position: 'relative',
         my: 10,
-        background: `url(${item.image})`
+        background: `url(${item.image})`,
       }}
     >
       <CardContent
@@ -63,7 +56,7 @@ function CarouselItem({ item }) {
           zIndex: 9,
           width: '100%',
           textAlign: 'left',
-          position: 'absolute'
+          position: 'absolute',
         }}
       >
         {/* <Typography variant="h4" paragraph>
@@ -71,12 +64,11 @@ function CarouselItem({ item }) {
         </Typography> */}
       </CardContent>
     </Box>
-  );
+  )
 }
 
 export default function CarouselCenterMode() {
-  const carouselRef = useRef();
-  const theme = useTheme();
+  const carouselRef = useRef()
 
   const settings = {
     slidesToShow: 3,
@@ -87,26 +79,26 @@ export default function CarouselCenterMode() {
     responsive: [
       {
         breakpoint: 1024,
-        settings: { slidesToShow: 5 }
+        settings: { slidesToShow: 5 },
       },
       {
         breakpoint: 960,
-        settings: { slidesToShow: 3 }
+        settings: { slidesToShow: 3 },
       },
       {
         breakpoint: 480,
-        settings: { slidesToShow: 1, centerPadding: '0' }
-      }
-    ]
-  };
+        settings: { slidesToShow: 1, centerPadding: '0' },
+      },
+    ],
+  }
 
   const handlePrevious = () => {
-    carouselRef.current.slickPrev();
-  };
+    carouselRef.current.slickPrev()
+  }
 
   const handleNext = () => {
-    carouselRef.current.slickNext();
-  };
+    carouselRef.current.slickNext()
+  }
 
   return (
     <RootStyle>
@@ -115,7 +107,10 @@ export default function CarouselCenterMode() {
           <CarouselItem key={item.title} item={item} />
         ))}
       </Slider>
-      <CarouselControlsArrowsBasic3 onNext={handleNext} onPrevious={handlePrevious} />
+      <CarouselControlsArrowsBasic3
+        onNext={handleNext}
+        onPrevious={handlePrevious}
+      />
     </RootStyle>
-  );
+  )
 }

@@ -24,7 +24,10 @@ const db = require('./config/keys').mongoURI
 
 // Connect to MongoDB
 mongoose
-  .connect(db, { useNewUrlParser: true, useFindAndModify: false })
+  .connect(process.env.MONGODB_URI || db, {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+  })
   .then(() => console.log('MongoDB successfully connected'))
   .catch((err) => console.log(err))
 
@@ -34,9 +37,9 @@ app.use(passport.initialize())
 // Passport config
 require('./config/passport')(passport)
 
-app.use(express.static(path.join(__dirname, '../client/build')));
-app.get("/*", function (req, res) {
-  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+app.use(express.static(path.join(__dirname, '../client/build')))
+app.get('*', function (req, res) {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
 })
 
 //  Define the route to read the files of the server from the client

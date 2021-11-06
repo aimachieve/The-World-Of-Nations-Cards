@@ -1,5 +1,4 @@
-import { createContext, useEffect, useReducer } from 'react'
-import PropTypes from 'prop-types'
+import React, { createContext, useEffect, useReducer } from 'react'
 // utils
 import axios from '../utils/axios'
 import { isValidToken, setSession } from '../utils/jwt'

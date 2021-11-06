@@ -1,24 +1,12 @@
-import { capitalCase } from 'change-case'
+import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 // material
 import { styled } from '@material-ui/core/styles'
-import {
-  Box,
-  Card,
-  Link,
-  Container,
-  Typography,
-  Tooltip,
-} from '@material-ui/core'
-// hooks
-import useAuth from '../../hooks/useAuth'
+import { Box, Link, Container, Typography } from '@material-ui/core'
 // routes
 import { PATH_AUTH, PATH_USER } from '../../routes/paths'
-// layouts
-import AuthLayout from '../../layouts/AuthLayout'
 // components
 import Page from '../../components/Page'
-import { MHidden } from '../../components/@material-extend'
 import { RegisterForm } from '../../components/authentication/register'
 
 // ----------------------------------------------------------------------
@@ -43,8 +31,6 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Register() {
-  const { method } = useAuth()
-
   return (
     <RootStyle title="Register | Minimal-UI">
       <Container sx={{ margin: 'auto' }}>
