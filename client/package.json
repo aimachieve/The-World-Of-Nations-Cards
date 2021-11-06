@@ -132,7 +132,6 @@
     "yup": "^0.32.9"
   },
   "proxy": "http://54.88.175.222/:5000",
-  "homepage": ".",
   "devDependencies": {
     "@babel/core": "^7.15.0",
     "@babel/eslint-parser": "^7.15.0"
