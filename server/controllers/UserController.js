@@ -74,30 +74,37 @@ exports.register = (req, res) => {
                   expiresIn: '5 days', // 1 year in seconds
                 },
                 (err, token) => {
+                  if (err) throw err
+                  console.log(payload)
+                  res.json({
+                    success: true,
+                    accessToken: 'Bearer ' + token,
+                    user: payload,
+                  })
                   /* ================== Send user's mail the verification code ============ */
-                  var transporter = nodemailer.createTransport({
-                    service: 'gmail',
-                    auth: {
-                      user: ADMIN_EMAIL,
-                      pass: ADMIN_EMAIL_PASSWORD,
-                    },
-                  })
-                  var mailOptions = {
-                    from: ADMIN_EMAIL,
-                    to: email,
-                    subject: 'Welcome!',
-                    text: `<h3 style="text-align: center;">Welcome ${firstName}!</h3><h6 style="text-align:center;">Please verify your email.</h6><p style="text-align: center;"><a href="http://${window.location.hostname}/auth/verifyEmail/${token}">Verify</a></p>`,
-                  }
-                  console.log(mailOptions)
-                  transporter.sendMail(mailOptions, function (error, info) {
-                    if (error) {
-                      console.log(error)
-                      return res.status(200).send('Failed')
-                    } else {
-                      console.log('Email sent: ' + info.response)
-                      return res.status(200).send('Success')
-                    }
-                  })
+                  // var transporter = nodemailer.createTransport({
+                  //   service: 'gmail',
+                  //   auth: {
+                  //     user: ADMIN_EMAIL,
+                  //     pass: ADMIN_EMAIL_PASSWORD,
+                  //   },
+                  // })
+                  // var mailOptions = {
+                  //   from: ADMIN_EMAIL,
+                  //   to: email,
+                  //   subject: 'Welcome!',
+                  //   text: `<h3 style="text-align: center;">Welcome ${firstName}!</h3><h6 style="text-align:center;">Please verify your email.</h6><p style="text-align: center;"><a href="http://${window.location.hostname}/auth/verifyEmail/${token}">Verify</a></p>`,
+                  // }
+                  // console.log(mailOptions)
+                  // transporter.sendMail(mailOptions, function (error, info) {
+                  //   if (error) {
+                  //     console.log(error)
+                  //     return res.status(200).send('Failed')
+                  //   } else {
+                  //     console.log('Email sent: ' + info.response)
+                  //     return res.status(200).send('Success')
+                  //   }
+                  // })
                   /* ======================================================================== */
                 },
               )
