@@ -50,7 +50,13 @@ function CarouselItem({ item }) {
       />
       <Box
         position="absolute"
-        sx={{ position: 'absolute', top: '30%', width: '100%', zIndex: 2, color: 'common.white' }}
+        sx={{
+          position: 'absolute',
+          top: '30%',
+          width: '100%',
+          zIndex: 2,
+          color: 'common.white',
+        }}
       >
         <Stack spacing={1}>
           <Stack>
@@ -60,22 +66,24 @@ function CarouselItem({ item }) {
                 align="center"
                 sx={{ textTransform: 'uppercase' }}
               >
-                Page Title
+                WELCOME TO WNOC
               </Typography>
               <Typography
-                fontSize={36}
+                fontSize={28}
                 align="center"
                 sx={{ textTransform: 'uppercase' }}
               >
-                Sub title will be here
+                Where everyone has a fair chance at the prizes!
               </Typography>
             </MotionInView>
           </Stack>
           <Stack direction="row" justifyContent="center">
             <MotionInView variants={varFadeInUp}>
-              <Typography fontSize={28} align="center" maxWidth={550}>
-                Here will be some form of text maybe a little paragraph of info
-                to grab the eye
+              <Typography fontSize={20} align="center" maxWidth={850}>
+                Sign up today to secure yourself a seat in the main event! The
+                main-event starting date will be announced on social media!
+                Follow us to stay tuned on the upcoming news for this
+                one-in-a-lifetime chance at some of the most prestigious prizes.
               </Typography>
             </MotionInView>
           </Stack>
@@ -87,7 +95,7 @@ function CarouselItem({ item }) {
                 sx={{
                   px: 4,
                   color: 'common.white',
-                  fontSize: 24,
+                  fontSize: 20,
                   textTransform: 'uppercase',
                 }}
               >

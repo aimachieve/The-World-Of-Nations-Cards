@@ -41,10 +41,11 @@ export default function SignUpCTA() {
               </Typography>
             </MotionInView>
             <MotionInView variants={varFadeInUp}>
-              <Container maxWidth="sm">
+              <Container maxWidth="md">
                 <Typography align="center" color="common.white" fontSize={28}>
-                  Here will be some form of text maybe a little paragraph of
-                  info to grab the eye
+                  Sign up now to start being part of the fun! We have many
+                  events and you may just end up winning some of the most
+                  amazing prizes available!
                 </Typography>
               </Container>
             </MotionInView>
@@ -56,11 +57,12 @@ export default function SignUpCTA() {
                   color="success"
                   sx={{
                     color: 'common.white',
-                    fontSize: 28,
+                    fontSize: 22,
                     textTransform: 'uppercase',
+                    px: 10
                   }}
                 >
-                  sign up now
+                  sign up
                 </Button>
               </Typography>
             </MotionInView>

@@ -31,7 +31,7 @@ export default function MultiActionAreaCard() {
          >
            Small sub-text for the section
          </Typography>
-         <Typography variant="body2" color="black">
+         <Typography variant="body2" color="black" align="left">
            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
            Aliquam eros arcu, malesuada auctor velit feugiat, dapibus
            congue ligula. Etiam ipsum nisl, scelerisque
@@ -49,7 +49,7 @@ export default function MultiActionAreaCard() {
         VALUE
        </Typography>
        <Button size="small" color="primary">
-         300$
+         1500$
        </Button>
      </CardActions>
    </Card>
