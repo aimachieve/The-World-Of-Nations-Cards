@@ -89,7 +89,7 @@ exports.register = (req, res) => {
                     from: ADMIN_EMAIL,
                     to: user.email,
                     subject: subject,
-                    html: `<h3 style="text-align: center;">Welcome ${firstName}!</h3><h6 style="text-align:center;">Please verify your email.</h6><p style="text-align: center;"><a href="http://${window.location.hostname}/${token}">Verify</a></p>`,
+                    html: `<h3 style="text-align: center;">Welcome ${firstName}!</h3><h6 style="text-align:center;">Please verify your email.</h6><p style="text-align: center;"><a href="http://${window.location.hostname}/auth/verifyEmail/${token}">Verify</a></p>`,
                   }
 
                   transporter.sendMail(mailOptions, function (error, info) {
@@ -99,11 +99,6 @@ exports.register = (req, res) => {
                     } else {
                       console.log('Email sent: ' + info.response)
                       return res.status(200).send('Success')
-                      // return res.json({
-                      //   success: true,
-                      //   accessToken: 'Bearer ' + token,
-                      //   user,
-                      // })
                     }
                   })
                   /* ======================================================================== */
@@ -177,11 +172,10 @@ exports.verifyEmail = (req, res) => {
     if (err) {
       return res.status(404).send('Unregistered user')
     } else {
-      const user = JSON.parse(decoded)
       return res.json({
         success: true,
         accessToken: 'Bearer ' + token,
-        user,
+        user: decoded,
       })
     }
   })

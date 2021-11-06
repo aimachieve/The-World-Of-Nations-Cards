@@ -51,7 +51,7 @@ export default function RegisterForm() {
       password: '',
       username: '',
       address: '',
-      town: '',
+      city: '',
       province: '',
       postalcode: '',
       phone: '',
@@ -59,19 +59,32 @@ export default function RegisterForm() {
     validationSchema: RegisterSchema,
     onSubmit: async (values, { setErrors, setSubmitting }) => {
       try {
-        await register(values)
+        const response = await register(values)
         // setAuthModal("verify")
-        enqueueSnackbar('Register success. Please check your email', {
-          variant: 'success',
-          action: (key) => (
-            <MIconButton size="small" onClick={() => closeSnackbar(key)}>
-              <Icon icon={closeFill} />
-            </MIconButton>
-          ),
-        })
-        // if (isMountedRef.current) {
-        //   setSubmitting(false);
-        // }
+        const { data } = response
+        if (data === 'Success') {
+          enqueueSnackbar('Register success. Please check your email', {
+            variant: 'success',
+            action: (key) => (
+              <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+                <Icon icon={closeFill} />
+              </MIconButton>
+            ),
+          })
+        } else {
+          enqueueSnackbar('Register failed.', {
+            variant: 'error',
+            action: (key) => (
+              <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+                <Icon icon={closeFill} />
+              </MIconButton>
+            ),
+          })
+        }
+
+        if (isMountedRef.current) {
+          setSubmitting(false)
+        }
       } catch (error) {
         console.error(error)
         if (isMountedRef.current) {
