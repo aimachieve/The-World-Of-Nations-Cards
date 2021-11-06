@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const passport = require('passport')
 const cors = require('cors')
+const path = require('path')
 
 const users = require('./routes/api/users')
 const draw = require('./routes/api/draw')
@@ -33,6 +34,7 @@ app.use(passport.initialize())
 // Passport config
 require('./config/passport')(passport)
 
+app.use(express.static(path.join(__dirname, '../client/build')));
 app.get("/*", function (req, res) {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 })
