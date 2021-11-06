@@ -27,7 +27,7 @@ export default function EventManagement() {
     getAllDays();
   }, []);
 
-  const [currentTab, setCurrentTab] = useState('Satelite_event')
+  const [currentTab, setCurrentTab] = useState('Main_event')
   const [formData, setFormData] = useState({
     eventName: '',
     mockUsernum: 0,
@@ -76,12 +76,12 @@ export default function EventManagement() {
 
   const TABS = [
     {
-      value: 'Satelite_event',
-      component: <SateliteEvent />,
-    },
-    {
       value: 'Main_event',
       component: <MainEvent />,
+    },
+    {
+      value: 'Satelite_event',
+      component: <SateliteEvent />,
     },
   ]
 

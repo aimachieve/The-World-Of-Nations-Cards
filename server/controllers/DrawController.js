@@ -104,7 +104,7 @@ exports.getRandomTablesByUserId = async (req, res) => {
   ])
 
   let maxDay = await MainTicket.findOne({ user_id: userId }).sort({ day: -1 })
-
+console.log(userId)
   for (let i = 0; i < tables.length; i += 1) {
     let table = await Table.findById(tables[i]._id).populate({
       path: 'seat',
@@ -112,7 +112,7 @@ exports.getRandomTablesByUserId = async (req, res) => {
     })
     await resTables.push(table)
   }
-  return res.status(200).json({ table: resTables, maxDay: maxDay.day })
+  return res.status(200).json({ table: resTables, maxDay: maxDay == null ? 0 : maxDay.day })
 }
 
 /**
@@ -548,7 +548,6 @@ exports.create_mEvent = async (req, res) => {
 
 exports.getCurrentEvent = async (req, res) => {
   const current_event = await Event.findOne({ status: { $lt: 3 } })
-
   res.json({
     success: true,
     current_event: current_event,
@@ -603,6 +602,9 @@ exports.get_tickets = async (req, res) => {
 /*========================= PlayGame =============================*/
 exports.assignSatelliteTable = async (req, res) => {
   const { satelliteId, roomnumber } = req.body
+
+  let flag = await SatelliteTicket.find({ satelliteId: satelliteId }).count();
+  if (flag == 0) return res.json('not exist')
 
   let event = await Event.findOne({ status: { $lt: 3 } })
   let day = await Day.findOne({ event_id: event._id, daynumber: 1 }).populate(
@@ -667,7 +669,6 @@ exports.assignSatelliteTable = async (req, res) => {
 
   await SatelliteTicket.find({ satelliteId: satelliteId }).then(
     async (data) => {
-      if (data.length == 0) return res.json('OK')
       maps = data
       var newMainTicket = {}
 
@@ -799,6 +800,12 @@ exports.makeTable = async (req, res) => {
     })
   }
 
+  let mainticketFlag = await MainTicket.find({satelliteId: null}).count();
+
+  if(mainticketFlag == 0) {
+    return res.json("There is no main ticket. Please add main tickets.");
+  }
+
   let winnerCount = await MainTicket.find().count()
   day.entry = winnerCount
   day.status = 1
@@ -878,6 +885,7 @@ exports.roomDraw = async (req, res) => {
   await generateTable(newDay._id, { day: daynumber + 1 }) // generate tables for new days
 
   let room = await Room.findOne({ roomnumber: roomnumber, day: day._id })
+
   room.status = true
   await room.save()
 
@@ -934,25 +942,23 @@ exports.finalRoom = async (req, res) => {
   day.status = false
   day.winner = finalwinner
 
-  for (var i = tables.length - 1; i >= 0 && total <= finalwinner; i--) {
+  for (var i = 0; i < tables.length && total < finalwinner; i++) {
     let temp = tables[i].seat
 
-    let randomlimit = Math.ceil(Math.random() * 100) % 10
-
-    for (var j = temp.length - 1; j > randomlimit; j--) {
-      let rand = Math.ceil(Math.random() * 100) % temp.length
+    for (var j = temp.length - 1; j > 0; j--) {
 
       await MainTicket.findOneAndUpdate(
-        { _id: temp[rand]._id },
+        { _id: temp[j]._id },
         { $set: { day: day.daynumber + 1 } },
       )
 
-      temp.splice(rand, 1)
-      i--
-      total++
+      total++;
+      if(total >= finalwinner) {
+        break;
+      }
     }
     console.log('temp-length----->', i)
-    // await Table.findOneAndUpdate({ _id: tables[i]._id }, {$set: {'seat': temp} })
+    await Table.findOneAndUpdate({ _id: tables[i]._id }, {$set: {'seat': temp} })
   }
 
   let rooms = await Room.find({ day: day._id })
@@ -965,10 +971,12 @@ exports.finalRoom = async (req, res) => {
   await day.save()
   let entry = await MainTicket.find().count()
 
-  let winners = await MainTicket.find({ day: day.daynumber })
+  let winners = await MainTicket.find({ day: day.daynumber+1 })
+
+  let winnerItem = {};
 
   for (var i = winners.length - 1; i >= 0; i--) {
-    let winnerItem = await Winner.findOne({ user: winners[i].user_id })
+    winnerItem = await Winner.findOne({ user: winners[i].user_id })
 
     if (winnerItem) {
       winnerItem.tickets = [...winnerItem.tickets, i + 1]
@@ -1033,21 +1041,35 @@ exports.payment = async (req, res) => {
     function (error, response, body) {
       data = qs.parse(body)
       console.log(data)
-      // let event = await Event.findOne({status: 0});
 
-      // var newMainTicket = {}
+    // let main = cart.filter(item => !item.satelliteId)
+    // let satellite = cart.filter(item => item.satelliteId)
 
-      // User.find().then(async (users) => {
-      //   for (var j = 0; j < 5; j++) {
-      //     console.log(i + '-----' + j)
-      //     newMainTicket = new MainTicket({
-      //       user_id: users[i]._id,
-      //       username: users[i].name,
-      //       event: event._id
-      //     })
-      //     await newMainTicket.save()
-      //   }
-      // })
+    // let newTicket = {};
+
+    // if(main.length > 0) {
+    //   for (var i = 0; i < main[0].qty; i++) {
+    //     newTicket = new MainTicket({
+    //       user_id: main[0]._id,
+    //       username: main[0].username,
+    //       event: main[0].event
+    //     });
+
+    //     await newTicket.save();
+    //   }
+    // }
+
+    // if(satellite.length > 0) {
+    //   for (var j = 0; j < satellite[j].qty; j++) {
+    //     newTicket = new SatelliteTicket({
+    //       user_id: satellite[j]._id,
+    //       username: satellite[j].username,
+    //       eventId: satellite[j].event
+    //     });
+
+    //     await newTicket.save();
+    //   }
+    // }
 
       res.json(data)
     },
@@ -1057,7 +1079,7 @@ exports.payment = async (req, res) => {
 exports.getFinalWinner = async (req, res) => {
   let event = await Event.findOne({ status: 2 })
   if (event) {
-    Winner.find({ event })
+    Winner.find({ event: event._id })
       .populate('user')
       .then((data) => {
         res.json(data)
@@ -1242,16 +1264,19 @@ exports.createMockData = async (req, res) => {
   var i = 0
   var sat = event.satellite.filter((item) => item.status == true)
   for (var ii = 0; ii < sat.length; ii++) {
-    for (i = ii * 200; i < 200 * (ii + 1); i++) {
-      for (var j = 0; j < 5; j++) {
-        newSatelliteTicket = new SatelliteTicket({
-          user_id: users[i]._id,
-          username: users[i].username,
-          eventId: event._id,
-          satelliteId: sat[ii]._id,
-        })
-        await newSatelliteTicket.save()
-        console.log(i + '-----' + j)
+    let existFakesate = await SatelliteTicket.find({ satelliteId: sat[ii]._id })
+    if (existFakesate.length == 0) {
+      for (i = ii * 200; i < 200 * (ii + 1); i++) {
+        for (var j = 0; j < 5; j++) {
+          newSatelliteTicket = new SatelliteTicket({
+            user_id: users[i % users.length]._id,
+            username: users[i % users.length].username,
+            eventId: event._id,
+            satelliteId: sat[ii]._id,
+          })
+          await newSatelliteTicket.save()
+          console.log(i + '-----' + j)
+        }
       }
     }
   }

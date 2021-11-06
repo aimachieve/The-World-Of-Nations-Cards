@@ -43,7 +43,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 export default function WhoWeAre() {
   return (
     <RootStyle>
-      <Container maxWidth="lg" sx={{ position: 'relative' }}>
+      <Container maxWidth="xl" sx={{ position: 'relative' }}>
         <ContentStyle>
           <MotionInView variants={varFadeInUp}>
             <Stack direction="row" justifyContent="center">
@@ -67,11 +67,11 @@ export default function WhoWeAre() {
               color="primary"
               variant="subtitle1"
             >
-              Small sub-title for the section
+              THE WORLD NATION OF CARDS
             </Typography>
           </MotionInView>
 
-          <Grid container spacing={2}>
+          <Grid container spacing={10}>
             <Grid item xs={12} md={6}>
               <MotionInView variants={varFadeInLeft}>
                 <Box
@@ -104,6 +104,14 @@ export default function WhoWeAre() {
                       Bringing excitement to you through online entertainment
                     </Typography>
                   </Box>
+                  <Typography variant="body1" color="common.black">
+                    Getting your hands on prominent hockey cards these days can
+                    seem unattainable… in fact, getting your hands on any
+                    sporting card is difficult. That leaves you with no choice
+                    but to hunt for cards on the internet, where the costs
+                    (before fees) have simply become unsustainable for most
+                    people. That’s when the concept for WNOC arose.
+                  </Typography>
                   <Typography variant="body1" color="common.black">
                     WNOC is the only online draw website giving fans and
                     experience-seekers the chance to win exclusive cards through

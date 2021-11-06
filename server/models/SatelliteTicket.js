@@ -23,10 +23,6 @@ const SatelliteTicketSchema = new Schema(
       type: Boolean,
       default: false
     },
-    eventId: {
-      type: String,
-      require: true
-    },
   },
 )
 

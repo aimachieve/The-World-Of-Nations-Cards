@@ -28,7 +28,6 @@ export default function Satellite1Tab({ satelliteEventId }) {
   const [searchKey, setSearchKey] = useState('')
   const [pageSize, setPageSize] = useState(35)
   const [pageNumber, setPageNumber] = useState(1)
-  console.log(satelliteEventId)
 
   useEffect(() => {
     clearUsers()
@@ -47,7 +46,6 @@ export default function Satellite1Tab({ satelliteEventId }) {
 
   const fetchNextData = () => {
     if (users.length !== expectedUsersAmount) {
-      console.log(users.length, expectedUsersAmount)
       setPageSize(pageSize + 10)
       setPageNumber(pageNumber + 1)
       if (searchKey) {

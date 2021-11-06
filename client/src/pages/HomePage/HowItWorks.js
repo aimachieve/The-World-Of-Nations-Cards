@@ -2,7 +2,9 @@
 import React from 'react'
 // material
 import { styled, useTheme } from '@material-ui/core/styles'
-import { Grid, Container, Typography, Stack, Card } from '@material-ui/core'
+import { Grid, Container, Typography, Stack, Box } from '@material-ui/core'
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
 //
 import {
   MotionInView,
@@ -53,102 +55,107 @@ export default function HowItWorks() {
               color="primary"
               variant="subtitle1"
             >
-              Small sub-title for the section
+              3 EASY AND FUN STEPS FOR EVERYONE
             </Typography>
           </MotionInView>
 
-          <Grid container spacing={5}>
+          <Grid container spacing={5} mt={5}>
             <Grid item xs={12} md={4}>
               <MotionInView variants={varFadeInLeft}>
-                <Card
-                  sx={{
-                    padding: 2,
-                    backgroundColor: 'common.white',
-                    borderRadius: 0,
-                  }}
-                >
+                <Stack spacing={8}>
+                  <Stack direction="row" justifyContent="center">
+                    <Box sx={{ width: 200, height: 200 }}>
+                      <CircularProgressbar
+                        value={35}
+                        strokeWidth={5}
+                        text={1}
+                        styles={buildStyles({
+                          textColor: 'white',
+                          pathColor: '#29B2FE',
+                          trailColor: 'white',
+                        })}
+                      />
+                    </Box>
+                  </Stack>
                   <Stack spacing={2}>
-                    <img
-                      src="/images/generic-placeholder.jpg"
-                      alt="placeholder"
-                      width="100%"
-                    />
-                    <Typography
-                      variant="h4"
-                      color="primary"
-                      sx={{ textTransform: 'capitalize' }}
-                    >
-                      section title
+                    <Typography fontSize={24} align="center">
+                      STEP 1:
                     </Typography>
-                    <Typography variant="body2" color="black">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Aliquam eros arcu, malesuada auctor velit feugiat, dapibus
-                      congue ligula. Etiam ipsum nisl, scelerisque
+                    <Typography fontSize={16} align="center">
+                      You must register on our website in order to view the
+                      product page. Once that is done you may purchase any
+                      amount of entries to the products of your choice. Once you
+                      have purchased your entries, you will be randomly assigned
+                      to a table in the event of your choice.
                     </Typography>
                   </Stack>
-                </Card>
+                </Stack>
               </MotionInView>
             </Grid>
             <Grid item xs={12} md={4}>
               <MotionInView variants={varFadeInUp}>
-                <Card
-                  sx={{
-                    padding: 2,
-                    backgroundColor: '#29B2FE',
-                    borderRadius: 0,
-                  }}
-                >
+                <Stack spacing={8}>
+                  <Stack direction="row" justifyContent="center">
+                    <Box sx={{ width: 200, height: 200 }}>
+                      <CircularProgressbar
+                        value={60}
+                        strokeWidth={5}
+                        text={2}
+                        styles={buildStyles({
+                          textColor: 'white',
+                          pathColor: '#29B2FE',
+                          trailColor: 'white',
+                        })}
+                      />
+                    </Box>
+                  </Stack>
                   <Stack spacing={2}>
-                    <img
-                      src="/images/generic-placeholder.jpg"
-                      alt="placeholder"
-                      width="100%"
-                    />
-                    <Typography
-                      variant="h4"
-                      color="common.white"
-                      sx={{ textTransform: 'capitalize' }}
-                    >
-                      section title
+                    <Typography fontSize={24} align="center">
+                      STEP 2:
                     </Typography>
-                    <Typography variant="body2" color="common.white">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Aliquam eros arcu, malesuada auctor velit feugiat, dapibus
-                      congue ligula. Etiam ipsum nisl, scelerisque
+                    <Typography fontSize={16} align="center">
+                      Once the room is full or that the sales in entries has
+                      ceased, our software will then begin the events drawing
+                      sequence. If you are in the main event, 3 random winning
+                      tickets are chosen from every table in every room. As the
+                      winners proceed through the rooms, we continue this
+                      elimination tournament till we have 75 total winning
+                      tickets.
                     </Typography>
                   </Stack>
-                </Card>
+                </Stack>
               </MotionInView>
             </Grid>
             <Grid item xs={12} md={4}>
               <MotionInView variants={varFadeInRight}>
-                <Card
-                  sx={{
-                    padding: 2,
-                    backgroundColor: 'common.white',
-                    borderRadius: 0,
-                  }}
-                >
+                <Stack spacing={8}>
+                  <Stack direction="row" justifyContent="center">
+                    <Box sx={{ width: 200, height: 200 }}>
+                      <CircularProgressbar
+                        value={100}
+                        strokeWidth={5}
+                        text={3}
+                        styles={buildStyles({
+                          textColor: 'white',
+                          pathColor: '#29B2FE',
+                          trailColor: 'white',
+                        })}
+                      />
+                    </Box>
+                  </Stack>
                   <Stack spacing={2}>
-                    <img
-                      src="/images/generic-placeholder.jpg"
-                      alt="placeholder"
-                      width="100%"
-                    />
-                    <Typography
-                      variant="h4"
-                      color="primary"
-                      sx={{ textTransform: 'capitalize' }}
-                    >
-                      section title
+                    <Typography fontSize={24} align="center">
+                      STEP 3:
                     </Typography>
-                    <Typography variant="body2" color="black">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Aliquam eros arcu, malesuada auctor velit feugiat, dapibus
-                      congue ligula. Etiam ipsum nisl, scelerisque
+                    <Typography fontSize={16} align="center">
+                      You must register on our website in order to view the
+                      product page. Once that is done you may purchase any
+                      amount of entries to the products of your choice. Once you
+                      have purchased your entries, you will be randomly assigned
+                      to a table in the event of your choice.
                     </Typography>
                   </Stack>
-                </Card>
+                </Stack>
               </MotionInView>
             </Grid>
           </Grid>

@@ -174,45 +174,6 @@ export default function CurrentEvent() {
               ) : (
                 <></>
               )}
-              {/* {current_event && current_event.main.price != 0 ? (
-                <TableRow>
-                  <TableCell>Main</TableCell>
-                  <TableCell>{current_event.main.date}</TableCell>
-                  <TableCell>{current_event.main.price}</TableCell>
-                  <TableCell style={{ textAlign: 'center' }}>
-                    - - - - - -
-                  </TableCell>
-                  <TableCell style={{ textAlign: 'center' }}>
-                    - - - - - -
-                  </TableCell>
-                  <TableCell>
-                    {loading ? (
-                      'Loading...'
-                    ) : (
-                      <Button
-                        varient="contained"
-                        sx={{
-                          backgroundColor: 'yellow',
-                          color: '#000',
-                          '&:hover': {
-                            backgroundColor: '#29B2FE',
-                            color: '#fff',
-                          },
-                        }}
-                        onClick={() => {
-                          makeTable()
-                        }}
-                        disabled={mainflag()}
-                      >
-                        {' '}
-                        Draw{' '}
-                      </Button>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ) : (
-                <></>
-              )} */}
               {current_event ? (
                 current_event.satellite.length > 0 ? (
                   current_event.satellite.map((satellite, index) => {
@@ -235,7 +196,7 @@ export default function CurrentEvent() {
                                 color: '#fff',
                               },
                             }}
-                            disabled={!satellite.status}
+                            disabled={!satellite.status || current_event.status > 1 || (days.length > 0 ? days[0].status == 2 : false)}
                           >
                             {' '}
                             Draw{' '}
