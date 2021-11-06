@@ -1008,72 +1008,104 @@ exports.payment = async (req, res) => {
 
   let { cart, user } = req.body
 
-  let amount = 0
-  for (var i = cart.length - 1; i >= 0; i--) {
-    amount += cart[i].quantity * cart[i].price
-  }
+  let main = cart.filter(item => !item.satelliteId)
+    let satellite = cart.filter(item => item.satelliteId)
 
-  request.post(
-    {
-      url: transactionUrl,
-      form: {
-        xKey: xKey,
-        xVersion: xVersion,
-        xSoftwareName: xSoftwareName,
-        xSoftwareVersion: xSoftwareVersion,
-        xCommand: 'cc:Sale',
-        xAmount: 10,
-        xCardNum: user.cardname,
-        xCVV: user.cvc,
-        xExp: user.expire,
-        xEmail: user.xEmail,
-        xBillFirstName: user.xBillFirstName,
-        xBillLastName: user.xBillLastName,
-        xBillStreet: user.xBillStreet,
-        xBillCity: user.xBillCity,
-        xBillState: user.xBillState,
-        xBillZip: user.xBillZip,
-        xBillCountry: user.xBillCountry,
-        xBillCompany: user.xBillCompany,
-        xBillPhone: user.xBillPhone,
-      },
-    },
-    function (error, response, body) {
-      data = qs.parse(body)
-      console.log(data)
+    let newTicket = {};
 
-    // let main = cart.filter(item => !item.satelliteId)
-    // let satellite = cart.filter(item => item.satelliteId)
+    if(main.length > 0) {
+      for (var i = 0; i < main[0].qty; i++) {
+        newTicket = new MainTicket({
+          user_id: main[0]._id,
+          username: main[0].username,
+          event: main[0].event
+        });
 
-    // let newTicket = {};
+        await newTicket.save();
+      }
+    }
 
-    // if(main.length > 0) {
-    //   for (var i = 0; i < main[0].qty; i++) {
-    //     newTicket = new MainTicket({
-    //       user_id: main[0]._id,
-    //       username: main[0].username,
-    //       event: main[0].event
-    //     });
+    if(satellite.length > 0) {
+      for (var i = 0; i < satellite.length; i++) {
+        for (var j = 0; j < satellite[i].qty; j++) {
+          newTicket = new SatelliteTicket({
+            user_id: satellite[i]._id,
+            username: satellite[i].username,
+            eventId: satellite[i].event
+          });
 
-    //     await newTicket.save();
-    //   }
-    // }
+          await newTicket.save();
+        }
+      }
+    }
 
-    // if(satellite.length > 0) {
-    //   for (var j = 0; j < satellite[j].qty; j++) {
-    //     newTicket = new SatelliteTicket({
-    //       user_id: satellite[j]._id,
-    //       username: satellite[j].username,
-    //       eventId: satellite[j].event
-    //     });
+    res.json("OK")
+  // let amount = 0
+  // for (var i = cart.length - 1; i >= 0; i--) {
+  //   amount += cart[i].quantity * cart[i].price
+  // }
 
-    //     await newTicket.save();
-    //   }
-    // }
+  // request.post(
+  //   {
+  //     url: transactionUrl,
+  //     form: {
+  //       xKey: xKey,
+  //       xVersion: xVersion,
+  //       xSoftwareName: xSoftwareName,
+  //       xSoftwareVersion: xSoftwareVersion,
+  //       xCommand: 'cc:Sale',
+  //       xAmount: 10,
+  //       xCardNum: user.cardname,
+  //       xCVV: user.cvc,
+  //       xExp: user.expire,
+  //       xEmail: user.xEmail,
+  //       xBillFirstName: user.xBillFirstName,
+  //       xBillLastName: user.xBillLastName,
+  //       xBillStreet: user.xBillStreet,
+  //       xBillCity: user.xBillCity,
+  //       xBillState: user.xBillState,
+  //       xBillZip: user.xBillZip,
+  //       xBillCountry: user.xBillCountry,
+  //       xBillCompany: user.xBillCompany,
+  //       xBillPhone: user.xBillPhone,
+  //     },
+  //   },
+  //   function (error, response, body) {
+  //     data = qs.parse(body)
+  //     console.log(data)
 
-      res.json(data)
-    },
-  )
+  //   // let main = cart.filter(item => !item.satelliteId)
+  //   // let satellite = cart.filter(item => item.satelliteId)
+
+  //   // let newTicket = {};
+
+  //   // if(main.length > 0) {
+  //   //   for (var i = 0; i < main[0].qty; i++) {
+  //   //     newTicket = new MainTicket({
+  //   //       user_id: main[0]._id,
+  //   //       username: main[0].username,
+  //   //       event: main[0].event
+  //   //     });
+
+  //   //     await newTicket.save();
+  //   //   }
+  //   // }
+
+  //   // if(satellite.length > 0) {
+  //   //   for (var j = 0; j < satellite[j].qty; j++) {
+  //   //     newTicket = new SatelliteTicket({
+  //   //       user_id: satellite[j]._id,
+  //   //       username: satellite[j].username,
+  //   //       eventId: satellite[j].event
+  //   //     });
+
+  //   //     await newTicket.save();
+  //   //   }
+  //   // }
+
+  //     res.json(data)
+  //   },
+  // )
 }
 
 exports.getFinalWinner = async (req, res) => {

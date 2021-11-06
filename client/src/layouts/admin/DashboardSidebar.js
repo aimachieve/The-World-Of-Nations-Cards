@@ -97,6 +97,8 @@ DashboardSidebar.propTypes = {
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation()
 
+  let user = JSON.parse(localStorage.getItem('user'));
+
   const {
     isCollapse,
     collapseClick,
@@ -172,10 +174,10 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
               />
               <Box sx={{ ml: 2 }}>
                 <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                  displayName
+                  {user.name}
                 </Typography>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  role
+                  {user.role}
                 </Typography>
               </Box>
             </AccountStyle>

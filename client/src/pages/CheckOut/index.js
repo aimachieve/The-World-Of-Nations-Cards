@@ -90,30 +90,27 @@ export default function Cart() {
   const [cvc, setCvc] = useState('')
 
   const payment = () => {
-    // if (cardname == '' || expire == '' || cvc == '') {
-    //   window.alert('Please Input your Card info.')
-    //   return
-    // }
+    if (cardname == '' || expire == '' || cvc == '') {
+      window.alert('Please Input your Card info.')
+      return
+    }
 
-    // let user = {
-    //   id: userid,
-    //   xBillFirstName: firstname,
-    //   xBillLastName: lastname,
-    //   xBillCompany: company,
-    //   xBillCountry: country,
-    //   xBillStreet: address,
-    //   xBillCity: town,
-    //   xBillPhone: phone,
-    //   xEmail: email,
-    //   cardname,
-    //   expire,
-    //   cvc,
-    // }
+    let user = {
+      id: userid,
+      xBillFirstName: firstname,
+      xBillLastName: lastname,
+      xBillCompany: company,
+      xBillCountry: country,
+      xBillStreet: address,
+      xBillCity: town,
+      xBillPhone: phone,
+      xEmail: email,
+      cardname,
+      expire,
+      cvc,
+    }
 
-    // purchase(user)
-    window.localStorage.removeItem('products')
-      // window.localStorage.removeItem('cart')
-      window.location.href = '/thanks'
+    purchase(user)
   }
 
   useEffect(() => {

@@ -328,7 +328,8 @@ function DrawProvider({ children }) {
     let cart = JSON.parse(localStorage.getItem('cart'))
     const response = await axios.post('/api/draw/payment', { cart, user })
 
-    if (response.data.xStatus === 'Approved') {
+    // if (response.data.xStatus === 'Approved') {
+    if (response.data === 'OK') {
       window.localStorage.removeItem('products')
       window.localStorage.removeItem('cart')
       window.location.href = '/thanks'
