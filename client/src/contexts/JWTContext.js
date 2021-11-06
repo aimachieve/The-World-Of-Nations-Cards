@@ -172,11 +172,8 @@ function AuthProvider({ children }) {
     }
   }
 
-  const verifyEmail = async (code) => {
-    const response = await axios.post('/api/account/verify-email', {
-      code,
-      email: state.user.email,
-    })
+  const verifyEmail = async (token) => {
+    const response = await axios.post('/api/account/verifyEmail', { token })
 
     const { accessToken, user } = response.data
 

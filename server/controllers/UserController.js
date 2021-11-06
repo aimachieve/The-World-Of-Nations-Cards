@@ -1,12 +1,17 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
+const nodemailer = require('nodemailer')
 const keys = require('../config/keys')
 const User = require('../models/User')
 
 const { otplibAuthenticator } = require('../config/otplib')
 const { mailgunHelper } = require('../config/mailgun')
-const { SERVER_ERROR, ADMIN_EMAIL } = require('../utils/constants')
+const {
+  SERVER_ERROR,
+  ADMIN_EMAIL,
+  ADMIN_EMAIL_PASSWORD,
+} = require('../utils/constants')
 const Avatar = require('../models/Avatar')
 
 let otp
@@ -70,27 +75,40 @@ exports.register = (req, res) => {
                   expiresIn: '5 days', // 1 year in seconds
                 },
                 (err, token) => {
-                  return res.json({
-                    success: true,
-                    accessToken: 'Bearer ' + token,
-                    user,
+                  console.log(token)
+                  /* ================== Send user's mail the verification code ============ */
+                  var transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                      user: ADMIN_EMAIL,
+                      pass: ADMIN_EMAIL_PASSWORD,
+                    },
                   })
+
+                  var mailOptions = {
+                    from: ADMIN_EMAIL,
+                    to: user.email,
+                    subject: subject,
+                    html: `<h3 style="text-align: center;">Welcome ${firstName}!</h3><h6 style="text-align:center;">Please verify your email.</h6><p style="text-align: center;"><a href="http://${window.location.hostname}/${token}">Verify</a></p>`,
+                  }
+
+                  transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {
+                      console.log(error)
+                      return res.status(200).send('Failed')
+                    } else {
+                      console.log('Email sent: ' + info.response)
+                      return res.status(200).send('Success')
+                      // return res.json({
+                      //   success: true,
+                      //   accessToken: 'Bearer ' + token,
+                      //   user,
+                      // })
+                    }
+                  })
+                  /* ======================================================================== */
                 },
               )
-
-              // const mailData = {
-              //   from: ADMIN_EMAIL,
-              //   to: email,
-              //   subject: `Your OTP is ${otp}`,
-              //   text: `Please verify your email. verify-code: ${otp} `,
-              // }
-
-              // mailgunHelper
-              //   .messages()
-              //   .send(mailData)
-              //   .then((res) => console.log(res))
-              //   .catch((err) => console.log(err))
-              // console.log('Email Sent: ', otp)
             })
             .catch((err) => console.log(err))
         })
@@ -153,51 +171,65 @@ exports.login = (req, res) => {
 }
 
 exports.verifyEmail = (req, res) => {
-  const { code, email } = req.body
-  if (code === otp) {
-    console.log('Your Email is verified!  Code: ', code, 'OTP: ', otp)
+  const { token } = req.body
+  jwt.verify(token, keys.secretOrKey, (err, decoded) => {
+    console.log(decoded)
+    if (err) {
+      return res.status(404).send('Unregistered user')
+    } else {
+      const user = JSON.parse(decoded)
+      return res.json({
+        success: true,
+        accessToken: 'Bearer ' + token,
+        user,
+      })
+    }
+  })
+  // const { code, email } = req.body
+  // if (code === otp) {
+  //   console.log('Your Email is verified!  Code: ', code, 'OTP: ', otp)
 
-    User.findOne({ email }).then((user) => {
-      if (user) {
-        User.findOneAndUpdate({ email }, { $set: { isVerified: true } }).then(
-          (verifiedUser) => {
-            const payload = {
-              id: user._id,
-              name: user.name,
-              email: user.email,
-              username: user.username,
-              address: user.address,
-              town: user.town,
-              province: user.province,
-              postalcode: user.postalcode,
-              phone: user.phone,
-              role: user.role,
-            }
-            jwt.sign(
-              payload,
-              keys.secretOrKey,
-              {
-                expiresIn: '5 days', // 1 year in seconds
-              },
-              (err, token) => {
-                return res.json({
-                  success: true,
-                  accessToken: 'Bearer ' + token,
-                  user: verifiedUser,
-                })
-              },
-            )
-          },
-        )
-      } else {
-        return res.status(400).json({ email: 'Invalid email' })
-      }
-    })
-  } else {
-    return res
-      .status(400)
-      .json({ error: 'Email verification is failed! Please resend email' })
-  }
+  //   User.findOne({ email }).then((user) => {
+  //     if (user) {
+  //       User.findOneAndUpdate({ email }, { $set: { isVerified: true } }).then(
+  //         (verifiedUser) => {
+  //           const payload = {
+  //             id: user._id,
+  //             name: user.name,
+  //             email: user.email,
+  //             username: user.username,
+  //             address: user.address,
+  //             town: user.town,
+  //             province: user.province,
+  //             postalcode: user.postalcode,
+  //             phone: user.phone,
+  //             role: user.role,
+  //           }
+  //           jwt.sign(
+  //             payload,
+  //             keys.secretOrKey,
+  //             {
+  //               expiresIn: '5 days', // 1 year in seconds
+  //             },
+  //             (err, token) => {
+  //               return res.json({
+  //                 success: true,
+  //                 accessToken: 'Bearer ' + token,
+  //                 user: verifiedUser,
+  //               })
+  //             },
+  //           )
+  //         },
+  //       )
+  //     } else {
+  //       return res.status(400).json({ email: 'Invalid email' })
+  //     }
+  //   })
+  // } else {
+  //   return res
+  //     .status(400)
+  //     .json({ error: 'Email verification is failed! Please resend email' })
+  // }
 }
 
 exports.updateProfile = (req, res) => {
