@@ -108,7 +108,7 @@ console.log(days)
           </TableHead>
           <TableBody>
             {
-              days.length > 0 && days.map((item, index) => (
+              days instanceof Array && days.length > 0 && days.map((item, index) => (
                 <>
                   <TableRow>
                     <TableCell>Day {index+1}</TableCell>
