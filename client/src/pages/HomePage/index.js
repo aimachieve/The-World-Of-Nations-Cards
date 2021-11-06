@@ -8,7 +8,7 @@ import Page from '../../components/Page'
 import WhoWeAre from './WhoWeAre'
 import { CarouselBasic3 } from 'components/carousel'
 import HowItWorks from './HowItWorks'
-import LiveEvents from './LiveEvents'
+import LiveEvents from '../../customComponents/LiveEvents'
 import SignUpCTA from 'customComponents/SignUpCTA'
 
 // ----------------------------------------------------------------------

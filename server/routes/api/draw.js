@@ -52,7 +52,9 @@ router.post("/create_sEvent", DrawController.create_sEvent);
 router.post("/create_mEvent", DrawController.create_mEvent);
 
 router.get("/get_tickets", DrawController.get_tickets);
+router.post("/resetPassword", DrawController.resetPassword);
 
+ 
 /*=====================Mock Data for testing=================*/
 router.post("/create_mock", DrawController.createMockData);
 

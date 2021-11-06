@@ -67,18 +67,16 @@ export default function RoomStatus() {
                       <TableHead>
                         <TableRow>
                           <TableCell>Username</TableCell>
-                          <TableCell>Entries</TableCell>
-                          <TableCell>Tables</TableCell>
-                          <TableCell>Ticket Status</TableCell>
+                          <TableCell>Winning Entries</TableCell>
+                          <TableCell>Final Draw Number</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
                         {finalWinner.length > 0 && finalWinner.map((item, index) => (
                           <TableRow key={index}>
-                            <TableCell>{item.user_id.username}</TableCell>
-                            <TableCell>15</TableCell>
-                            <TableCell>View Table</TableCell>
-                            <TableCell>TBD OR 5L OR 10W</TableCell>
+                            <TableCell>{item.user.name}</TableCell>
+                            <TableCell>{item.tickets.length}</TableCell>
+                            <TableCell>{item.tickets.map((i, index) => <span key={index}>{index+1 == item.tickets.length ? i : i + ', '}</span>)}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>

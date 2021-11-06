@@ -33,6 +33,10 @@ app.use(passport.initialize())
 // Passport config
 require('./config/passport')(passport)
 
+app.get("/*", function (req, res) {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+})
+
 //  Define the route to read the files of the server from the client
 app.use('/uploads/', express.static('uploads'))
 

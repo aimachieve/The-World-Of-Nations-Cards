@@ -70,7 +70,7 @@ export default function PredictionTable() {
   };
 
   let roomname = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
-
+console.log(days)
   let finalWinner = days.length > 0 ? days[days.length - 1].entry : 1;
 
   const startFlag = (item) => {
@@ -82,7 +82,11 @@ export default function PredictionTable() {
   }
 
   const drawRoomFlag = (roomitem, dayitem) => {
-    return dayitem.status == 0 || roomitem.status || loading;
+    if(dayitem.status == 0 || dayitem.status == 2) {
+      return true;
+    } else if(dayitem.status == 1){
+      return roomitem.status || loading
+    }
   }
 
   return (
@@ -104,7 +108,7 @@ export default function PredictionTable() {
           </TableHead>
           <TableBody>
             {
-              days.map((item, index) => (
+              days.length > 0 && days.map((item, index) => (
                 <>
                   <TableRow>
                     <TableCell>Day {index+1}</TableCell>
