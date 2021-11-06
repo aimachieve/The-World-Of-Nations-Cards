@@ -6,15 +6,15 @@ const DrawController = require('../../controllers/DrawController')
 // router.post("/register", DrawController.register);
 // router.post("/login", DrawController.login);
 // router.post("/verify-email", DrawController.verifyEmail);
-router.get("/products", DrawController.getProducts);
+router.post("/products", DrawController.getProducts);
 /*================ Mr.New ==============*/
-router.get('/createMockData', DrawController.createMockData)
-router.get('/getRandomTables', DrawController.getRandomTables)
-router.get(
+router.post('/createMockData', DrawController.createMockData)
+router.post('/getRandomTables', DrawController.getRandomTables)
+router.post(
   '/getRandomTablesByUserId/:userId',
   DrawController.getRandomTablesByUserId,
 )
-router.get('/getAllDays', DrawController.getAllDays)
+router.post('/getAllDays', DrawController.getAllDays)
 router.post('/search', DrawController.searchData)
 router.post('/getAllUsers', DrawController.getAllUsers)
 router.post(
@@ -29,29 +29,29 @@ router.put(
   '/searchSatelliteUsersBySatelliteEventId/:satelliteEventId',
   DrawController.searchSatelliteUsersBySatelliteEventId,
 )
-router.get('/getEventById/:_id', DrawController.getEventById)
+router.post('/getEventById/:_id', DrawController.getEventById)
 router.post('/sendEmailToAdmin', DrawController.sendEmailToAdmin)
-router.get('/getTicketsByUserId/:userId', DrawController.getTicketsByUserId)
+router.post('/getTicketsByUserId/:userId', DrawController.getTicketsByUserId)
 /*======================================*/
 router.post("/payment", DrawController.payment);
 
 
 /*=====================Play Game=================*/
 router.post("/assignSatelliteTable", DrawController.assignSatelliteTable);
-router.get("/makeTable", DrawController.makeTable);
-router.get("/roomDraw/:roomnumber/:daynumber", DrawController.roomDraw);
-router.get("/endDay/:daynumber", DrawController.endDay);
-router.get("/finalRoom/:id", DrawController.finalRoom);
-router.get("/getFinalWinner", DrawController.getFinalWinner);
+router.post("/makeTable", DrawController.makeTable);
+router.post("/roomDraw/:roomnumber/:daynumber", DrawController.roomDraw);
+router.post("/endDay/:daynumber", DrawController.endDay);
+router.post("/finalRoom/:id", DrawController.finalRoom);
+router.post("/getFinalWinner", DrawController.getFinalWinner);
 
 
 /*=====================Admin Page=================*/
-router.get("/current_event", DrawController.getCurrentEvent);
+router.post("/current_event", DrawController.getCurrentEvent);
 router.post("/create_event", DrawController.create_Event);
 router.post("/create_sEvent", DrawController.create_sEvent);
 router.post("/create_mEvent", DrawController.create_mEvent);
 
-router.get("/get_tickets", DrawController.get_tickets);
+router.post("/get_tickets", DrawController.get_tickets);
 router.post("/resetPassword", DrawController.resetPassword);
 
  
