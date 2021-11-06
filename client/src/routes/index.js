@@ -51,7 +51,7 @@ export default function Router() {
             <GuestGuard>
               <Login />
             </GuestGuard>
-          )
+          ),
         },
         {
           path: 'register',
@@ -59,13 +59,14 @@ export default function Router() {
             <GuestGuard>
               <Register />
             </GuestGuard>
-          )
+          ),
         },
         { path: 'login', element: <Login /> },
         { path: 'register', element: <Register /> },
         { path: 'reset-password', element: <ResetPassword /> },
-        { path: 'verify', element: <VerifyCode /> }
-      ]
+        { path: 'verify', element: <VerifyCode /> },
+        { path: 'verifyEmail/:token', element: <AuthSuccess /> },
+      ],
     },
 
     // Admin Routes
@@ -74,7 +75,8 @@ export default function Router() {
       element: (
         <AdminGuard>
           <AdminLayout />
-        </AdminGuard>),
+        </AdminGuard>
+      ),
       children: [
         {
           path: '/',
@@ -99,16 +101,16 @@ export default function Router() {
         },
         {
           path: '/order',
-          element: <Order />
+          element: <Order />,
         },
         {
           path: '/addresses',
-          element: <Addresses />
+          element: <Addresses />,
         },
         {
           path: '/account',
-          element: <Account />
-        }
+          element: <Account />,
+        },
       ],
     },
 
@@ -126,14 +128,14 @@ export default function Router() {
       element: <MainLayout />,
       children: [
         { path: '/', element: <HomePage /> },
-        
+
         // { path: '/purchaseTicket', element: <PurchaseTicket /> },
         { path: '/roomStatus', element: <RoomStatus /> },
         { path: '/portfolio', element: <Portfolio /> },
         { path: '/aboutUs', element: <AboutUs /> },
         { path: '/contactUs', element: <ContactUs /> },
         { path: '/productPage', element: <ProductPage /> },
-        
+
         { path: 'reset-password', element: <ResetPassword /> },
         { path: 'verify', element: <VerifyCode /> },
       ],
@@ -150,7 +152,7 @@ export default function Router() {
         { path: '/purchaseTicket', element: <PurchaseTicket /> },
         { path: '/cart', element: <Cart /> },
         { path: '/checkout', element: <CheckOut /> },
-      ]
+      ],
     },
     { path: '*', element: <Navigate to="/404" replace /> },
   ])
@@ -168,6 +170,9 @@ const ResetPassword = Loadable(
 )
 const VerifyCode = Loadable(
   lazy(() => import('../pages/authentication/VerifyCode')),
+)
+const AuthSuccess = Loadable(
+  lazy(() => import('../pages/authentication/AuthSuccess')),
 )
 // Dashboard
 const UserManagement = Loadable(

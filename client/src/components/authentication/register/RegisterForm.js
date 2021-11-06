@@ -4,6 +4,12 @@ import { useFormik, Form, FormikProvider } from 'formik'
 // material
 import { Stack, TextField, Alert, Box, Typography } from '@material-ui/core'
 import { LoadingButton } from '@material-ui/lab'
+import { Icon } from '@iconify/react'
+import closeFill from '@iconify/icons-eva/close-fill'
+import { useSnackbar } from 'notistack5'
+
+import { MIconButton } from '../../@material-extend'
+
 // hooks
 import useAuth from '../../../hooks/useAuth'
 import useIsMountedRef from '../../../hooks/useIsMountedRef'
@@ -12,7 +18,7 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef'
 export default function RegisterForm() {
   const { register } = useAuth()
   const isMountedRef = useIsMountedRef()
-
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
       .min(2, 'Too Short!')
@@ -55,14 +61,14 @@ export default function RegisterForm() {
       try {
         await register(values)
         // setAuthModal("verify")
-        // enqueueSnackbar('Register success', {
-        //   variant: 'success',
-        //   action: (key) => (
-        //     <MIconButton size="small" onClick={() => closeSnackbar(key)}>
-        //       <Icon icon={closeFill} />
-        //     </MIconButton>
-        //   )
-        // });
+        enqueueSnackbar('Register success. Please check your email', {
+          variant: 'success',
+          action: (key) => (
+            <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+              <Icon icon={closeFill} />
+            </MIconButton>
+          ),
+        })
         // if (isMountedRef.current) {
         //   setSubmitting(false);
         // }

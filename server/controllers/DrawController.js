@@ -436,7 +436,6 @@ exports.getTicketsByUserId = async (req, res) => {
  */
 exports.sendEmailToAdmin = (req, res) => {
   const { firstName, lastName, email, password, subject, message } = req.body
-  console.log(req.body)
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
