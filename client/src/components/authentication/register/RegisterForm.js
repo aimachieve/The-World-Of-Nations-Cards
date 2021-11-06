@@ -59,32 +59,33 @@ export default function RegisterForm() {
     validationSchema: RegisterSchema,
     onSubmit: async (values, { setErrors, setSubmitting }) => {
       try {
-        // const response = await register(values)
-        // // setAuthModal("verify")
-        // const { data } = response
-        // if (data === 'Success') {
-        //   enqueueSnackbar('Register success. Please check your email', {
-        //     variant: 'success',
-        //     action: (key) => (
-        //       <MIconButton size="small" onClick={() => closeSnackbar(key)}>
-        //         <Icon icon={closeFill} />
-        //       </MIconButton>
-        //     ),
-        //   })
-        // } else {
-        //   enqueueSnackbar('Register failed.', {
-        //     variant: 'error',
-        //     action: (key) => (
-        //       <MIconButton size="small" onClick={() => closeSnackbar(key)}>
-        //         <Icon icon={closeFill} />
-        //       </MIconButton>
-        //     ),
-        //   })
-        // }
+        const response = await register(values)
+        // setAuthModal("verify")
+        const { data } = response
+        console.log(response)
+        if (data === 'Success') {
+          enqueueSnackbar('Register success. Please check your email', {
+            variant: 'success',
+            action: (key) => (
+              <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+                <Icon icon={closeFill} />
+              </MIconButton>
+            ),
+          })
+        } else {
+          enqueueSnackbar('Register failed.', {
+            variant: 'error',
+            action: (key) => (
+              <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+                <Icon icon={closeFill} />
+              </MIconButton>
+            ),
+          })
+        }
 
-        // if (isMountedRef.current) {
-        //   setSubmitting(false);
-        // }
+        if (isMountedRef.current) {
+          setSubmitting(false)
+        }
       } catch (error) {
         console.error(error)
         if (isMountedRef.current) {
