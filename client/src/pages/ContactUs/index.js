@@ -75,6 +75,15 @@ export default function ContactUs() {
           </MIconButton>
         ),
       })
+    } else {
+      enqueueSnackbar('Message submit failed!', {
+        variant: 'error',
+        action: (key) => (
+          <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+            <Icon icon={closeFill} />
+          </MIconButton>
+        ),
+      })
     }
   }
 
