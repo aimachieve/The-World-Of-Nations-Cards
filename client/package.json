@@ -131,7 +131,12 @@
     "worker-loader": "^3.0.8",
     "yup": "^0.32.9"
   },
+<<<<<<< HEAD
   "proxy": "http://54.88.175.222/localhost:5000",
+=======
+  "proxy": "http://54.88.175.222/:5000",
+  "homepage": ".",
+>>>>>>> 9468d99b14ebc8cbb410cef09d1d4e3146f5d11d
   "devDependencies": {
     "@babel/core": "^7.15.0",
     "@babel/eslint-parser": "^7.15.0"
