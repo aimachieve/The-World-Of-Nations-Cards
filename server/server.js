@@ -10,11 +10,6 @@ const draw = require('./routes/api/draw')
 
 const app = express()
 
-app.use(express.static('../client/build'));
-app.get('/*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'));
-})
-
 // Bodyparser middleware
 app.use(
   bodyParser.urlencoded({
