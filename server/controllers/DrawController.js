@@ -455,10 +455,10 @@ exports.sendEmailToAdmin = (req, res) => {
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error)
-      return res.status(500).send('Failed')
+      return res.status(200).send('Failed')
     } else {
       console.log('Email sent: ' + info.response)
-      return res.status(200).send('OK')
+      return res.status(200).send('Success')
     }
   })
 }

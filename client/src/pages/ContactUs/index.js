@@ -62,12 +62,10 @@ export default function ContactUs() {
   }
 
   const onSubmit = async () => {
-    console.log(messageData)
     const response = await sendEmailToAdmin(messageData)
-    console.log(response)
-    const { status } = response
-    if (status === 200) {
-      enqueueSnackbar('Message submit success!', {
+    const { status, data } = response
+    if (data === 'Success') {
+      await enqueueSnackbar('Message submit success!', {
         variant: 'success',
         action: (key) => (
           <MIconButton size="small" onClick={() => closeSnackbar(key)}>
@@ -76,7 +74,7 @@ export default function ContactUs() {
         ),
       })
     } else {
-      enqueueSnackbar('Message submit failed!', {
+      await enqueueSnackbar('Message submit failed!', {
         variant: 'error',
         action: (key) => (
           <MIconButton size="small" onClick={() => closeSnackbar(key)}>
