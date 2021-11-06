@@ -16,7 +16,6 @@ import AdapterDateFns from '@material-ui/lab/AdapterDateFns'
 import LocalizationProvider from '@material-ui/lab/LocalizationProvider'
 import { AuthProvider } from './contexts/JWTContext'
 import { DrawProvider } from 'contexts/DrawContext'
-import { CartProvider } from './contexts/cartContext';
 
 import App from './App'
 import * as serviceWorker from './serviceWorker'

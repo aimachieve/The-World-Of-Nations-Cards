@@ -1,27 +1,19 @@
+import React from 'react'
 import * as Yup from 'yup'
-import { useState } from 'react'
 import { useSnackbar } from 'notistack5'
-import { Link as RouterLink } from 'react-router-dom'
 import { useFormik, Form, FormikProvider } from 'formik'
 import { Icon } from '@iconify/react'
-import eyeFill from '@iconify/icons-eva/eye-fill'
 import closeFill from '@iconify/icons-eva/close-fill'
-import eyeOffFill from '@iconify/icons-eva/eye-off-fill'
 // material
 import {
-  Link,
   Stack,
   Alert,
   Checkbox,
   TextField,
-  IconButton,
-  InputAdornment,
   FormControlLabel,
   Typography,
 } from '@material-ui/core'
 import { LoadingButton } from '@material-ui/lab'
-// routes
-import { PATH_AUTH } from '../../../routes/paths'
 // hooks
 import useAuth from '../../../hooks/useAuth'
 import useIsMountedRef from '../../../hooks/useIsMountedRef'
@@ -34,7 +26,6 @@ export default function LoginForm() {
   const { login } = useAuth()
   const isMountedRef = useIsMountedRef()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
-  const [showPassword, setShowPassword] = useState(false)
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string()
@@ -84,10 +75,6 @@ export default function LoginForm() {
     getFieldProps,
   } = formik
 
-  const handleShowPassword = () => {
-    setShowPassword((show) => !show)
-  }
-
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -119,7 +106,7 @@ export default function LoginForm() {
           <TextField
             fullWidth
             autoComplete="current-password"
-            type={showPassword ? 'text' : 'password'}
+            type="password"
             label="Enter your subject"
             {...getFieldProps('password')}
             error={Boolean(touched.password && errors.password)}

@@ -1,27 +1,12 @@
-import { capitalCase } from 'change-case'
+import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 // material
 import { styled } from '@material-ui/core/styles'
-import {
-  Box,
-  Card,
-  Stack,
-  Link,
-  Alert,
-  Tooltip,
-  Container,
-  Typography,
-  Button,
-} from '@material-ui/core'
+import { Box, Stack, Link, Container, Typography } from '@material-ui/core'
 // routes
 import { PATH_AUTH, PATH_USER } from '../../routes/paths'
-// hooks
-import useAuth from '../../hooks/useAuth'
-// layouts
-import AuthLayout from '../../layouts/AuthLayout'
 // components
 import Page from '../../components/Page'
-import { MHidden } from '../../components/@material-extend'
 import { LoginForm } from '../../components/authentication/login'
 
 // ----------------------------------------------------------------------
@@ -47,16 +32,6 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Login() {
-  const { method, login } = useAuth()
-
-  const handleLoginAuth0 = async () => {
-    try {
-      await login()
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
   return (
     <RootStyle title="Login | Minimal-UI">
       <Container maxWidth="sm" sx={{ margin: 'auto' }}>

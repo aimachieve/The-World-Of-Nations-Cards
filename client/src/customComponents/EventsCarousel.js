@@ -8,13 +8,6 @@ import { CarouselControlsArrowsBasic3 } from '../components/carousel/controls'
 
 // ----------------------------------------------------------------------
 
-const MOCK_CAROUSELS = [...Array(8)].map((_, index) => ({
-  id: index,
-  title: 'Musical',
-  image: '/images/city1.png',
-  description: 'Instruments',
-}))
-
 const RootStyle = styled('div')(({ theme }) => ({
   // overflow: 'hidden',
   position: 'relative',
@@ -36,7 +29,7 @@ CarouselItem.propTypes = {
 function CarouselItem({ currentEvent, item, index }) {
   console.log(item, index)
   const theme = useTheme()
-  
+
   const register = (index, item) => {
     let user = localStorage.getItem('user')
     let cart = localStorage.getItem('cart')
@@ -46,26 +39,23 @@ function CarouselItem({ currentEvent, item, index }) {
       window.location.href = '/auth/login'
     }
 
-    const userInfo = JSON.parse( user );
-    const cartInfo = JSON.parse( cart );
+    const userInfo = JSON.parse(user)
+    const cartInfo = JSON.parse(cart)
 
     if (index === 0) {
-      if ( cartInfo.length === 0) {
+      if (cartInfo.length === 0) {
         cartInfo.push({
           index: index,
           user_id: userInfo._id,
           event: currentEvent._id,
           price: item.price,
           username: userInfo.username,
-          qty: 0
+          qty: 0,
         })
 
-        window.localStorage.setItem(
-          'cart',
-          JSON.stringify( cartInfo ),
-        )
+        window.localStorage.setItem('cart', JSON.stringify(cartInfo))
       } else {
-        let exist = cartInfo.filter(item => item.index === index )
+        let exist = cartInfo.filter((item) => item.index === index)
         if (exist.length === 0) {
           cartInfo.push({
             index: index,
@@ -73,32 +63,26 @@ function CarouselItem({ currentEvent, item, index }) {
             event: currentEvent._id,
             price: item.price,
             username: userInfo.username,
-            qty: 0
+            qty: 0,
           })
-  
-          window.localStorage.setItem(
-            'cart',
-            JSON.stringify( cartInfo ),
-          )
+
+          window.localStorage.setItem('cart', JSON.stringify(cartInfo))
         }
       }
     } else {
-      if ( cartInfo.length === 0) {
+      if (cartInfo.length === 0) {
         cartInfo.push({
           index: index,
           user_id: userInfo._id,
           eventId: currentEvent._id,
           satelliteId: item._id,
           price: item.price,
-          qty: 0
-        })       
+          qty: 0,
+        })
 
-        window.localStorage.setItem(
-          'cart',
-          JSON.stringify( cartInfo ),
-        )
+        window.localStorage.setItem('cart', JSON.stringify(cartInfo))
       } else {
-        let exist = cartInfo.filter(item => item.index === index )
+        let exist = cartInfo.filter((item) => item.index === index)
         if (exist.length === 0) {
           cartInfo.push({
             index: index,
@@ -106,13 +90,10 @@ function CarouselItem({ currentEvent, item, index }) {
             eventId: currentEvent._id,
             satelliteId: item._id,
             price: item.price,
-            qty: 0
+            qty: 0,
           })
-  
-          window.localStorage.setItem(
-            'cart',
-            JSON.stringify( cartInfo ),
-          )
+
+          window.localStorage.setItem('cart', JSON.stringify(cartInfo))
         }
       }
     }
@@ -164,7 +145,7 @@ function CarouselItem({ currentEvent, item, index }) {
               color="success"
               sx={{ color: 'common.white', textTransform: 'uppercase' }}
               size="large"
-              onClick={() => register( index, item)}
+              onClick={() => register(index, item)}
             >
               Register Now
             </Button>
@@ -224,7 +205,7 @@ function CarouselItem({ currentEvent, item, index }) {
 }
 
 export default function EventsCarousel({ current_event }) {
-  console.log("current_event", current_event)
+  console.log('current_event', current_event)
   const carouselRef = useRef()
   const [events, setEvents] = useState([])
 
@@ -261,19 +242,21 @@ export default function EventsCarousel({ current_event }) {
   useEffect(() => {
     const tempEvents = []
     if (current_event) {
-      tempEvents.push( current_event.main )
-      current_event.satellite.map((item, index) => {
-        tempEvents.push(item)
-      })
+      tempEvents.push(current_event.main)
+      current_event.satellite.map((item) => tempEvents.push(item))
     }
     setEvents(tempEvents)
   }, [current_event])
-  console.log("tempEvents", events)
   return (
     <RootStyle>
       <Slider ref={carouselRef} {...settings}>
         {events.map((item, key) => (
-          <CarouselItem key={key} item={item} currentEvent={current_event} index={key} />
+          <CarouselItem
+            key={key}
+            item={item}
+            currentEvent={current_event}
+            index={key}
+          />
         ))}
       </Slider>
       <CarouselControlsArrowsBasic3

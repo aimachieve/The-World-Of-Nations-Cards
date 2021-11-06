@@ -1,16 +1,11 @@
-import { useRef } from 'react';
-import Slider from 'react-slick';
-import PropTypes from 'prop-types';
-import { Icon } from '@iconify/react';
-import { Link as RouterLink } from 'react-router-dom';
-import arrowForwardFill from '@iconify/icons-eva/arrow-forward-fill';
+import React, { useRef } from 'react'
+import Slider from 'react-slick'
+import PropTypes from 'prop-types'
 // material
-import { alpha, useTheme, styled } from '@material-ui/core/styles';
-import { Box, Paper, Link, Typography, CardContent, Stack } from '@material-ui/core';
+import { styled } from '@material-ui/core/styles'
+import { Box, Typography, CardContent, Stack } from '@material-ui/core'
 // utils
-import mockData from '../../utils/mock-data';
-//
-import { CarouselControlsArrowsBasic2 } from './controls';
+import { CarouselControlsArrowsBasic2 } from './controls'
 
 // ----------------------------------------------------------------------
 
@@ -18,66 +13,66 @@ const MOCK_CAROUSELS = [
   {
     title: 'Musical',
     image: '/images/guitar.png',
-    description: 'Instruments'
+    description: 'Instruments',
   },
   {
     title: 'Musical',
     image: '/images/tools.png',
-    description: 'Instruments'
+    description: 'Instruments',
   },
   {
     title: 'Musical',
     image: '/images/camera.png',
-    description: 'Instruments'
+    description: 'Instruments',
   },
   {
     title: 'Musical',
     image: '/images/speaker.png',
-    description: 'Instruments'
+    description: 'Instruments',
   },
   {
     title: 'Musical',
     image: '/images/gears.png',
-    description: 'Instruments'
+    description: 'Instruments',
   },
   {
     title: 'Musical',
     image: '/images/guitar.png',
-    description: 'Instruments'
+    description: 'Instruments',
   },
   {
     title: 'Musical',
     image: '/images/tools.png',
-    description: 'Instruments'
+    description: 'Instruments',
   },
   {
     title: 'Musical',
     image: '/images/camera.png',
-    description: 'Instruments'
+    description: 'Instruments',
   },
   {
     title: 'Musical',
     image: '/images/speaker.png',
-    description: 'Instruments'
+    description: 'Instruments',
   },
   {
     title: 'Musical',
     image: '/images/gears.png',
-    description: 'Instruments'
-  }
-];
+    description: 'Instruments',
+  },
+]
 const RootStyle = styled('div')(({ theme }) => ({
   // overflow: 'hidden',
-  position: 'relative'
-}));
+  position: 'relative',
+}))
 // ----------------------------------------------------------------------
 
 CarouselItem.propTypes = {
-  item: PropTypes.object
-};
+  item: PropTypes.object,
+}
 
 function CarouselItem({ item }) {
-  const { image, title } = item;
+  const { image, title } = item
 
   return (
     <Box
@@ -92,7 +87,7 @@ function CarouselItem({ item }) {
         boxShadow: '0px 4px 31px rgba(0, 0, 0, 0.11)',
         position: 'relative',
         mt: 10,
-        mb: 5
+        mb: 5,
       }}
     >
       <Stack
@@ -104,7 +99,7 @@ function CarouselItem({ item }) {
           width: 138,
           height: 138,
           background: '#FFFFFF',
-          boxShadow: '0px 10px 40px rgba(0, 0, 0, 0.22)'
+          boxShadow: '0px 10px 40px rgba(0, 0, 0, 0.22)',
         }}
       >
         <Box component="img" src={image} />
@@ -115,7 +110,7 @@ function CarouselItem({ item }) {
           zIndex: 9,
           width: '100%',
           textAlign: 'left',
-          position: 'absolute'
+          position: 'absolute',
         }}
       >
         <Typography variant="h4" paragraph>
@@ -123,12 +118,11 @@ function CarouselItem({ item }) {
         </Typography>
       </CardContent>
     </Box>
-  );
+  )
 }
 
 export default function CarouselCenterMode() {
-  const carouselRef = useRef();
-  const theme = useTheme();
+  const carouselRef = useRef()
 
   const settings = {
     slidesToShow: 5,
@@ -142,26 +136,26 @@ export default function CarouselCenterMode() {
     responsive: [
       {
         breakpoint: 1024,
-        settings: { slidesToShow: 5 }
+        settings: { slidesToShow: 5 },
       },
       {
         breakpoint: 960,
-        settings: { slidesToShow: 3 }
+        settings: { slidesToShow: 3 },
       },
       {
         breakpoint: 480,
-        settings: { slidesToShow: 1, centerPadding: '0' }
-      }
-    ]
-  };
+        settings: { slidesToShow: 1, centerPadding: '0' },
+      },
+    ],
+  }
 
   const handlePrevious = () => {
-    carouselRef.current.slickPrev();
-  };
+    carouselRef.current.slickPrev()
+  }
 
   const handleNext = () => {
-    carouselRef.current.slickNext();
-  };
+    carouselRef.current.slickNext()
+  }
 
   return (
     <RootStyle>
@@ -170,7 +164,10 @@ export default function CarouselCenterMode() {
           <CarouselItem key={index} item={item} />
         ))}
       </Slider>
-      <CarouselControlsArrowsBasic2 onNext={handleNext} onPrevious={handlePrevious} />
+      <CarouselControlsArrowsBasic2
+        onNext={handleNext}
+        onPrevious={handlePrevious}
+      />
     </RootStyle>
-  );
+  )
 }

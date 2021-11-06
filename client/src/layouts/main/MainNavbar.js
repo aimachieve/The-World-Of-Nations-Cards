@@ -1,34 +1,28 @@
+import React from 'react'
 import { NavLink as RouterLink, useLocation } from 'react-router-dom'
 // material
 import { styled } from '@material-ui/core/styles'
 import {
   Box,
-  Button,
   AppBar,
   Toolbar,
-  Container,
   Stack,
-  Link,
   Typography,
-  Badge
+  Badge,
 } from '@material-ui/core'
 import PersonIcon from '@material-ui/icons/Person'
 // hooks
 import useOffSetTop from '../../hooks/useOffSetTop'
 // components
 import Logo from '../../components/Logo'
-import Label from '../../components/Label'
 import { MHidden } from '../../components/@material-extend'
 //
-import AccountPopover from './AccountPopover'
 import MenuDesktop from './MenuDesktop'
 import MenuMobile from './MenuMobile'
 import navConfig from './MenuConfig'
-import LoginButton from './LoginButton'
-import RegisterButton from './RegisterButton'
 
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import { IconButton } from '@material-ui/core';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
+import { IconButton } from '@material-ui/core'
 
 import useAuth from '../../hooks/useAuth'
 
@@ -94,7 +88,11 @@ export default function MainNavbar() {
         >
           {isAuthenticated ? (
             <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-              <IconButton color="primary" aria-label="add to shopping cart" href="/cart">
+              <IconButton
+                color="primary"
+                aria-label="add to shopping cart"
+                href="/cart"
+              >
                 <Badge badgeContent={cart.length} color="primary">
                   <AddShoppingCartIcon />
                 </Badge>

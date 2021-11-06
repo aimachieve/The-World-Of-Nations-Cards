@@ -1,24 +1,18 @@
-import PropTypes from 'prop-types';
-
-import { Icon } from '@iconify/react';
-import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
-import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
-import arrowBackFill from '@iconify/icons-eva/arrow-back-fill';
-import arrowForwardFill from '@iconify/icons-eva/arrow-forward-fill';
+import React from 'react'
+import { Icon } from '@iconify/react'
+import arrowBackFill from '@iconify/icons-eva/arrow-back-fill'
+import arrowForwardFill from '@iconify/icons-eva/arrow-forward-fill'
 // material
-import { useTheme, styled } from '@material-ui/core/styles';
-import { IconButton, Box } from '@material-ui/core';
-//
-import { MIconButton } from '../../@material-extend';
-
+import { useTheme, styled } from '@material-ui/core/styles'
+import { IconButton, Box } from '@material-ui/core'
 // ----------------------------------------------------------------------
 
-const SIZE = 60;
+const SIZE = 60
 
 const ICON_SIZE = {
   width: 32,
-  height: 32
-};
+  height: 32,
+}
 
 const RootStyle = styled(Box)(({ theme }) => ({
   top: 0,
@@ -30,8 +24,8 @@ const RootStyle = styled(Box)(({ theme }) => ({
   margin: 'auto',
   display: 'flex',
   position: 'absolute',
-  justifyContent: 'space-between'
-}));
+  justifyContent: 'space-between',
+}))
 
 const ArrowStyle = styled(IconButton)(({ theme }) => ({
   width: SIZE,
@@ -48,14 +42,19 @@ const ArrowStyle = styled(IconButton)(({ theme }) => ({
   '&:hover': {
     opacity: 1,
     background: theme.palette.primary.main,
-  }
-}));
+  },
+}))
 
 // ----------------------------------------------------------------------
 
-export default function CarouselControlsArrowsBasic3({ arrowLine, onNext, onPrevious, ...other }) {
-  const theme = useTheme();
-  const isRTL = theme.direction === 'rtl';
+export default function CarouselControlsArrowsBasic3({
+  arrowLine,
+  onNext,
+  onPrevious,
+  ...other
+}) {
+  const theme = useTheme()
+  const isRTL = theme.direction === 'rtl'
 
   return (
     <RootStyle {...other}>
@@ -67,5 +66,5 @@ export default function CarouselControlsArrowsBasic3({ arrowLine, onNext, onPrev
         <Icon icon={isRTL ? arrowBackFill : arrowForwardFill} {...ICON_SIZE} />
       </ArrowStyle>
     </RootStyle>
-  );
+  )
 }
