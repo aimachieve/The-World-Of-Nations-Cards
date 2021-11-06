@@ -235,7 +235,7 @@ export default function CurrentEvent() {
                                 color: '#fff',
                               },
                             }}
-                            disabled={!satellite.status}
+                            disabled={!satellite.status || current_event > 1}
                           >
                             {' '}
                             Draw{' '}

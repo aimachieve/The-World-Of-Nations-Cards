@@ -187,7 +187,7 @@ export default function PredictionTable() {
               onChange={(e) => setFinalWinner(e.target.value)}
               sx={{mt: 3}}
               type="number"
-              inputProps={{ min: 0, max: finalWinner }}
+              inputProps={{ max: finalWinner }}
             />
             <Stack spacing={2} direction="row" justifyContent="right" sx={{ mt: 3 }}>
               <Button onClick={onSubmit} variant="outlined" sx={{ background: "transparent" }}>OK</Button>

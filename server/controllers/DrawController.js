@@ -104,7 +104,7 @@ exports.getRandomTablesByUserId = async (req, res) => {
   ])
 
   let maxDay = await MainTicket.findOne({ user_id: userId }).sort({ day: -1 })
-
+console.log(userId)
   for (let i = 0; i < tables.length; i += 1) {
     let table = await Table.findById(tables[i]._id).populate({
       path: 'seat',
@@ -112,7 +112,7 @@ exports.getRandomTablesByUserId = async (req, res) => {
     })
     await resTables.push(table)
   }
-  return res.status(200).json({ table: resTables, maxDay: maxDay.day })
+  return res.status(200).json({ table: resTables, maxDay: maxDay == null ? 0 : maxDay.day })
 }
 
 /**
@@ -797,6 +797,12 @@ exports.makeTable = async (req, res) => {
       daynumber: 1,
       event_id: event._id,
     })
+  }
+
+  let mainticketFlag = await MainTicket.find({satelliteId: null}).count();
+
+  if(mainticketFlag == 0) {
+    return res.json("There is no main ticket. Please add main tickets.");
   }
 
   let winnerCount = await MainTicket.find().count()
