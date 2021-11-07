@@ -75,7 +75,6 @@ exports.register = (req, res) => {
                   expiresIn: '5 days', // 1 year in seconds
                 },
                 (err, token) => {
-                  console.log(token)
                   /* ================== Send user's mail the verification code ============ */
                   var transporter = nodemailer.createTransport({
                     service: 'gmail',
