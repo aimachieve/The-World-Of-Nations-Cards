@@ -1,9 +1,9 @@
 {
-  "name": "minimal-starter",
+  "name": "The World Nations of Cards",
   "version": "1.0.0",
-  "description": "a start project for material-ui react applications",
+  "description": "This is a result of our team! (Aim, Simba, Mr.New)",
   "engines": {
-    "node": "14.x"
+    "node": "16.x"
   },
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
@@ -13,7 +13,7 @@
     "start": "node server.js",
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
-  "author": "aimachieve",
+  "author": "Aim, Simba, Mr.New",
   "license": "MIT",
   "dependencies": {
     "concurrently": "^6.2.1",

@@ -35,12 +35,21 @@ app.use(passport.initialize())
 require('./config/passport')(passport)
 
 //  Define the route to read the files of the server from the client
+<<<<<<< HEAD
 app.use('/uploads', express.static('uploads'))
 
 // app.use(express.static(path.join(__dirname, '../client/build')));
 // app.get("/*", function (req, res) {
 //   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 // })
+=======
+app.use('/uploads/', express.static('uploads'))
+
+app.use(express.static(path.join(__dirname, '../client/build')))
+app.get('*', function (req, res) {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
+})
+>>>>>>> e3fac73e709d9aad9e79363b31267054d05475f1
 
 // Routes
 app.use('/api/account', users)
