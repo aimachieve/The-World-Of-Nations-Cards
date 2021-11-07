@@ -112,11 +112,7 @@ exports.getRandomTablesByUserId = async (req, res) => {
   ])
 
   let maxDay = await MainTicket.findOne({ user_id: userId }).sort({ day: -1 })
-<<<<<<< HEAD
-
-=======
   console.log(userId)
->>>>>>> 24becfcb7a3bcc96cbfad0adc945390bfa4a49a6
   for (let i = 0; i < tables.length; i += 1) {
     let table = await Table.findById(tables[i]._id).populate({
       path: 'seat',
@@ -974,27 +970,8 @@ exports.finalRoom = async (req, res) => {
   let allwinner = []
   let finalwinner = []
 
-<<<<<<< HEAD
   for (var i = tables.length - 1; i >= 0; i--) {
     allwinner = [...allwinner, ...tables[i].seat]
-=======
-    for (var j = temp.length - 1; j > 0; j--) {
-      await MainTicket.findOneAndUpdate(
-        { _id: temp[j]._id },
-        { $set: { day: day.daynumber + 1 } },
-      )
-
-      total++
-      if (total >= finalwinner) {
-        break
-      }
-    }
-    console.log('temp-length----->', i)
-    await Table.findOneAndUpdate(
-      { _id: tables[i]._id },
-      { $set: { seat: temp } },
-    )
->>>>>>> 24becfcb7a3bcc96cbfad0adc945390bfa4a49a6
   }
 
   for (var i = allwinner.length - 1; total < finalwinnernum; i--) {
@@ -1006,16 +983,9 @@ exports.finalRoom = async (req, res) => {
       { $set: { day: day.daynumber + 1 } },
     )
 
-<<<<<<< HEAD
     total++;
     allwinner.splice(random, 1);
   }
-=======
-  await day.save()
-  let entry = await MainTicket.find().count()
-
-  let winners = await MainTicket.find({ day: day.daynumber + 1 })
->>>>>>> 24becfcb7a3bcc96cbfad0adc945390bfa4a49a6
 
   let winnerItem = {}
 
@@ -1064,12 +1034,10 @@ exports.payment = async (req, res) => {
 
   let { cart, user } = req.body
 
-<<<<<<< HEAD
   let amount = 0
   for (var i = cart.length - 1; i >= 0; i--) {
     amount += cart[i].qty * cart[i].price
   }
-=======
   let main = cart.filter((item) => !item.satelliteId)
   let satellite = cart.filter((item) => item.satelliteId)
 
@@ -1119,7 +1087,6 @@ exports.payment = async (req, res) => {
   // for (var i = cart.length - 1; i >= 0; i--) {
   //   amount += cart[i].quantity * cart[i].price
   // }
->>>>>>> 24becfcb7a3bcc96cbfad0adc945390bfa4a49a6
 
   // request.post(
   //   {
