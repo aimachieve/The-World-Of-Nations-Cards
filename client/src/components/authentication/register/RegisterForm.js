@@ -1,4 +1,6 @@
 import React from 'react'
+import { useNavigate } from 'react-router'
+
 import * as Yup from 'yup'
 import { useFormik, Form, FormikProvider } from 'formik'
 // material
@@ -13,12 +15,14 @@ import { MIconButton } from '../../@material-extend'
 // hooks
 import useAuth from '../../../hooks/useAuth'
 import useIsMountedRef from '../../../hooks/useIsMountedRef'
+import { PATH_USER } from 'routes/paths'
 // ----------------------------------------------------------------------
 
 export default function RegisterForm() {
   const { register } = useAuth()
   const isMountedRef = useIsMountedRef()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  const navigate = useNavigate()
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
       .min(2, 'Too Short!')
@@ -61,18 +65,35 @@ export default function RegisterForm() {
       try {
         const response = await register(values)
         // setAuthModal("verify")
-        const { data } = response
-        console.log(response)
-        if (data === 'Success') {
-          enqueueSnackbar('Register success. Please check your email', {
-            variant: 'success',
-            action: (key) => (
-              <MIconButton size="small" onClick={() => closeSnackbar(key)}>
-                <Icon icon={closeFill} />
-              </MIconButton>
-            ),
-          })
-        } else {
+        // const { data } = response
+        // console.log(response)
+        // if (data === 'Success') {
+        enqueueSnackbar('Register success. Please check your email', {
+          variant: 'success',
+          action: (key) => (
+            <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+              <Icon icon={closeFill} />
+            </MIconButton>
+          ),
+        })
+        navigate(PATH_USER.home)
+        // } else {
+        //   enqueueSnackbar('Register failed.', {
+        //     variant: 'error',
+        //     action: (key) => (
+        //       <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+        //         <Icon icon={closeFill} />
+        //       </MIconButton>
+        //     ),
+        //   })
+        // }
+
+        if (isMountedRef.current) {
+          setSubmitting(false)
+        }
+      } catch (error) {
+        console.error(error)
+        if (isMountedRef.current) {
           enqueueSnackbar('Register failed.', {
             variant: 'error',
             action: (key) => (
@@ -81,14 +102,6 @@ export default function RegisterForm() {
               </MIconButton>
             ),
           })
-        }
-
-        if (isMountedRef.current) {
-          setSubmitting(false)
-        }
-      } catch (error) {
-        console.error(error)
-        if (isMountedRef.current) {
           setErrors({ afterSubmit: error.message })
           setSubmitting(false)
         }
