@@ -112,11 +112,7 @@ exports.getRandomTablesByUserId = async (req, res) => {
   ])
 
   let maxDay = await MainTicket.findOne({ user_id: userId }).sort({ day: -1 })
-<<<<<<< HEAD
 
-=======
-  console.log(userId)
->>>>>>> 24becfcb7a3bcc96cbfad0adc945390bfa4a49a6
   for (let i = 0; i < tables.length; i += 1) {
     let table = await Table.findById(tables[i]._id).populate({
       path: 'seat',
@@ -876,7 +872,7 @@ exports.roomDraw = async (req, res) => {
 
   var tables = await Table.find({
     day: day._id,
-    table: { $lt: (roomnumber + 1) * 2000 + 1, $gt: roomnumber * 2000 },
+    table: { $lt: (roomnumber + 1) * 2000, $gt: roomnumber * 2000 - 1 },
   }) // get tables in this selected room
 
   for (var i = tables.length - 1; i >= 0; i--) {
@@ -974,27 +970,8 @@ exports.finalRoom = async (req, res) => {
   let allwinner = []
   let finalwinner = []
 
-<<<<<<< HEAD
   for (var i = tables.length - 1; i >= 0; i--) {
     allwinner = [...allwinner, ...tables[i].seat]
-=======
-    for (var j = temp.length - 1; j > 0; j--) {
-      await MainTicket.findOneAndUpdate(
-        { _id: temp[j]._id },
-        { $set: { day: day.daynumber + 1 } },
-      )
-
-      total++
-      if (total >= finalwinner) {
-        break
-      }
-    }
-    console.log('temp-length----->', i)
-    await Table.findOneAndUpdate(
-      { _id: tables[i]._id },
-      { $set: { seat: temp } },
-    )
->>>>>>> 24becfcb7a3bcc96cbfad0adc945390bfa4a49a6
   }
 
   for (var i = allwinner.length - 1; total < finalwinnernum; i--) {
@@ -1006,23 +983,16 @@ exports.finalRoom = async (req, res) => {
       { $set: { day: day.daynumber + 1 } },
     )
 
-<<<<<<< HEAD
     total++;
     allwinner.splice(random, 1);
   }
-=======
-  await day.save()
-  let entry = await MainTicket.find().count()
-
-  let winners = await MainTicket.find({ day: day.daynumber + 1 })
->>>>>>> 24becfcb7a3bcc96cbfad0adc945390bfa4a49a6
 
   let winnerItem = {}
 
   for (var i = finalwinner.length - 1; i >= 0; i--) {
     let tempWinner = await MainTicket.findOne({_id: finalwinner[i]})
 
-    winnerItem = await Winner.findOne({ user: tempWinner.user_id })
+    winnerItem = await Winner.findOne({ user: tempWinner.user_id, event: event._id })
 
     if (winnerItem) {
       winnerItem.tickets = [...winnerItem.tickets, i + 1]
@@ -1064,62 +1034,10 @@ exports.payment = async (req, res) => {
 
   let { cart, user } = req.body
 
-<<<<<<< HEAD
   let amount = 0
   for (var i = cart.length - 1; i >= 0; i--) {
     amount += cart[i].qty * cart[i].price
   }
-=======
-  let main = cart.filter((item) => !item.satelliteId)
-  let satellite = cart.filter((item) => item.satelliteId)
-
-  let newTicket = {}
-
-  if (main.length > 0) {
-    for (var i = 0; i < main[0].qty; i++) {
-      newTicket = new MainTicket({
-        user_id: main[0]._id,
-        username: main[0].username,
-        event: main[0].event,
-      })
-
-      await newTicket.save()
-    }
-  }
-
-  if (satellite.length > 0) {
-    for (var i = 0; i < satellite.length; i++) {
-      for (var j = 0; j < satellite[i].qty; j++) {
-        newTicket = new SatelliteTicket({
-          user_id: satellite[i]._id,
-          username: satellite[i].username,
-          eventId: satellite[i].event,
-        })
-
-        await newTicket.save()
-      }
-    }
-  }
-
-  let mailOptions = {
-    from: ADMIN_EMAIL,
-    to: user.email,
-    subject: 'You purchased the tickets!',
-    html: `<h3 style="text-align: center;">Thank ${user.username}!</h3><h6 style="text-align:center;">You purchased the tickets. Hope you will be lucky.</h6>`,
-  }
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error)
-    } else {
-      console.log('Email sent: ' + info.response)
-    }
-  })
-  res.json('OK')
-  // let amount = 0
-  // for (var i = cart.length - 1; i >= 0; i--) {
-  //   amount += cart[i].quantity * cart[i].price
-  // }
->>>>>>> 24becfcb7a3bcc96cbfad0adc945390bfa4a49a6
 
   // request.post(
   //   {

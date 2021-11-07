@@ -108,6 +108,8 @@ export default function CurrentEvent() {
   ]
 
   const mainflag = () => {
+    if(current_event.status > 1) return true
+
     if (days.length > 0) {
       return days[0].status != 0
     }
