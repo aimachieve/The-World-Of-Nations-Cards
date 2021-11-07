@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React from 'react'
 import { styled } from '@material-ui/core/styles'
-import { Box, Container, Stack } from '@material-ui/core'
+import { Box, Container, Grid } from '@material-ui/core'
 import Banner from 'customComponents/Banner'
 import SignUpCTA from 'customComponents/SignUpCTA'
 import Item from './Item.js'
@@ -31,52 +31,14 @@ export default function Portfolio() {
 
         <Box sx={{ backgroundImage: 'url("/images/site-background.jpg")' }}>
           {/* Drop a message */}
-          <Container maxWidth="xl">
-            <Stack
-              spacing={2}
-              direction="row"
-              justifyContent="center"
-              alignItems="center"
-              sx={{
-                paddingTop: '30px',
-                paddingBottom: '30px',
-              }}
-            >
-              <Item />
-              <Item />
-              <Item />
-              <Item />
-            </Stack>
-            <Stack
-              spacing={2}
-              direction="row"
-              justifyContent="center"
-              alignItems="center"
-              sx={{
-                paddingTop: '30px',
-                paddingBottom: '30px',
-              }}
-            >
-              <Item />
-              <Item />
-              <Item />
-              <Item />
-            </Stack>
-            <Stack
-              spacing={2}
-              direction="row"
-              justifyContent="center"
-              alignItems="center"
-              sx={{
-                paddingTop: '30px',
-                paddingBottom: '30px',
-              }}
-            >
-              <Item />
-              <Item />
-              <Item />
-              <Item />
-            </Stack>
+          <Container maxWidth="xl" sx={{ py: 4 }}>
+            <Grid container spacing={1}>
+              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
+                <Grid item md={3} key={item} mb={3}>
+                  <Item />
+                </Grid>
+              ))}
+            </Grid>
           </Container>
 
           {/* Sign Up Now */}

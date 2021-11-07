@@ -30,7 +30,8 @@ export default function SignUpCTA() {
           <Stack spacing={3}>
             <MotionInView variants={varFadeInUp}>
               <Typography
-                variant="h1"
+                fontSize={{ xs: 36, sm: 40, md: 44, lg: 48 }}
+                fontWeight="bold"
                 align="center"
                 sx={{
                   color: 'common.white',
@@ -42,7 +43,11 @@ export default function SignUpCTA() {
             </MotionInView>
             <MotionInView variants={varFadeInUp}>
               <Container maxWidth="md">
-                <Typography align="center" color="common.white" fontSize={28}>
+                <Typography
+                  align="center"
+                  color="common.white"
+                  fontSize={{ xs: 16, sm: 20, md: 24, lg: 28 }}
+                >
                   Sign up now to start being part of the fun! We have many
                   events and you may just end up winning some of the most
                   amazing prizes available!
@@ -57,9 +62,9 @@ export default function SignUpCTA() {
                   color="success"
                   sx={{
                     color: 'common.white',
-                    fontSize: 22,
+                    fontSize: { xs: 10, sm: 14, md: 18, lg: 22 },
                     textTransform: 'uppercase',
-                    px: 10
+                    px: { xs: 2, sm: 4, md: 6, lg: 8 },
                   }}
                 >
                   sign up

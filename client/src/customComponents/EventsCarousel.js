@@ -3,7 +3,15 @@ import Slider from 'react-slick'
 import PropTypes from 'prop-types'
 // material
 import { useTheme, styled } from '@material-ui/core/styles'
-import { Box, Paper, Typography, Stack, Card, Button } from '@material-ui/core'
+import {
+  Box,
+  Paper,
+  Typography,
+  Stack,
+  Card,
+  Button,
+  useMediaQuery,
+} from '@material-ui/core'
 import { CarouselControlsArrowsBasic3 } from '../components/carousel/controls'
 
 // ----------------------------------------------------------------------
@@ -27,14 +35,13 @@ CarouselItem.propTypes = {
 }
 
 function CarouselItem({ currentEvent, item, index }) {
-  console.log(item, index)
   const theme = useTheme()
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
 
   const register = (index, item) => {
     let user = localStorage.getItem('user')
     let cart = localStorage.getItem('cart')
     localStorage.setItem('currentProductIndex', index)
-    console.log('currentIndex', localStorage.getItem('currentProductIndex'))
     if (user === null) {
       window.location.href = '/auth/login'
     }
@@ -98,7 +105,6 @@ function CarouselItem({ currentEvent, item, index }) {
       }
     }
 
-    console.log(window.localStorage.getItem('cart'))
     window.location.href = '/purchaseTicket'
   }
   return (
@@ -126,25 +132,46 @@ function CarouselItem({ currentEvent, item, index }) {
           }}
         >
           <Stack spacing={2}>
-            <Typography variant="h3" color="common.white">
+            <Typography
+              sx={{ fontSize: { xs: 18, sm: 22, md: 26, lg: 30 } }}
+              color="common.white"
+            >
               Main Event
             </Typography>
             <Stack>
-              <Typography variant="h5" color="common.white">
-                Entry Fee
-              </Typography>
-              <Typography fontSize={50} fontWeight="bold">
+              {isDesktop ? (
+                <Typography
+                  sx={{ fontSize: { xs: 14, sm: 18, md: 22, lg: 26 } }}
+                  color="common.white"
+                >
+                  Entry Fee
+                </Typography>
+              ) : (
+                ''
+              )}
+
+              <Typography
+                sx={{ fontSize: { xs: 22, sm: 26, md: 30, lg: 34 } }}
+                fontWeight="bold"
+              >
                 ${item.price}
               </Typography>
             </Stack>
             <Paper
-              sx={{ backgroundColor: 'common.white', py: 3, height: 110 }}
+              sx={{
+                backgroundColor: 'common.white',
+                py: 3,
+                height: { xs: 20, sm: 40, md: 60, lg: 80 },
+              }}
             ></Paper>
             <Button
               variant="contained"
               color="success"
-              sx={{ color: 'common.white', textTransform: 'uppercase' }}
-              size="large"
+              sx={{
+                color: 'common.white',
+                textTransform: 'uppercase',
+                fontSize: { xs: 12, sm: 16, md: 20, lg: 24 },
+              }}
               onClick={() => register(index, item)}
             >
               Register Now
@@ -163,27 +190,52 @@ function CarouselItem({ currentEvent, item, index }) {
           }}
         >
           <Stack spacing={2}>
-            <Typography variant="h3" color="common.white">
+            <Typography
+              sx={{ fontSize: { xs: 18, sm: 22, md: 26, lg: 30 } }}
+              color="common.white"
+            >
               Satellite Event {index}
             </Typography>
             <Stack>
-              <Typography variant="h5" color="common.white">
+              <Typography
+                sx={{ fontSize: { xs: 14, sm: 18, md: 22, lg: 26 } }}
+                color="common.white"
+              >
                 Entry Fee
               </Typography>
-              <Typography fontSize={50} fontWeight="bold">
+              <Typography
+                sx={{ fontSize: { xs: 22, sm: 26, md: 30, lg: 34 } }}
+                fontWeight="bold"
+              >
                 ${item.price}
               </Typography>
             </Stack>
             <Paper sx={{ backgroundColor: 'common.white', py: 2 }}>
-              <Typography align="center" color="common.black" fontSize={18}>
+              <Typography
+                align="center"
+                color="common.black"
+                sx={{ fontSize: { xs: 6, sm: 10, md: 14, lg: 18 } }}
+              >
                 Total entries:{' '}
-                <Typography variant="h4" component="span" color="primary">
+                <Typography
+                  sx={{ fontSize: { xs: 6, sm: 10, md: 14, lg: 18 } }}
+                  component="span"
+                  color="primary"
+                >
                   {item.entries}
                 </Typography>
               </Typography>
-              <Typography fontSize={18} align="center" color="common.black">
+              <Typography
+                sx={{ fontSize: { xs: 6, sm: 10, md: 14, lg: 18 } }}
+                align="center"
+                color="common.black"
+              >
                 Total Winners:{' '}
-                <Typography variant="h4" component="span" color="primary">
+                <Typography
+                  sx={{ fontSize: { xs: 6, sm: 10, md: 14, lg: 18 } }}
+                  component="span"
+                  color="primary"
+                >
                   {item.winners}
                 </Typography>
               </Typography>
@@ -191,7 +243,11 @@ function CarouselItem({ currentEvent, item, index }) {
             <Button
               variant="contained"
               color="success"
-              sx={{ color: 'common.white', textTransform: 'uppercase' }}
+              sx={{
+                color: 'common.white',
+                textTransform: 'uppercase',
+                fontSize: { xs: 12, sm: 16, md: 20, lg: 24 },
+              }}
               size="large"
               onClick={() => register(index, item)}
             >
@@ -205,7 +261,6 @@ function CarouselItem({ currentEvent, item, index }) {
 }
 
 export default function EventsCarousel({ current_event }) {
-  console.log('current_event', current_event)
   const carouselRef = useRef()
   const [events, setEvents] = useState([])
 
