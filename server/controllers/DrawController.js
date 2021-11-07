@@ -112,6 +112,7 @@ exports.getRandomTablesByUserId = async (req, res) => {
   ])
 
   let maxDay = await MainTicket.findOne({ user_id: userId }).sort({ day: -1 })
+  console.log(userId)
   for (let i = 0; i < tables.length; i += 1) {
     let table = await Table.findById(tables[i]._id).populate({
       path: 'seat',
