@@ -3,7 +3,7 @@ module.exports = {
   secretOrKey: 'secret',
   mailUser: 'mr.new0509@gmail.com',
   mailPass: 'dkaneh ahffk.',
-  cardknoxKey: 'companydev9505c6799efc4f37b214763ad766366b',
+  cardknoxKey: 'companydev55aa52363a2d408ca6e1e639b9f33ea3',
   xSoftwareName: 'world nation of card',
   xSoftwareVersion: '1.0',
   transactionUrl: 'https://x1.cardknox.com/gateway',

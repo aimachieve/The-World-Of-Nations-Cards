@@ -104,7 +104,7 @@ exports.getRandomTablesByUserId = async (req, res) => {
   ])
 
   let maxDay = await MainTicket.findOne({ user_id: userId }).sort({ day: -1 })
-console.log(userId)
+
   for (let i = 0; i < tables.length; i += 1) {
     let table = await Table.findById(tables[i]._id).populate({
       path: 'seat',
@@ -672,9 +672,10 @@ exports.assignSatelliteTable = async (req, res) => {
       maps = data
       var newMainTicket = {}
 
-      for (i = 0; i < satelliteEvent[0].winners; i++) {
+      for (i = 0; i < satelliteEvent[0].winners && maps.length > 0; i++) {
         // get winners for satellite tickets
         let winnerNumber = Math.ceil(Math.random() * 1000) % maps.length
+
         await SatelliteTicket.findOneAndUpdate(
           { _id: maps[winnerNumber]._id },
           { $set: { status: true } },
@@ -1009,42 +1010,10 @@ exports.payment = async (req, res) => {
 
   let { cart, user } = req.body
 
-  let main = cart.filter(item => !item.satelliteId)
-    let satellite = cart.filter(item => item.satelliteId)
-
-    let newTicket = {};
-
-    if(main.length > 0) {
-      for (var i = 0; i < main[0].qty; i++) {
-        newTicket = new MainTicket({
-          user_id: main[0]._id,
-          username: main[0].username,
-          event: main[0].event
-        });
-
-        await newTicket.save();
-      }
-    }
-
-    if(satellite.length > 0) {
-      for (var i = 0; i < satellite.length; i++) {
-        for (var j = 0; j < satellite[i].qty; j++) {
-          newTicket = new SatelliteTicket({
-            user_id: satellite[i]._id,
-            username: satellite[i].username,
-            eventId: satellite[i].event
-          });
-
-          await newTicket.save();
-        }
-      }
-    }
-
-    res.json("OK")
-  // let amount = 0
-  // for (var i = cart.length - 1; i >= 0; i--) {
-  //   amount += cart[i].quantity * cart[i].price
-  // }
+  let amount = 0
+  for (var i = cart.length - 1; i >= 0; i--) {
+    amount += cart[i].qty * cart[i].price
+  }
 
   // request.post(
   //   {
@@ -1055,7 +1024,7 @@ exports.payment = async (req, res) => {
   //       xSoftwareName: xSoftwareName,
   //       xSoftwareVersion: xSoftwareVersion,
   //       xCommand: 'cc:Sale',
-  //       xAmount: 10,
+  //       xAmount: amount,
   //       xCardNum: user.cardname,
   //       xCVV: user.cvc,
   //       xExp: user.expire,
@@ -1071,40 +1040,60 @@ exports.payment = async (req, res) => {
   //       xBillPhone: user.xBillPhone,
   //     },
   //   },
-  //   function (error, response, body) {
+  //   async function (error, response, body) {
   //     data = qs.parse(body)
-  //     console.log(data)
 
-  //   // let main = cart.filter(item => !item.satelliteId)
-  //   // let satellite = cart.filter(item => item.satelliteId)
+      let main = cart.filter(item => !item.satelliteId)
+      let satellite = cart.filter(item => item.satelliteId)
 
-  //   // let newTicket = {};
+      let newTicket = {};
 
-  //   // if(main.length > 0) {
-  //   //   for (var i = 0; i < main[0].qty; i++) {
-  //   //     newTicket = new MainTicket({
-  //   //       user_id: main[0]._id,
-  //   //       username: main[0].username,
-  //   //       event: main[0].event
-  //   //     });
+      if(main.length > 0) {
+        for (var i = 0; i < main[0].qty; i++) {
+          newTicket = new MainTicket({
+            user_id: main[0].user_id,
+            username: main[0].username,
+            event: main[0].event
+          });
 
-  //   //     await newTicket.save();
-  //   //   }
-  //   // }
+          await newTicket.save();
+        }
+      }
 
-  //   // if(satellite.length > 0) {
-  //   //   for (var j = 0; j < satellite[j].qty; j++) {
-  //   //     newTicket = new SatelliteTicket({
-  //   //       user_id: satellite[j]._id,
-  //   //       username: satellite[j].username,
-  //   //       eventId: satellite[j].event
-  //   //     });
+      if(satellite.length > 0) {
+        for (var i = 0; i < satellite.length; i++) {
+          for (var j = 0; j < satellite[i].qty; j++) {
+            newTicket = new SatelliteTicket({
+              user_id: satellite[i].user_id,
+              username: satellite[i].username,
+              eventId: satellite[i].eventId,
+              satelliteId: satellite[i].satelliteId
+            });
 
-  //   //     await newTicket.save();
-  //   //   }
-  //   // }
+            await newTicket.save();
+          }
+        }
+      }
 
-  //     res.json(data)
+      let day = await Day.findOne({ event_id: main[0].event, daynumber: 1 }) // find day-1
+
+      if (day == null) {
+        // create day-1 when there is no day-1 info in day table.
+        day = new Day({
+          daynumber: 1,
+          event_id: main[0].event,
+        })
+      }
+
+      let winnerCount = await MainTicket.find().count()
+      day.entry = winnerCount
+      day.status = 1
+
+      await day.save()
+
+      await generateTable(day._id, { day: 1, satelliteId: null })
+
+      res.json("OK")
   //   },
   // )
 }
@@ -1240,6 +1229,9 @@ async function generateTable(day_id, search_param) {
 /*========================= Create Mock Data =============================*/
 exports.createMockData = async (req, res) => {
   let { mockUsernum, mockMainNum } = req.body
+
+  // let mockflag = await MainTicket
+
   for (var i = 1; i <= 20; i++) {
     let avatar = await Avatar.findOne({ name: 'avatar (' + i + ').png' })
     if (avatar == null) {

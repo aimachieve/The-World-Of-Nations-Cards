@@ -165,7 +165,6 @@ export default function Cart() {
                         autoComplete="username"
                         label="Enter your first name"
                         sx={{ marginTop: '10px !important' }}
-                        disabled
                         value={firstname}
                       />
                     </Grid>
@@ -184,7 +183,6 @@ export default function Cart() {
                         autoComplete="current-password"
                         label="Enter your subject"
                         sx={{ marginTop: '10px !important' }}
-                        disabled
                         value={lastname}
                       />
                     </Grid>
@@ -203,7 +201,6 @@ export default function Cart() {
                         autoComplete="username"
                         label="Enter your first name"
                         sx={{ marginTop: '10px !important' }}
-                        disabled
                         value={company}
                       />
                     </Grid>
@@ -223,7 +220,6 @@ export default function Cart() {
                         autoComplete="username"
                         label="Enter your first name"
                         sx={{ marginTop: '10px !important' }}
-                        disabled
                         value={country}
                       />
                     </Grid>
@@ -243,7 +239,6 @@ export default function Cart() {
                         autoComplete="username"
                         label="Enter your first name"
                         sx={{ marginTop: '10px !important' }}
-                        disabled
                         value={address}
                       />
                     </Grid>
@@ -262,7 +257,6 @@ export default function Cart() {
                         autoComplete="username"
                         label="Enter your first name"
                         sx={{ marginTop: '10px !important' }}
-                        disabled
                         value={town}
                       />
                     </Grid>
@@ -281,7 +275,6 @@ export default function Cart() {
                         autoComplete="username"
                         label="Enter your first name"
                         sx={{ marginTop: '10px !important' }}
-                        disabled
                         value={province}
                       />
                     </Grid>
@@ -300,7 +293,6 @@ export default function Cart() {
                         autoComplete="username"
                         label="Enter your first name"
                         sx={{ marginTop: '10px !important' }}
-                        disabled
                         value={postalcode}
                       />
                     </Grid>
@@ -319,7 +311,6 @@ export default function Cart() {
                         autoComplete="username"
                         label="Enter your first name"
                         sx={{ marginTop: '10px !important' }}
-                        disabled
                         value={phone}
                       />
                     </Grid>
@@ -338,7 +329,6 @@ export default function Cart() {
                         autoComplete="username"
                         label="Enter your first name"
                         sx={{ marginTop: '10px !important' }}
-                        disabled
                         value={email}
                       />
                     </Grid>

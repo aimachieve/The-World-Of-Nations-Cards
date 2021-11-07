@@ -26,7 +26,7 @@ export default function Banner() {
           <img
             src="/images/slider.jpg"
             alt="banner"
-            style={{ width: '100%' }}
+            style={{ width: '100%', height: 580 }}
           />
           <Box
             sx={{
@@ -40,14 +40,15 @@ export default function Banner() {
               <Stack>
                 <MotionInView variants={varFadeInUp}>
                   <Typography
-                    variant="h1"
+                    fontSize={{ xs: 36, sm: 40, md: 44, lg: 48 }}
+                    fontWeight="bold"
                     align="center"
                     sx={{ textTransform: 'uppercase' }}
                   >
                     WELCOME TO WNOC
                   </Typography>
                   <Typography
-                    fontSize={32}
+                    fontSize={{ xs: 16, sm: 20, md: 24, lg: 28 }}
                     align="center"
                     sx={{ textTransform: 'uppercase' }}
                   >
@@ -57,7 +58,12 @@ export default function Banner() {
               </Stack>
               <Stack direction="row" justifyContent="center">
                 <MotionInView variants={varFadeInUp}>
-                  <Typography fontSize={22} align="center" maxWidth={750}>
+                  <Typography
+                    fontSize={{ xs: 12, sm: 14, md: 16, lg: 20 }}
+                    align="center"
+                    align="center"
+                    maxWidth={750}
+                  >
                     Sign up today to secure yourself a seat in the main event!
                     The main-event starting date will be announced on social
                     media! Follow us to stay tuned on the upcoming news for this
@@ -74,7 +80,7 @@ export default function Banner() {
                     sx={{
                       px: 4,
                       color: 'common.white',
-                      fontSize: 20,
+                      fontSize: { xs: 12, sm: 14, md: 16, lg: 20 },
                       textTransform: 'uppercase',
                     }}
                   >

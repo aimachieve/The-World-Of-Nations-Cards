@@ -3,7 +3,6 @@ import React from 'react'
 // material
 import { styled } from '@material-ui/core/styles'
 import { Box, Stack } from '@material-ui/core'
-import ReactPlayer from 'react-player'
 // components
 import Page from '../../components/Page'
 import WhoWeAre from './WhoWeAre'

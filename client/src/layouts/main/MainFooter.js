@@ -15,7 +15,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 export default function MainFooter() {
   return (
-    <RootStyle>
+    <RootStyle className="footer">
       <Typography
         color="white"
         sx={{
