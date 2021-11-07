@@ -11,6 +11,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  useTheme
 } from '@material-ui/core'
 import { styled } from '@material-ui/core/styles'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -37,6 +38,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 }))
 
 export default function RoomStatus() {
+  const theme = useTheme()
   const currentUser = JSON.parse(localStorage.getItem('user'))
   const {
     getRandomTables,
