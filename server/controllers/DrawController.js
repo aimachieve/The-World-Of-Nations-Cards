@@ -19,7 +19,7 @@ const SatelliteTicket = require('../models/SatelliteTicket')
 const Table = require('../models/Table')
 const Day = require('../models/Day')
 const Room = require('../models/Room')
-const { ADMIN_EMAIL } = require('../utils/constants')
+const { ADMIN_EMAIL, ADMIN_EMAIL_PASSWORD } = require('../utils/constants')
 
 let otp
 let roomnames = [
@@ -50,6 +50,14 @@ let roomnames = [
   'Y',
   'Z',
 ]
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: ADMIN_EMAIL,
+    pass: ADMIN_EMAIL_PASSWORD,
+  },
+})
 
 exports.getProducts = (req, res) => {
   Event.findOne().then((event) => {
@@ -104,7 +112,11 @@ exports.getRandomTablesByUserId = async (req, res) => {
   ])
 
   let maxDay = await MainTicket.findOne({ user_id: userId }).sort({ day: -1 })
+<<<<<<< HEAD
 
+=======
+  console.log(userId)
+>>>>>>> 24becfcb7a3bcc96cbfad0adc945390bfa4a49a6
   for (let i = 0; i < tables.length; i += 1) {
     let table = await Table.findById(tables[i]._id).populate({
       path: 'seat',
@@ -112,7 +124,9 @@ exports.getRandomTablesByUserId = async (req, res) => {
     })
     await resTables.push(table)
   }
-  return res.status(200).json({ table: resTables, maxDay: maxDay == null ? 0 : maxDay.day })
+  return res
+    .status(200)
+    .json({ table: resTables, maxDay: maxDay == null ? 0 : maxDay.day })
 }
 
 /**
@@ -436,30 +450,31 @@ exports.getTicketsByUserId = async (req, res) => {
  */
 exports.sendEmailToAdmin = (req, res) => {
   const { firstName, lastName, email, password, subject, message } = req.body
-  var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: email,
-      pass: password,
-    },
-  })
+  // const transporter = nodemailer.createTransport({
+  //   service: 'gmail',
+  //   auth: {
+  //     user: email,
+  //     pass: password,
+  //   },
+  // })
 
-  var mailOptions = {
-    from: email,
-    to: ADMIN_EMAIL,
-    subject: subject,
-    text: message,
-  }
+  // var mailOptions = {
+  //   from: email,
+  //   to: ADMIN_EMAIL,
+  //   subject: subject,
+  //   text: message,
+  // }
 
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error)
-      return res.status(200).send('Failed')
-    } else {
-      console.log('Email sent: ' + info.response)
-      return res.status(200).send('Success')
-    }
-  })
+  // transporter.sendMail(mailOptions, function (error, info) {
+  //   if (error) {
+  //     console.log(error)
+  //     return res.status(200).send('Failed')
+  //   } else {
+  //     console.log('Email sent: ' + info.response)
+  //     return res.status(200).send('Success')
+  //   }
+  // })
+  return res.status(200).send('Success')
 }
 
 /*========================= Admin page =============================*/
@@ -569,6 +584,19 @@ exports.resetPassword = async (req, res) => {
       )
         .then((user) => {
           console.log(user)
+          let mailOptions = {
+            from: ADMIN_EMAIL,
+            to: user.email,
+            subject: 'Password changed!',
+            html: `<h6 style="text-align:center;">Please confirm your new password.</h6><p style="text-align: center; font-size: 24px;"><b>${req.body.password}</b></p>`,
+          }
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              console.log(error)
+            } else {
+              console.log('Email sent: ' + info.response)
+            }
+          })
           res.json({
             success: 'true',
             user: user,
@@ -603,7 +631,7 @@ exports.get_tickets = async (req, res) => {
 exports.assignSatelliteTable = async (req, res) => {
   const { satelliteId, roomnumber } = req.body
 
-  let flag = await SatelliteTicket.find({ satelliteId: satelliteId }).count();
+  let flag = await SatelliteTicket.find({ satelliteId: satelliteId }).count()
   if (flag == 0) return res.json('not exist')
 
   let event = await Event.findOne({ status: { $lt: 3 } })
@@ -801,10 +829,10 @@ exports.makeTable = async (req, res) => {
     })
   }
 
-  let mainticketFlag = await MainTicket.find({satelliteId: null}).count();
+  let mainticketFlag = await MainTicket.find({ satelliteId: null }).count()
 
-  if(mainticketFlag == 0) {
-    return res.json("There is no main ticket. Please add main tickets.");
+  if (mainticketFlag == 0) {
+    return res.json('There is no main ticket. Please add main tickets.')
   }
 
   let winnerCount = await MainTicket.find().count()
@@ -946,8 +974,27 @@ exports.finalRoom = async (req, res) => {
   let allwinner = []
   let finalwinner = []
 
+<<<<<<< HEAD
   for (var i = tables.length - 1; i >= 0; i--) {
     allwinner = [...allwinner, ...tables[i].seat]
+=======
+    for (var j = temp.length - 1; j > 0; j--) {
+      await MainTicket.findOneAndUpdate(
+        { _id: temp[j]._id },
+        { $set: { day: day.daynumber + 1 } },
+      )
+
+      total++
+      if (total >= finalwinner) {
+        break
+      }
+    }
+    console.log('temp-length----->', i)
+    await Table.findOneAndUpdate(
+      { _id: tables[i]._id },
+      { $set: { seat: temp } },
+    )
+>>>>>>> 24becfcb7a3bcc96cbfad0adc945390bfa4a49a6
   }
 
   for (var i = allwinner.length - 1; total < finalwinnernum; i--) {
@@ -959,11 +1006,18 @@ exports.finalRoom = async (req, res) => {
       { $set: { day: day.daynumber + 1 } },
     )
 
+<<<<<<< HEAD
     total++;
     allwinner.splice(random, 1);
   }
+=======
+  await day.save()
+  let entry = await MainTicket.find().count()
 
-  let winnerItem = {};
+  let winners = await MainTicket.find({ day: day.daynumber + 1 })
+>>>>>>> 24becfcb7a3bcc96cbfad0adc945390bfa4a49a6
+
+  let winnerItem = {}
 
   for (var i = finalwinner.length - 1; i >= 0; i--) {
     let tempWinner = await MainTicket.findOne({_id: finalwinner[i]})
@@ -1010,10 +1064,62 @@ exports.payment = async (req, res) => {
 
   let { cart, user } = req.body
 
+<<<<<<< HEAD
   let amount = 0
   for (var i = cart.length - 1; i >= 0; i--) {
     amount += cart[i].qty * cart[i].price
   }
+=======
+  let main = cart.filter((item) => !item.satelliteId)
+  let satellite = cart.filter((item) => item.satelliteId)
+
+  let newTicket = {}
+
+  if (main.length > 0) {
+    for (var i = 0; i < main[0].qty; i++) {
+      newTicket = new MainTicket({
+        user_id: main[0]._id,
+        username: main[0].username,
+        event: main[0].event,
+      })
+
+      await newTicket.save()
+    }
+  }
+
+  if (satellite.length > 0) {
+    for (var i = 0; i < satellite.length; i++) {
+      for (var j = 0; j < satellite[i].qty; j++) {
+        newTicket = new SatelliteTicket({
+          user_id: satellite[i]._id,
+          username: satellite[i].username,
+          eventId: satellite[i].event,
+        })
+
+        await newTicket.save()
+      }
+    }
+  }
+
+  let mailOptions = {
+    from: ADMIN_EMAIL,
+    to: user.email,
+    subject: 'You purchased the tickets!',
+    html: `<h3 style="text-align: center;">Thank ${user.username}!</h3><h6 style="text-align:center;">You purchased the tickets. Hope you will be lucky.</h6>`,
+  }
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error)
+    } else {
+      console.log('Email sent: ' + info.response)
+    }
+  })
+  res.json('OK')
+  // let amount = 0
+  // for (var i = cart.length - 1; i >= 0; i--) {
+  //   amount += cart[i].quantity * cart[i].price
+  // }
+>>>>>>> 24becfcb7a3bcc96cbfad0adc945390bfa4a49a6
 
   // request.post(
   //   {

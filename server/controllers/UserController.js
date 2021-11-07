@@ -16,6 +16,14 @@ const Avatar = require('../models/Avatar')
 
 let otp
 
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: ADMIN_EMAIL,
+    pass: ADMIN_EMAIL_PASSWORD,
+  },
+})
+
 exports.register = (req, res) => {
   const {
     firstName,
@@ -82,14 +90,7 @@ exports.register = (req, res) => {
                   // })
                   /* ================== Send user's mail the verification code ============ */
                   try {
-                    var transporter = nodemailer.createTransport({
-                      service: 'gmail',
-                      auth: {
-                        user: ADMIN_EMAIL,
-                        pass: ADMIN_EMAIL_PASSWORD,
-                      },
-                    })
-                    var mailOptions = {
+                    let mailOptions = {
                       from: ADMIN_EMAIL,
                       to: email,
                       subject: 'Welcome!',

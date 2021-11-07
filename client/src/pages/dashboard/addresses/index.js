@@ -13,7 +13,7 @@ import useAuth from "hooks/useAuth";
 
 const RootStyle = styled(Page)({
   paddingTop: 120,
-  paddingBottom: 88,
+  paddingBottom: 105,
   height: '100%',
 })
 
