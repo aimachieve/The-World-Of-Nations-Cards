@@ -12,7 +12,6 @@ import LiveEvents from '../../customComponents/LiveEvents'
 
 const RootStyle = styled('div')(({ theme }) => ({
   paddingTop: 120,
-  // paddingBottom: 88,
   height: '100%',
 }))
 

@@ -1,8 +1,8 @@
 /* eslint-disable */
 import React from 'react'
 // material
-import { styled, useTheme } from '@material-ui/core/styles'
-import { Typography, Stack, Box } from '@material-ui/core'
+import { styled } from '@material-ui/core/styles'
+import { Typography, Stack, Box, Button } from '@material-ui/core'
 import { MotionInView, varFadeInUp, varFadeInDown } from '../components/animate'
 
 // ----------------------------------------------------------------------
@@ -44,25 +44,44 @@ export default function Banner() {
                     align="center"
                     sx={{ textTransform: 'uppercase' }}
                   >
-                    Page Title
+                    WELCOME TO WNOC
                   </Typography>
                   <Typography
-                    fontSize={36}
+                    fontSize={32}
                     align="center"
                     sx={{ textTransform: 'uppercase' }}
                   >
-                    Sub title will be here
+                    Learn More About Us
                   </Typography>
                 </MotionInView>
               </Stack>
               <Stack direction="row" justifyContent="center">
                 <MotionInView variants={varFadeInUp}>
-                  <Typography fontSize={28} align="center" maxWidth={550}>
-                    Here will be some form of text maybe a little paragraph of
-                    info to grab the eye
+                  <Typography fontSize={22} align="center" maxWidth={750}>
+                    Sign up today to secure yourself a seat in the main event!
+                    The main-event starting date will be announced on social
+                    media! Follow us to stay tuned on the upcoming news for this
+                    one-in-a-lifetime chance at some of the most prestigious
+                    prizes.
                   </Typography>
                 </MotionInView>
               </Stack>
+              <MotionInView variants={varFadeInDown}>
+                <Typography align="center">
+                  <Button
+                    variant="contained"
+                    color="success"
+                    sx={{
+                      px: 4,
+                      color: 'common.white',
+                      fontSize: 20,
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    sign up now
+                  </Button>
+                </Typography>
+              </MotionInView>
             </Stack>
           </Box>
         </Box>

@@ -30,10 +30,9 @@ exports.register = (req, res) => {
     phone,
   } = req.body
   // otp = otplibAuthenticator.generate(email)
-
   User.findOne({ email }).then((user) => {
     if (user) {
-      return res.status(400).json({ email: 'Email already exists' })
+      return res.status(400).json({ data: 'Email already exists' })
     } else {
       const newUser = new User({
         name: `${firstName} ${lastName}`,
@@ -83,14 +82,13 @@ exports.register = (req, res) => {
                       pass: ADMIN_EMAIL_PASSWORD,
                     },
                   })
-
                   var mailOptions = {
                     from: ADMIN_EMAIL,
-                    to: user.email,
-                    subject: subject,
-                    html: `<h3 style="text-align: center;">Welcome ${firstName}!</h3><h6 style="text-align:center;">Please verify your email.</h6><p style="text-align: center;"><a href="http://${window.location.hostname}/auth/verifyEmail/${token}">Verify</a></p>`,
+                    to: email,
+                    subject: 'Welcome!',
+                    text: `<h3 style="text-align: center;">Welcome ${firstName}!</h3><h6 style="text-align:center;">Please verify your email.</h6><p style="text-align: center;"><a href="http://${window.location.hostname}/auth/verifyEmail/${token}">Verify</a></p>`,
                   }
-
+                  console.log(mailOptions)
                   transporter.sendMail(mailOptions, function (error, info) {
                     if (error) {
                       console.log(error)

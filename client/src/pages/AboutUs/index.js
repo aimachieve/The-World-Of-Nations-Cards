@@ -2,15 +2,15 @@
 import React from 'react'
 // material
 import { styled } from '@material-ui/core/styles'
-import { Box } from '@material-ui/core'
+import { Box, Stack } from '@material-ui/core'
+import ReactPlayer from 'react-player'
 // components
 import Page from '../../components/Page'
-import WhyChooseUs from './WhyChooseUs'
-import { CarouselBasic3 } from 'components/carousel'
-import HowItWorks from './HowItWorks'
+import WhoWeAre from './WhoWeAre'
 import LiveEvents from './LiveEvents'
 import SignUpCTA from 'customComponents/SignUpCTA'
 import Banner from 'customComponents/Banner'
+import WhyChooseUs from './WhyChooseUs'
 
 // ----------------------------------------------------------------------
 
@@ -34,9 +34,13 @@ export default function AboutUs() {
       <ContentStyle>
         <Banner />
         <Box sx={{ backgroundImage: 'url("/images/site-background.jpg")' }}>
+          <WhoWeAre />
           <WhyChooseUs />
-          <HowItWorks />
-          <LiveEvents />
+          <Stack direction="row" justifyContent="center">
+            <Box component="img" src="/images/youtube-2.png" my={5} />
+          </Stack>
+          {/* <ReactPlayer url="https://www.youtube.com/watch?v=ug50zmP9I7s" /> */}
+          {/* <LiveEvents /> */}
           <SignUpCTA />
         </Box>
       </ContentStyle>

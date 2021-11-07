@@ -1,18 +1,7 @@
 /* eslint-disable */
 import React from 'react'
 import { styled } from '@material-ui/core/styles'
-import {
-  Box,
-  Grid,
-  Container,
-  Stack,
-  Typography,
-  Button,
-  TextField,
-} from '@material-ui/core'
-
-import { MotionInView, varFadeInUp } from '../../components/animate'
-
+import { Box, Container, Stack } from '@material-ui/core'
 import Banner from 'customComponents/Banner'
 import SignUpCTA from 'customComponents/SignUpCTA'
 import Item from './Item.js'
