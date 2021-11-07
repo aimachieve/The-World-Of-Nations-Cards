@@ -13,6 +13,7 @@ import {
   TableBody,
 } from '@material-ui/core'
 import { styled } from '@material-ui/core/styles'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 import { CarouselBasic3 } from 'components/carousel'
 import UserList from './UserList'
@@ -45,15 +46,18 @@ export default function RoomStatus() {
     days,
     currentDay,
     finalWinner,
-    getFinalWinner,
+    getFinalWinnerBypage,
     getCurrentEvent,
     current_event,
   } = useDraw()
   const [isLoading, setIsLoading] = useState(true)
   const [isVisibleDaysAccordion, setIsVisibleDaysAccordion] = useState(true)
 
+  const [pageSize, setPageSize] = useState(23)
+  const [pageNumber, setPageNumber] = useState(1)
+
   useEffect(() => {
-    getFinalWinner()
+    getFinalWinnerBypage({ pageSize, pageNumber })
     getCurrentEvent()
     setIsLoading(true)
     if (currentUser) {
@@ -65,6 +69,14 @@ export default function RoomStatus() {
   }, [])
 
   let event_status = current_event ? current_event.status == 2 : false
+
+  const fetchNextData = () => {
+    if (finalWinner.length !== current_event.winner) {
+      setPageSize(pageSize + 10)
+      setPageNumber(pageNumber + 1)
+      getFinalWinnerBypage({ pageSize, pageNumber })
+    }
+  }
 
   return (
     <RootStyle>
@@ -83,33 +95,49 @@ export default function RoomStatus() {
                     <Link to="/youtobe.com">YouTobe</Link>
                   </Typography>
                   <TableContainer sx={{ minHeight: 1200 }}>
-                    <Table>
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Username</TableCell>
-                          <TableCell>Winning Entries</TableCell>
-                          <TableCell>Final Draw Number</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {finalWinner.length > 0 &&
-                          finalWinner.map((item, index) => (
-                            <TableRow key={index}>
-                              <TableCell>{item.user.name}</TableCell>
-                              <TableCell>{item.tickets.length}</TableCell>
-                              <TableCell>
-                                {item.tickets.map((i, index) => (
-                                  <span key={index}>
-                                    {index + 1 == item.tickets.length
-                                      ? i
-                                      : i + ', '}
-                                  </span>
-                                ))}
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                      </TableBody>
-                    </Table>
+                    <InfiniteScroll
+                      dataLength={pageSize}
+                      hasMore={finalWinner.length === current_event.winner ? false : true}
+                      next={fetchNextData}
+                      height={1200}
+                      loader={
+                        finalWinner.length <= current_event.winner ? (
+                          <></>
+                        ) : (
+                          <Typography variant="subtitle1" align="center" mt={1}>
+                            Loading...
+                          </Typography>
+                        )
+                      }
+                    >
+                      <Table>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Username</TableCell>
+                            <TableCell>Winning Entries</TableCell>
+                            <TableCell>Final Draw Number</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {finalWinner.length > 0 &&
+                            finalWinner.map((item, index) => (
+                              <TableRow key={index}>
+                                <TableCell>{item.user.name}</TableCell>
+                                <TableCell>{item.tickets.length}</TableCell>
+                                <TableCell>
+                                  {item.tickets.map((i, index) => (
+                                    <span key={index}>
+                                      {index + 1 == item.tickets.length
+                                        ? i
+                                        : i + ', '}
+                                    </span>
+                                  ))}
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                        </TableBody>
+                      </Table>
+                    </InfiniteScroll>
                   </TableContainer>
                 </Box>
               ) : isVisibleDaysAccordion ? (

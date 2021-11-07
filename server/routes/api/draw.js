@@ -43,7 +43,7 @@ router.post("/roomDraw/:roomnumber/:daynumber", DrawController.roomDraw);
 router.post("/endDay/:daynumber", DrawController.endDay);
 router.post("/finalRoom/:id", DrawController.finalRoom);
 router.post("/getFinalWinner", DrawController.getFinalWinner);
-
+router.post("/getFinalWinnerBypage", DrawController.getFinalWinnerBypage);
 
 /*=====================Admin Page=================*/
 router.post("/current_event", DrawController.getCurrentEvent);
