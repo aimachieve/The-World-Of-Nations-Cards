@@ -1032,6 +1032,7 @@ exports.payment = async (req, res) => {
   let transactionUrl = keys.transactionUrl
   let xVersion = keys.xVersion
 
+  let event = await Event.findOne({ status: { $lt: 3 } })
   let { cart, user } = req.body
 
   let amount = 0
@@ -1077,7 +1078,7 @@ exports.payment = async (req, res) => {
           newTicket = new MainTicket({
             user_id: main[0].user_id,
             username: main[0].username,
-            event: main[0].event
+            event: event._id
           });
 
           await newTicket.save();
@@ -1099,13 +1100,13 @@ exports.payment = async (req, res) => {
         }
       }
 
-      let day = await Day.findOne({ event_id: main[0].event, daynumber: 1 }) // find day-1
+      let day = await Day.findOne({ event_id: event._id, daynumber: 1 }) // find day-1
 
       if (day == null) {
         // create day-1 when there is no day-1 info in day table.
         day = new Day({
           daynumber: 1,
-          event_id: main[0].event,
+          event_id: event._id,
         })
       }
 
