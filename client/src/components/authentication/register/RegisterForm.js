@@ -65,9 +65,9 @@ export default function RegisterForm() {
       try {
         const response = await register(values)
         // setAuthModal("verify")
-        const { data } = response
-        console.log(response)
-        if (data === 'Success') {
+        // const { data } = response
+        // console.log(response)
+        // if (data === 'Success') {
           enqueueSnackbar('Register success. Please check your email', {
             variant: 'success',
             action: (key) => (
@@ -77,16 +77,16 @@ export default function RegisterForm() {
             ),
           })
           // navigate(PATH_USER.home)
-        } else {
-          enqueueSnackbar('Register failed.', {
-            variant: 'error',
-            action: (key) => (
-              <MIconButton size="small" onClick={() => closeSnackbar(key)}>
-                <Icon icon={closeFill} />
-              </MIconButton>
-            ),
-          })
-        }
+        // } else {
+        //   enqueueSnackbar('Register failed.', {
+        //     variant: 'error',
+        //     action: (key) => (
+        //       <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+        //         <Icon icon={closeFill} />
+        //       </MIconButton>
+        //     ),
+        //   })
+        // }
 
         if (isMountedRef.current) {
           setSubmitting(false)
