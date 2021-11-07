@@ -33,7 +33,7 @@ import useDraw from 'hooks/useDraw'
 
 const RootStyle = styled(Page)({
   paddingTop: 120,
-  paddingBottom: 88,
+  paddingBottom: 105,
   height: '100%',
 })
 

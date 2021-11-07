@@ -29,7 +29,7 @@ import ChooseAvatar from './ChooseAvatar'
 
 const RootStyle = styled(Page)({
   paddingTop: 176,
-  paddingBottom: 88,
+  paddingBottom: 105,
   height: '100%',
 })
 
