@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react'
 import { Link as RouterLink, useParams } from 'react-router-dom'
 // material
@@ -37,15 +38,21 @@ export default function AuthSuccess() {
   const { token } = useParams()
   const [isVerified, setIsVerified] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  useEffect(async () => {
-    await verifyEmail(token)
-    setIsLoading(false)
+  useEffect(() => {
+    const handleLoading = async () => {
+      await verifyEmail(token)
+      await setIsLoading(false)
+    }
+    handleLoading()
+  }, [token])
+
+  useEffect(() => {
     if (user) {
       setIsVerified(true)
     } else {
       setIsVerified(false)
     }
-  }, [token, user])
+  }, [user])
 
   return (
     <RootStyle>

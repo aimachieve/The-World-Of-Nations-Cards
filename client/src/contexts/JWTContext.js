@@ -140,16 +140,7 @@ function AuthProvider({ children }) {
 
   const register = async (data) => {
     const response = await axios.post('/api/account/register', data)
-
-    const { accessToken, user } = response.data
-
-    setSession(accessToken, user)
-    dispatch({
-      type: 'REGISTER',
-      payload: {
-        user,
-      },
-    })
+    return response
   }
 
   const updateProfile = async (data) => {
