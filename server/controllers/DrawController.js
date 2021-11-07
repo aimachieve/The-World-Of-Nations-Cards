@@ -930,7 +930,7 @@ exports.endDay = async (req, res) => {
 }
 
 exports.finalRoom = async (req, res) => {
-  let finalwinner = Number(req.params.id)
+  let finalwinnernum = Number(req.params.id)
 
   let event = await Event.findOne({ status: { $lt: 3 } })
   let day = await Day.findOne({ event_id: event._id }).sort({ daynumber: -1 })
@@ -940,25 +940,46 @@ exports.finalRoom = async (req, res) => {
   let total = 0
 
   day.status = false
-  day.winner = finalwinner
+  day.winner = finalwinnernum
 
-  for (var i = 0; i < tables.length && total < finalwinner; i++) {
-    let temp = tables[i].seat
+  let allwinner = []
+  let finalwinner = []
 
-    for (var j = temp.length - 1; j > 0; j--) {
+  for (var i = tables.length - 1; i >= 0; i--) {
+    allwinner = [...allwinner, ...tables[i].seat]
+  }
 
-      await MainTicket.findOneAndUpdate(
-        { _id: temp[j]._id },
-        { $set: { day: day.daynumber + 1 } },
-      )
+  for (var i = allwinner.length - 1; total < finalwinnernum; i--) {
+    let random = Math.ceil(Math.random()*1000) % finalwinnernum;
 
-      total++;
-      if(total >= finalwinner) {
-        break;
-      }
+    finalwinner.push(allwinner[random])
+    await MainTicket.findOneAndUpdate(
+      { _id: allwinner[random] },
+      { $set: { day: day.daynumber + 1 } },
+    )
+
+    total++;
+    allwinner.splice(random, 1);
+  }
+
+  let winnerItem = {};
+
+  for (var i = finalwinner.length - 1; i >= 0; i--) {
+    let tempWinner = await MainTicket.findOne({_id: finalwinner[i]})
+
+    winnerItem = await Winner.findOne({ user: tempWinner.user_id })
+
+    if (winnerItem) {
+      winnerItem.tickets = [...winnerItem.tickets, i + 1]
+    } else {
+      winnerItem = new Winner({
+        user: tempWinner.user_id,
+        event: event._id,
+        tickets: [i + 1],
+      })
     }
-    console.log('temp-length----->', i)
-    await Table.findOneAndUpdate({ _id: tables[i]._id }, {$set: {'seat': temp} })
+
+    await winnerItem.save()
   }
 
   let rooms = await Room.find({ day: day._id })
@@ -971,28 +992,8 @@ exports.finalRoom = async (req, res) => {
   await day.save()
   let entry = await MainTicket.find().count()
 
-  let winners = await MainTicket.find({ day: day.daynumber+1 })
-
-  let winnerItem = {};
-
-  for (var i = winners.length - 1; i >= 0; i--) {
-    winnerItem = await Winner.findOne({ user: winners[i].user_id })
-
-    if (winnerItem) {
-      winnerItem.tickets = [...winnerItem.tickets, i + 1]
-    } else {
-      winnerItem = new Winner({
-        user: winners[i].user_id,
-        event: event._id,
-        tickets: [i + 1],
-      })
-    }
-
-    await winnerItem.save()
-  }
-
   event.status = 2
-  event.winner = finalwinner
+  event.winner = finalwinnernum
   event.entry = entry
   await event.save()
 

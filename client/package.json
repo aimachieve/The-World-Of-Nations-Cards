@@ -1,7 +1,7 @@
 {
   "name": "The World Of Nations Card",
   "author": "Aim, Simba, Mr.New",
-  "version": "1.0",  
+  "version": "1.0",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
