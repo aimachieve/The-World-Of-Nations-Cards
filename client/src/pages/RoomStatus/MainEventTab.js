@@ -35,6 +35,7 @@ export default function MainEventTab({ eventId }) {
   useEffect(() => {
     clearUsers()
     getSearchData(searchKey, { pageSize, pageNumber, eventId })
+    return () => clearUsers()
   }, [])
 
   const onSearch = (sKey) => {

@@ -32,6 +32,7 @@ export default function Satellite1Tab({ satelliteEventId }) {
   useEffect(() => {
     clearUsers()
     getSatelliteUsersByEventId(satelliteEventId, { pageSize, pageNumber })
+    return () => clearUsers()
   }, [])
 
   const onSearch = (sKey) => {

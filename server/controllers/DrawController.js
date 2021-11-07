@@ -872,7 +872,7 @@ exports.roomDraw = async (req, res) => {
 
   var tables = await Table.find({
     day: day._id,
-    table: { $lt: (roomnumber + 1) * 2000, $gt: roomnumber * 2000 - 1 },
+    table: { $lt: (roomnumber + 1) * 2000, $gt: roomnumber * 2000 -1 },
   }) // get tables in this selected room
 
   for (var i = tables.length - 1; i >= 0; i--) {

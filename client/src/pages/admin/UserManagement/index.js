@@ -17,7 +17,7 @@ import {
   Fade,
   Box,
   Stack,
-  TextField
+  TextField,
 } from '@material-ui/core'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
@@ -32,11 +32,17 @@ import Page from '../../../components/Page'
 export default function UserManagement() {
   const theme = useTheme()
   const { themeStretch } = useSettings()
-  const { getAllUsers, users, clearUsers, expectedUsersAmount, updatePassword } = useDraw()
+  const {
+    getAllUsers,
+    users,
+    clearUsers,
+    expectedUsersAmount,
+    updatePassword,
+  } = useDraw()
   const [pageSize, setPageSize] = useState(20)
   const [pageNumber, setPageNumber] = useState(1)
   const [searchKey, setSearchKey] = useState('')
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false)
   const [id, setID] = useState('')
   const [newpassword1, setNewpassword1] = useState('')
   const [newpassword2, setNewpassword2] = useState('')
@@ -50,31 +56,36 @@ export default function UserManagement() {
   const handleOpen = (e) => {
     setID(e.target.id)
     setOpen(true)
-  };
-  const handleClose = () => setOpen(false);
+  }
+  const handleClose = () => setOpen(false)
 
   const onSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (newpassword1 !== newpassword2) {
       window.alert('please confirm your new password')
       return
     }
     console.log(id, newpassword1)
 
-    handleClose();
+    handleClose()
     const result = await updatePassword({
       id: id,
-      password: newpassword1
+      password: newpassword1,
     })
-    if ( result.success )
-      alert(`${result.user.name} 's password is changed as a ${newpassword1} successfully!`)
+    if (result.success)
+      alert(
+        `${result.user.name} 's password is changed as a ${newpassword1} successfully!`,
+      )
     else
-      alert(`Error: Unfortunately, ${result.user.name} 's password is not changed!`)
-  };
+      alert(
+        `Error: Unfortunately, ${result.user.name} 's password is not changed!`,
+      )
+  }
 
   useEffect(() => {
     getAllUsers({ pageSize, pageNumber })
     console.log(users)
+    return () => clearUsers()
   }, [])
 
   const onSearch = (sKey) => {
@@ -119,7 +130,7 @@ export default function UserManagement() {
     borderRadius: '20px',
     boxShadow: 24,
     p: 4,
-  };
+  }
 
   return (
     <Page>
@@ -175,7 +186,13 @@ export default function UserManagement() {
                       {item.isVerified ? 'Verified' : 'Not verified'}
                     </TableCell>
                     <TableCell>
-                      <Button id={item._id} onClick={handleOpen} variant="contained">Reset passowrd</Button>
+                      <Button
+                        id={item._id}
+                        onClick={handleOpen}
+                        variant="contained"
+                      >
+                        Reset passowrd
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -196,13 +213,15 @@ export default function UserManagement() {
         >
           <Fade in={open}>
             <Box sx={style}>
-              <Typography id="transition-modal-title" variant="h3" component="h2" sx={{ textAlign: "center" }}>
+              <Typography
+                id="transition-modal-title"
+                variant="h3"
+                component="h2"
+                sx={{ textAlign: 'center' }}
+              >
                 Reset Password !
               </Typography>
-              <Typography
-                variant="h5"
-                sx={{ margin: 0, fontWeight: '300' }}
-              >
+              <Typography variant="h5" sx={{ margin: 0, fontWeight: '300' }}>
                 New Password
               </Typography>
               <TextField
@@ -215,10 +234,7 @@ export default function UserManagement() {
                 onChange={(e) => setNewpassword1(e.target.value)}
               />
 
-              <Typography
-                variant="h5"
-                sx={{ margin: 0, fontWeight: '300' }}
-              >
+              <Typography variant="h5" sx={{ margin: 0, fontWeight: '300' }}>
                 Confirm new Password
               </Typography>
               <TextField
@@ -231,9 +247,26 @@ export default function UserManagement() {
                 onChange={(e) => setNewpassword2(e.target.value)}
               />
 
-              <Stack spacing={2} direction="row" justifyContent="right" sx={{ mt: 3 }}>
-                <Button onClick={onSubmit} variant="outlined" sx={{ background: "transparent" }}>Save Change</Button>
-                <Button onClick={handleClose} variant="contained" sx={{ background: "transparent" }}>Close</Button>
+              <Stack
+                spacing={2}
+                direction="row"
+                justifyContent="right"
+                sx={{ mt: 3 }}
+              >
+                <Button
+                  onClick={onSubmit}
+                  variant="outlined"
+                  sx={{ background: 'transparent' }}
+                >
+                  Save Change
+                </Button>
+                <Button
+                  onClick={handleClose}
+                  variant="contained"
+                  sx={{ background: 'transparent' }}
+                >
+                  Close
+                </Button>
               </Stack>
             </Box>
           </Fade>
