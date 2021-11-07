@@ -34,30 +34,30 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function AuthSuccess() {
-  const { verifyEmail, user } = useAuth()
-  const { token } = useParams()
-  const [isVerified, setIsVerified] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  useEffect(() => {
-    const handleLoading = async () => {
-      await verifyEmail(token)
-      await setIsLoading(false)
-    }
-    handleLoading()
-  }, [token])
+  // const { verifyEmail, user } = useAuth()
+  // const { token } = useParams()
+  // const [isVerified, setIsVerified] = useState(false)
+  // const [isLoading, setIsLoading] = useState(true)
+  // useEffect(() => {
+  //   const handleLoading = async () => {
+  //     await verifyEmail(token)
+  //     await setIsLoading(false)
+  //   }
+  //   handleLoading()
+  // }, [token])
 
-  useEffect(() => {
-    if (user) {
-      setIsVerified(true)
-    } else {
-      setIsVerified(false)
-    }
-  }, [user])
+  // useEffect(() => {
+  //   if (user) {
+  //     setIsVerified(true)
+  //   } else {
+  //     setIsVerified(false)
+  //   }
+  // }, [user])
 
   return (
     <RootStyle>
       <Container maxWidth="sm" sx={{ margin: 'auto' }}>
-        {isLoading ? (
+        {/* {isLoading ? (
           <LoadingScreen />
         ) : (
           <ContentStyle>
@@ -82,7 +82,7 @@ export default function AuthSuccess() {
               </Link>
             </Typography>
           </ContentStyle>
-        )}
+        )} */}
       </Container>
     </RootStyle>
   )

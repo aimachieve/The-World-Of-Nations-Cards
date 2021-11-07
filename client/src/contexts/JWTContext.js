@@ -139,8 +139,8 @@ function AuthProvider({ children }) {
   }
 
   const register = async (data) => {
-    const response = await axios.post('/api/account/register', data)
-    return response
+    // const response = await axios.post('/api/account/register', data)
+    // return response
   }
 
   const updateProfile = async (data) => {
