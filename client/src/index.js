@@ -20,12 +20,13 @@ import { DrawProvider } from 'contexts/DrawContext'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 import reportWebVitals from './reportWebVitals'
+import './custom.css'
 
 // ----------------------------------------------------------------------
 
-let cart = JSON.parse(localStorage.getItem('cart'));
-if(cart === null) {
-  cart = [];
+let cart = JSON.parse(localStorage.getItem('cart'))
+if (cart === null) {
+  cart = []
   localStorage.setItem('cart', JSON.stringify(cart))
 }
 
@@ -38,9 +39,9 @@ ReactDOM.render(
             <BrowserRouter>
               <AuthProvider>
                 {/*<CartProvider>*/}
-                  <DrawProvider>
-                    <App />
-                  </DrawProvider>
+                <DrawProvider>
+                  <App />
+                </DrawProvider>
                 {/*</CartProvider>*/}
               </AuthProvider>
             </BrowserRouter>
