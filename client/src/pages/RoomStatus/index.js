@@ -94,7 +94,7 @@ export default function RoomStatus() {
                     Final Winners!
                     <Link to="/youtobe.com">YouTobe</Link>
                   </Typography>
-                  <TableContainer sx={{ minHeight: 1200 }}>
+                  <TableContainer sx={{ minHeight: 1200, position: 'relative' }}>
                     <InfiniteScroll
                       dataLength={pageSize}
                       hasMore={finalWinner.length === current_event.winner ? false : true}
@@ -111,7 +111,12 @@ export default function RoomStatus() {
                       }
                     >
                       <Table>
-                        <TableHead>
+                        <TableHead sx={{
+                          position: 'sticky',
+                          top: 0,
+                          bgcolor: theme.palette.grey[900],
+                          zIndex: 500,
+                        }}>
                           <TableRow>
                             <TableCell>Username</TableCell>
                             <TableCell>Winning Entries</TableCell>
