@@ -139,23 +139,23 @@ function AuthProvider({ children }) {
   }
 
   const register = async (data) => {
-    // try {
-    const response = await axios.post('/api/account/register', data)
-    console.log(response)
-    const { accessToken, user } = response
-    setSession(accessToken, user)
-    dispatch({
-      type: 'LOGIN',
-      payload: {
-        user,
-      },
-    })
-    // console.log(response)
-    // return response
-    // } catch (error) {
-    //   console.log(error)
-    //   return error
-    // }
+    try {
+      const response = await axios.post('/api/account/register', data)
+      console.log(response)
+      // const { accessToken, user } = response
+      // setSession(accessToken, user)
+      // dispatch({
+      //   type: 'LOGIN',
+      //   payload: {
+      //     user,
+      //   },
+      // })
+      // console.log(response)
+      return response
+    } catch (error) {
+      console.log(error)
+      return error
+    }
   }
   const updateProfile = async (data) => {
     const response = await axios.post('/api/account/update', data)

@@ -174,7 +174,7 @@ export default function ContactUs() {
                       sx={{
                         backgroundColor: '#2FC656',
                         color: '#fff',
-                        mt: 3,
+                        my: 3,
                         width: '30px',
                         textAlign: 'left',
                         '&:hover': {

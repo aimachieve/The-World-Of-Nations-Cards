@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 // material
 import { styled } from '@material-ui/core/styles'
@@ -17,11 +17,11 @@ import {
   varFadeInLeft,
   varFadeInRight,
 } from '../../components/animate'
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt'
 import Incrementer from 'customComponents/Incrementer'
 
-import useCart from "hooks/useCart";
+import useCart from 'hooks/useCart'
 
 // ----------------------------------------------------------------------
 
@@ -37,20 +37,21 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function ProductDetail() {
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(1)
 
-
-    console.log(quantity)
+  console.log(quantity)
   const { addToCart } = useCart()
-    let cart = JSON.parse(localStorage.getItem('cart'))
-    const currentProductIndex = localStorage.getItem('currentProductIndex')
-    const currentProduct =  cart.filter(item => item.index == currentProductIndex)[0]
+  let cart = JSON.parse(localStorage.getItem('cart'))
+  const currentProductIndex = localStorage.getItem('currentProductIndex')
+  const currentProduct = cart.filter(
+    (item) => item.index == currentProductIndex,
+  )[0]
   const addtocart = () => {
     // addToCart(quantity);
     let cart = JSON.parse(localStorage.getItem('cart'))
     const currentProductIndex = localStorage.getItem('currentProductIndex')
-    cart.filter(item => item.index == currentProductIndex)[0].qty  = quantity
-    
+    cart.filter((item) => item.index == currentProductIndex)[0].qty = quantity
+
     console.log(cart)
     localStorage.setItem('cart', JSON.stringify(cart))
     window.location.replace('/cart')
@@ -73,7 +74,9 @@ export default function ProductDetail() {
                         textTransform: 'uppercase',
                       }}
                     >
-                      {currentProduct.index === 0? "Main Event" : `Satellite${currentProduct.index}`}
+                      {currentProduct.index === 0
+                        ? 'Main Event'
+                        : `Satellite${currentProduct.index}`}
                     </Typography>
                     <Typography
                       align="left"
@@ -121,26 +124,40 @@ export default function ProductDetail() {
                   </Stack>
                   <Stack
                     direction="row"
-                    justifyContent="flex-start"
+                    justifyContent="center"
                     alignItems="center"
+                    sx={{ flexWrap: 'wrap' }}
                     spacing={4}
                   >
                     <Button
                       variant="contained"
                       size="large"
                       color="info"
-                      sx={{ color: 'white', textTransform: 'uppercase' }}
+                      sx={{
+                        color: 'white',
+                        textTransform: 'uppercase',
+                        fontSize: 12,
+                      }}
                       href="/productPage"
                       startIcon={<ArrowBackIcon />}
                     >
                       Bact To Product Page
                     </Button>
-                    <Incrementer name="quantity" available={100} quantity={quantity} setQuantity={setQuantity} />
+                    <Incrementer
+                      name="quantity"
+                      available={100}
+                      quantity={quantity}
+                      setQuantity={setQuantity}
+                    />
                     <Button
                       variant="contained"
                       size="large"
                       color="success"
-                      sx={{ color: 'white', textTransform: 'uppercase' }}
+                      sx={{
+                        color: 'white',
+                        textTransform: 'uppercase',
+                        fontSize: 12,
+                      }}
                       onClick={addtocart}
                       endIcon={<ArrowRightAltIcon />}
                       // component={RouterLink}

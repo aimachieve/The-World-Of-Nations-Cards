@@ -1,7 +1,17 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react'
-import {Link} from 'react-router-dom'
-import { Grid, Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core'
+import { Link } from 'react-router-dom'
+import {
+  Grid,
+  Box,
+  Typography,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from '@material-ui/core'
 import { styled } from '@material-ui/core/styles'
 
 import { CarouselBasic3 } from 'components/carousel'
@@ -27,13 +37,24 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 export default function RoomStatus() {
   const currentUser = JSON.parse(localStorage.getItem('user'))
-  const { getRandomTables, getRandomTablesByUserId, tables, users, days, currentDay, finalWinner, getFinalWinner, getCurrentEvent, current_event } = useDraw()
+  const {
+    getRandomTables,
+    getRandomTablesByUserId,
+    tables,
+    users,
+    days,
+    currentDay,
+    finalWinner,
+    getFinalWinner,
+    getCurrentEvent,
+    current_event,
+  } = useDraw()
   const [isLoading, setIsLoading] = useState(true)
   const [isVisibleDaysAccordion, setIsVisibleDaysAccordion] = useState(true)
 
   useEffect(() => {
-    getFinalWinner();
-    getCurrentEvent();
+    getFinalWinner()
+    getCurrentEvent()
     setIsLoading(true)
     if (currentUser) {
       getRandomTablesByUserId(currentUser._id)
@@ -43,24 +64,21 @@ export default function RoomStatus() {
     setIsLoading(false)
   }, [])
 
-  let event_status = current_event ? current_event.status == 2 : false ;
+  let event_status = current_event ? current_event.status == 2 : false
 
   return (
     <RootStyle>
       <ContentStyle>
         <CarouselBasic3 />
-        <Box sx={{ px: 10, mt: 10 }}>
+        <Box sx={{ px: { xs: 4, sm: 6, md: 8, lg: 10 }, mt: 10 }}>
           <Grid container spacing={12}>
             <Grid item xs={12} md={4}>
               <UserList setIsVisibleDaysAccordion={setIsVisibleDaysAccordion} />
             </Grid>
             <Grid item xs={12} md={6} mt={5}>
-              { currentDay == days.length &&  event_status ?(
+              {currentDay == days.length && event_status ? (
                 <Box>
-                  <Typography
-                    variant="h4"
-                    textAlign="center"
-                  >
+                  <Typography variant="h4" textAlign="center">
                     Final Winners!
                     <Link to="/youtobe.com">YouTobe</Link>
                   </Typography>
@@ -74,46 +92,55 @@ export default function RoomStatus() {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {finalWinner.length > 0 && finalWinner.map((item, index) => (
-                          <TableRow key={index}>
-                            <TableCell>{item.user.name}</TableCell>
-                            <TableCell>{item.tickets.length}</TableCell>
-                            <TableCell>{item.tickets.map((i, index) => <span key={index}>{index+1 == item.tickets.length ? i : i + ', '}</span>)}</TableCell>
-                          </TableRow>
-                        ))}
+                        {finalWinner.length > 0 &&
+                          finalWinner.map((item, index) => (
+                            <TableRow key={index}>
+                              <TableCell>{item.user.name}</TableCell>
+                              <TableCell>{item.tickets.length}</TableCell>
+                              <TableCell>
+                                {item.tickets.map((i, index) => (
+                                  <span key={index}>
+                                    {index + 1 == item.tickets.length
+                                      ? i
+                                      : i + ', '}
+                                  </span>
+                                ))}
+                              </TableCell>
+                            </TableRow>
+                          ))}
                       </TableBody>
                     </Table>
                   </TableContainer>
                 </Box>
-                ):isVisibleDaysAccordion ? (        
-                  <Grid container spacing={12}>
-                    {isLoading ? (
-                      <LoadingScreen />
-                    ) : tables.length > 0 ? (
-                      tables.map((table, key) => (
-                        <Grid item xs={12} sm={12} md={6} lg={6} key={key}>
-                          <MotionInView variants={varFadeInUp}>
-                            <TicketTable table={table} />
-                          </MotionInView>
-                        </Grid>
-                      ))
-                    ) : (
-                      <MotionInView variants={varFadeInUp}>
-                        <Grid item xs={12} sm={12} md={12} lg={12}>
-                          <Box fullWidth>
-                            <Typography
-                              variant="h4"
-                              textAlign="center"
-                              sx={{ ml: 10, mt: 20 }}
-                            >
-                              No data
-                            </Typography>
-                          </Box>
-                        </Grid>
-                      </MotionInView>
-                    )}
-                  </Grid>
-                ) : null }
+              ) : isVisibleDaysAccordion ? (
+                <Grid container spacing={12}>
+                  {isLoading ? (
+                    <LoadingScreen />
+                  ) : tables.length > 0 ? (
+                    tables.map((table, key) => (
+                      <Grid item xs={12} sm={12} md={6} lg={6} key={key}>
+                        <MotionInView variants={varFadeInUp}>
+                          <TicketTable table={table} />
+                        </MotionInView>
+                      </Grid>
+                    ))
+                  ) : (
+                    <MotionInView variants={varFadeInUp}>
+                      <Grid item xs={12} sm={12} md={12} lg={12}>
+                        <Box fullWidth>
+                          <Typography
+                            variant="h4"
+                            textAlign="center"
+                            sx={{ ml: 10, mt: 20 }}
+                          >
+                            No data
+                          </Typography>
+                        </Box>
+                      </Grid>
+                    </MotionInView>
+                  )}
+                </Grid>
+              ) : null}
             </Grid>
             <Grid item xs={12} sm={12} md={2}>
               {isVisibleDaysAccordion ? <DaysAccordion /> : ''}
