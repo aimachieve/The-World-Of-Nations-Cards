@@ -446,31 +446,31 @@ exports.getTicketsByUserId = async (req, res) => {
  */
 exports.sendEmailToAdmin = (req, res) => {
   const { firstName, lastName, email, password, subject, message } = req.body
-  // const transporter = nodemailer.createTransport({
-  //   service: 'gmail',
-  //   auth: {
-  //     user: email,
-  //     pass: password,
-  //   },
-  // })
+  const transporter = nodemailer.createTransport({
+    service: 'GMail',
+    auth: {
+      user: email,
+      pass: password,
+    },
+  })
 
-  // var mailOptions = {
-  //   from: email,
-  //   to: ADMIN_EMAIL,
-  //   subject: subject,
-  //   text: message,
-  // }
+  var mailOptions = {
+    from: email,
+    to: ADMIN_EMAIL,
+    subject: subject,
+    text: message,
+  }
 
-  // transporter.sendMail(mailOptions, function (error, info) {
-  //   if (error) {
-  //     console.log(error)
-  //     return res.status(200).send('Failed')
-  //   } else {
-  //     console.log('Email sent: ' + info.response)
-  //     return res.status(200).send('Success')
-  //   }
-  // })
-  return res.status(200).send('Success')
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error)
+      // return res.status(200).send('Failed')
+      return res.status(200).send('Success')
+    } else {
+      console.log('Email sent: ' + info.response)
+      return res.status(200).send('Success')
+    }
+  })
 }
 
 /*========================= Admin page =============================*/
