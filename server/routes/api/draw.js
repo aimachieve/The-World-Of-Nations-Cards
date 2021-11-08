@@ -11,7 +11,7 @@ router.post("/products", DrawController.getProducts);
 router.post('/createMockData', DrawController.createMockData)
 router.post('/getRandomTables', DrawController.getRandomTables)
 router.post(
-  '/getRandomTablesByUserId/:userId',
+  '/getRandomTablesByUserId/:userId/:currentDay',
   DrawController.getRandomTablesByUserId,
 )
 router.post('/getAllDays', DrawController.getAllDays)

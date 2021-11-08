@@ -26,6 +26,7 @@ export default function MainEventTab({ eventId }) {
     expectedUsersAmount,
     clearUsers,
     getRandomTablesByUserId,
+    currentDay
   } = useDraw()
   const [searchKey, setSearchKey] = useState('')
   const [pageSize, setPageSize] = useState(23)
@@ -34,26 +35,26 @@ export default function MainEventTab({ eventId }) {
 
   useEffect(() => {
     clearUsers()
-    getSearchData(searchKey, { pageSize, pageNumber, eventId })
+    getSearchData(searchKey, { pageSize, pageNumber, eventId, currentDay })
     return () => clearUsers()
   }, [])
 
   const onSearch = (sKey) => {
     clearUsers()
     initializePageData()
-    getSearchData(sKey, { pageSize, pageNumber, eventId })
+    getSearchData(sKey, { pageSize, pageNumber, eventId, currentDay })
   }
 
   const getTablesByUser = (user) => {
     setSelectedUserId(user._id)
-    getRandomTablesByUserId(user._id)
+    getRandomTablesByUserId(user._id, currentDay)
   }
 
   const fetchNextData = () => {
     if (users.length !== expectedUsersAmount) {
       setPageSize(pageSize + 10)
       setPageNumber(pageNumber + 1)
-      getSearchData(searchKey, { pageSize, pageNumber, eventId })
+      getSearchData(searchKey, { pageSize, pageNumber, eventId, currentDay })
     }
   }
 

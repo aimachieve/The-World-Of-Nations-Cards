@@ -23,9 +23,17 @@ export default function TicketTable({ table }) {
     return () => window.removeEventListener('resize', updateSize)
   }, [])
 
+  let flagday = 0;
+  flagday = table.seat[0].day;
+  for (var i = table.seat.length - 1; i >= 0; i--) {
+    if(table.seat[i].day < flagday) {
+      flagday = table.seat[i].day;
+    }
+  }
+
   let card = [];
   for (var i = 0; i < table.seat.length; i++) {
-    if(table.seat[i].day > currentDay) card.push(i+1);
+    if(table.seat[i].day > flagday) card.push(i+1);
   }
 
   return (
@@ -131,7 +139,7 @@ export default function TicketTable({ table }) {
                         bgcolor: '#000',
                         color: 'white',
                         border:
-                          matchedTicket.day > currentDay &&
+                          matchedTicket.day > flagday &&
                           '2px solid yellow',
                         // border: matchedTicket.status && '1px solid red',
                       }}
@@ -142,7 +150,7 @@ export default function TicketTable({ table }) {
                         bgcolor: '#000',
                         color: 'white',
                         border:
-                          matchedTicket.day > currentDay &&
+                          matchedTicket.day > flagday &&
                           '1px solid yellow',
                         // border: matchedTicket.status && '1px solid red',
                       }}
