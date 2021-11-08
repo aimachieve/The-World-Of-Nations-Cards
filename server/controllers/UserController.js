@@ -6,6 +6,7 @@ const User = require('../models/User')
 
 const {
   SERVER_ERROR,
+  ADMIN_EMAIL,
   MAILGUN_API,
   MAILGUN_DOMAIN,
 } = require('../utils/constants')
