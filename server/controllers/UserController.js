@@ -17,7 +17,7 @@ const Avatar = require('../models/Avatar')
 let otp
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: 'GMail',
   auth: {
     user: ADMIN_EMAIL,
     pass: ADMIN_EMAIL_PASSWORD,
