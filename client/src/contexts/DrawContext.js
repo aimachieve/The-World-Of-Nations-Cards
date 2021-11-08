@@ -140,6 +140,7 @@ const DrawContext = createContext({
   endDay: () => Promise.resolve(),
   finalRoom: () => Promise.resolve(),
   getFinalWinner: () => Promise.resolve(),
+  getFinalWinnerBypage: () => Promise.resolve(),
 
   sendEmailToAdmin: () => Promise.resolve(),
   getAllUsers: () => Promise.resolve(),
@@ -454,6 +455,17 @@ function DrawProvider({ children }) {
     }
   }
 
+  const getFinalWinnerBypage = async (pageData) => {
+    const response = await axios.post('/api/draw/getFinalWinnerBypage')
+
+    if (response.data) {
+      dispatch({
+        type: 'SET_FINAL_WINNER',
+        payload: response.data,
+      })
+    }
+  }
+
   // Mr.new
 
   const getSatelliteUsersByEventId = async (eventId, pageData) => {
@@ -626,6 +638,7 @@ function DrawProvider({ children }) {
         endDay,
         finalRoom,
         getFinalWinner,
+        getFinalWinnerBypage,
         sendEmailToAdmin,
         getAllUsers,
         getTicketsByUserId,

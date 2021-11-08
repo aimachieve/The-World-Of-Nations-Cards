@@ -1139,6 +1139,22 @@ exports.getFinalWinner = async (req, res) => {
   }
 }
 
+exports.getFinalWinnerBypage = async (req, res) => {
+  const { pageNumber, pageSize } = req.body
+  let event = await Event.findOne({ status: 2 })
+  if (event) {
+    Winner.find({ event: event._id })
+      .populate('user')
+      .skip((pageNumber - 1) * pageSize)
+      .limit(pageSize)
+      .then((data) => {
+        res.json(data)
+      })
+  } else {
+    res.json([])
+  }
+}
+
 /*========================= PlayGame =============================*/
 
 /*========================= Custom Function =============================*/
