@@ -83,33 +83,43 @@ exports.register = (req, res) => {
                 },
                 (err, token) => {
                   if (err) throw err
-                  res.json({
-                    success: true,
-                    accessToken: 'Bearer ' + token,
-                    user: payload,
-                  })
+                  // res.json({
+                  //   success: true,
+                  //   accessToken: 'Bearer ' + token,
+                  //   user: payload,
+                  // })
                   /* ================== Send user's mail the verification code ============ */
-                  // try {
-                  //   let mailOptions = {
-                  //     from: ADMIN_EMAIL,
-                  //     to: email,
-                  //     subject: 'Welcome!',
-                  //     html: `<h3 style="text-align: center;">Welcome ${firstName}!</h3><h6 style="text-align:center;">Please verify your email.</h6><p style="text-align: center;"><a href="http://${req.hostname}/auth/verifyEmail/${token}">Verify</a></p>`,
-                  //   }
-                  //   console.log(req.hostname)
-                  //   console.log(mailOptions)
-                  //   transporter.sendMail(mailOptions, function (error, info) {
-                  //     if (error) {
-                  //       console.log(error)
-                  //       return res.status(200).send('Failed')
-                  //     } else {
-                  //       console.log('Email sent: ' + info.response)
-                  //       return res.status(200).send('Success')
-                  //     }
-                  //   })
-                  // } catch (err1) {
-                  //   console.log(err1)
-                  // }
+                  try {
+                    let mailOptions = {
+                      from: ADMIN_EMAIL,
+                      to: email,
+                      subject: 'Welcome!',
+                      html: `<h3 style="text-align: center;">Welcome ${firstName}!</h3><h6 style="text-align:center;">Please verify your email.</h6><p style="text-align: center;"><a href="http://${req.hostname}/auth/verifyEmail/${token}">Verify</a></p>`,
+                    }
+                    console.log(req.hostname)
+                    console.log(mailOptions)
+                    transporter.sendMail(mailOptions, function (error, info) {
+                      if (error) {
+                        console.log(error)
+                        // return res.status(200).send('Failed')
+                        res.json({
+                          success: true,
+                          accessToken: 'Bearer ' + token,
+                          user: payload,
+                        })
+                      } else {
+                        console.log('Email sent: ' + info.response)
+                        // return res.status(200).send('Success')
+                        res.json({
+                          success: true,
+                          accessToken: 'Bearer ' + token,
+                          user: payload,
+                        })
+                      }
+                    })
+                  } catch (err1) {
+                    console.log(err1)
+                  }
 
                   /* ======================================================================== */
                 },
