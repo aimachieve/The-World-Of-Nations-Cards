@@ -11,7 +11,7 @@ const initialState = {
   users: [],
   days: [],
   expectedUsersAmount: 0,
-  currentDay: 0,
+  currentDay: 1,
   finalWinner: [],
   tickets: [],
   avatars: [],
@@ -225,9 +225,9 @@ function DrawProvider({ children }) {
    * Get 12 random tables by user id
    * @param {string} userId
    */
-  const getRandomTablesByUserId = async (userId) => {
+  const getRandomTablesByUserId = async (userId, currentDay) => {
     const response = await axios.post(
-      `/api/draw/getRandomTablesByUserId/${userId}`,
+      `/api/draw/getRandomTablesByUserId/${userId}/${currentDay - 1}`,
     )
     const { status, data } = response
 
@@ -238,7 +238,7 @@ function DrawProvider({ children }) {
         type: 'SET_TABLES',
         payload: {
           tables: data.table,
-          currentDay: data.maxDay,
+          currentDay
         },
       })
     }
@@ -546,7 +546,7 @@ function DrawProvider({ children }) {
    * @param {object} pageData
    */
   const getAllUsers = async (pageData) => {
-    const response = await axios.post('/api/account/getAllUsers', pageData)
+    const response = await axios.post('/api/account/getAllUsers', {...pageData})
     console.log(response)
     const { status, data } = response
     if (status === 200) {

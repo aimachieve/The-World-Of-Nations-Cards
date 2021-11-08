@@ -88,11 +88,13 @@ exports.getRandomTables = async (req, res) => {
 }
 
 exports.getRandomTablesByUserId = async (req, res) => {
+  let { userId, currentDay } = req.params
+
   let event = await Event.findOne({ status: { $lt: 3 } })
-  let day = await Day.find({ event_id: event._id })
+  let day = await Day.findOne({ event_id: event._id, daynumber: currentDay })
 
   const resTables = []
-  const { userId } = req.params
+
   const tables = await Table.aggregate([
     { $unwind: '$seat' },
     {
@@ -106,6 +108,7 @@ exports.getRandomTablesByUserId = async (req, res) => {
     {
       $match: {
         'seat.user_id': mongoose.Types.ObjectId(userId),
+        // 'day': day._id
       },
     },
     { $sample: { size: 10 } },
@@ -122,7 +125,7 @@ exports.getRandomTablesByUserId = async (req, res) => {
   }
   return res
     .status(200)
-    .json({ table: resTables, maxDay: maxDay == null ? 0 : maxDay.day })
+    .json({ table: resTables, maxDay: currentDay })
 }
 
 /**
@@ -131,8 +134,8 @@ exports.getRandomTablesByUserId = async (req, res) => {
  * @param {object} res
  */
 exports.searchData = async (req, res) => {
-  const { pageNumber, pageSize, key } = req.body
-  console.log(pageNumber, pageSize, key)
+  const { pageNumber, pageSize, key, currentDay } = req.body
+
   MainTicket.aggregate(
     [
       { $match: { username: new RegExp(key) } },
@@ -143,12 +146,12 @@ exports.searchData = async (req, res) => {
           ticketAmount: { $sum: 1 },
           winAmount: {
             $sum: {
-              $cond: [{ $ne: ['$status', true] }, 1, 0],
+              $cond: [{ $gt: ['$day', currentDay] }, 1, 0],
             },
           },
           loseAmount: {
             $sum: {
-              $cond: [{ $ne: ['$status', true] }, 0, 1],
+              $cond: [{ $gt: ['$day', currentDay] }, 0, 1],
             },
           },
         },

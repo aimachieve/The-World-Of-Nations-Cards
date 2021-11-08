@@ -63,7 +63,7 @@ export default function RoomStatus() {
     getCurrentEvent()
     setIsLoading(true)
     if (currentUser) {
-      getRandomTablesByUserId(currentUser._id)
+      getRandomTablesByUserId(currentUser._id, currentDay)
     } else {
       getRandomTables()
     }
