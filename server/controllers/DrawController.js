@@ -74,7 +74,13 @@ exports.getProducts = (req, res) => {
  * @returns
  */
 exports.getRandomTables = async (req, res) => {
-  const tables = await Table.aggregate([{ $sample: { size: 10 } }])
+  let tables = []
+  const numberOfAllTables = await Table.find().count()
+  if (numberOfAllTables > 10) {
+    tables = await Table.aggregate([{ $sample: { size: 10 } }])
+  } else {
+    tables = await Table.find()
+  }
   await Table.populate(tables, {
     path: 'seat',
     populate: [{ path: 'user_id', populate: [{ path: 'avatar' }] }],
@@ -87,29 +93,76 @@ exports.getRandomTables = async (req, res) => {
     })
 }
 
+/**
+ * Get random 10 tables by user id
+ * @param {object} req
+ * @param {object} res
+ * @returns
+ */
 exports.getRandomTablesByUserId = async (req, res) => {
+  let tables = []
   let event = await Event.findOne({ status: { $lt: 3 } })
   let day = await Day.find({ event_id: event._id })
 
   const resTables = []
   const { userId } = req.params
-  const tables = await Table.aggregate([
-    { $unwind: '$seat' },
-    {
-      $lookup: {
-        from: 'maintickets',
-        localField: 'seat',
-        foreignField: '_id',
-        as: 'seat',
+
+  const numberOfTables = (
+    await Table.aggregate([
+      { $unwind: '$seat' },
+      {
+        $lookup: {
+          from: 'maintickets',
+          localField: 'seat',
+          foreignField: '_id',
+          as: 'seat',
+        },
       },
-    },
-    {
-      $match: {
-        'seat.user_id': mongoose.Types.ObjectId(userId),
+      {
+        $match: {
+          'seat.user_id': mongoose.Types.ObjectId(userId),
+        },
       },
-    },
-    { $sample: { size: 10 } },
-  ])
+      { $count: 'numberOfTables' },
+    ])
+  ).numberOfTables
+
+  if (numberOfTables > 10) {
+    tables = await Table.aggregate([
+      { $unwind: '$seat' },
+      {
+        $lookup: {
+          from: 'maintickets',
+          localField: 'seat',
+          foreignField: '_id',
+          as: 'seat',
+        },
+      },
+      {
+        $match: {
+          'seat.user_id': mongoose.Types.ObjectId(userId),
+        },
+      },
+      { $sample: { size: 10 } },
+    ])
+  } else {
+    tables = await Table.aggregate([
+      { $unwind: '$seat' },
+      {
+        $lookup: {
+          from: 'maintickets',
+          localField: 'seat',
+          foreignField: '_id',
+          as: 'seat',
+        },
+      },
+      {
+        $match: {
+          'seat.user_id': mongoose.Types.ObjectId(userId),
+        },
+      },
+    ])
+  }
 
   let maxDay = await MainTicket.findOne({ user_id: userId }).sort({ day: -1 })
 
@@ -123,6 +176,111 @@ exports.getRandomTablesByUserId = async (req, res) => {
   return res
     .status(200)
     .json({ table: resTables, maxDay: maxDay == null ? 0 : maxDay.day })
+}
+
+/**
+ * Get random 10 tables by day id and room number
+ * @param {object} req
+ * @param {object} res
+ * @returns
+ */
+exports.getRandomTablesByDayIdAndRoomNumber = async (req, res) => {
+  let tables = []
+  const resTables = []
+  const { dayId, roomnumber } = req.body
+
+  const numberOfTables = (
+    await Table.aggregate([
+      { $unwind: '$seat' },
+      {
+        $lookup: {
+          from: 'maintickets',
+          localField: 'seat',
+          foreignField: '_id',
+          as: 'seat',
+        },
+      },
+      {
+        $match: {
+          day: mongoose.Types.ObjectId(dayId),
+          table: {
+            $lt: (Number(roomnumber) + 1) * 2000 + 1,
+            $gt: Number(roomnumber) * 2000,
+          },
+          // 'seat.history': {
+          //   $elemMatch: {
+          //     room: roomnumber,
+          //   },
+          // },
+        },
+      },
+      { $count: 'numberOfTables' },
+    ])
+  ).numberOfTables
+
+  if (numberOfTables > 10) {
+    tables = await Table.aggregate([
+      { $unwind: '$seat' },
+      {
+        $lookup: {
+          from: 'maintickets',
+          localField: 'seat',
+          foreignField: '_id',
+          as: 'seat',
+        },
+      },
+      {
+        $match: {
+          day: mongoose.Types.ObjectId(dayId),
+          table: {
+            $lt: (Number(roomnumber) + 1) * 2000 + 1,
+            $gt: Number(roomnumber) * 2000,
+          },
+          // 'seat.history': {
+          //   $elemMatch: {
+          //     room: roomnumber,
+          //   },
+          // },
+        },
+      },
+      { $sample: { size: 10 } },
+    ])
+  } else {
+    tables = await Table.aggregate([
+      { $unwind: '$seat' },
+      {
+        $lookup: {
+          from: 'maintickets',
+          localField: 'seat',
+          foreignField: '_id',
+          as: 'seat',
+        },
+      },
+      {
+        $match: {
+          day: mongoose.Types.ObjectId(dayId),
+          table: {
+            $lt: (Number(roomnumber) + 1) * 2000 + 1,
+            $gt: Number(roomnumber) * 2000,
+          },
+          // 'seat.history': {
+          //   $elemMatch: {
+          //     room: roomnumber,
+          //   },
+          // },
+        },
+      },
+    ])
+  }
+
+  for (let i = 0; i < tables.length; i += 1) {
+    let table = await Table.findById(tables[i]._id).populate({
+      path: 'seat',
+      populate: [{ path: 'user_id', populate: [{ path: 'avatar' }] }],
+    })
+    await resTables.push(table)
+  }
+  return res.status(200).json(resTables)
 }
 
 /**
@@ -341,46 +499,6 @@ exports.getEventById = (req, res) => {
     .catch((error) => {
       return res.status(500).send('Server Error')
     })
-}
-
-exports.getRandomTablesByDayIdAndRoomNumber = async (req, res) => {
-  const resTables = []
-  const { dayId, roomnumber } = req.body
-
-  const tables = await Table.aggregate([
-    { $unwind: '$seat' },
-    {
-      $lookup: {
-        from: 'maintickets',
-        localField: 'seat',
-        foreignField: '_id',
-        as: 'seat',
-      },
-    },
-    {
-      $match: {
-        day: mongoose.Types.ObjectId(dayId),
-        table: {
-          $lt: (Number(roomnumber) + 1) * 2000 + 1,
-          $gt: Number(roomnumber) * 2000,
-        },
-        // 'seat.history': {
-        //   $elemMatch: {
-        //     room: roomnumber,
-        //   },
-        // },
-      },
-    },
-    { $sample: { size: 10 } },
-  ])
-  for (let i = 0; i < tables.length; i += 1) {
-    let table = await Table.findById(tables[i]._id).populate({
-      path: 'seat',
-      populate: [{ path: 'user_id', populate: [{ path: 'avatar' }] }],
-    })
-    await resTables.push(table)
-  }
-  return res.status(200).json(resTables)
 }
 
 /**
