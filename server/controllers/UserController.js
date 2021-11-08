@@ -1,27 +1,19 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
-const nodemailer = require('nodemailer')
 const keys = require('../config/keys')
 const User = require('../models/User')
 
-const { otplibAuthenticator } = require('../config/otplib')
-const { mailgunHelper } = require('../config/mailgun')
 const {
   SERVER_ERROR,
-  ADMIN_EMAIL,
-  ADMIN_EMAIL_PASSWORD,
+  MAILGUN_API,
+  MAILGUN_DOMAIN,
 } = require('../utils/constants')
 const Avatar = require('../models/Avatar')
 
-let otp
-
-const transporter = nodemailer.createTransport({
-  service: 'GMail',
-  auth: {
-    user: ADMIN_EMAIL,
-    pass: ADMIN_EMAIL_PASSWORD,
-  },
+const mailGun = require('mailgun-js')({
+  domain: MAILGUN_DOMAIN,
+  apiKey: MAILGUN_API,
 })
 
 exports.register = (req, res) => {
@@ -98,24 +90,21 @@ exports.register = (req, res) => {
                     }
                     console.log(req.hostname)
                     console.log(mailOptions)
-                    transporter.sendMail(mailOptions, function (error, info) {
-                      if (error) {
+
+                    mailGun
+                      .messages()
+                      .send(mailOptions)
+                      .then((result) => {
+                        console.log(result)
+                      })
+                      .catch((error) => {
                         console.log(error)
-                        // return res.status(200).send('Failed')
-                        res.json({
-                          success: true,
-                          accessToken: 'Bearer ' + token,
-                          user: payload,
-                        })
-                      } else {
-                        console.log('Email sent: ' + info.response)
-                        // return res.status(200).send('Success')
-                        res.json({
-                          success: true,
-                          accessToken: 'Bearer ' + token,
-                          user: payload,
-                        })
-                      }
+                      })
+
+                    res.json({
+                      success: true,
+                      accessToken: 'Bearer ' + token,
+                      user: payload,
                     })
                   } catch (err1) {
                     console.log(err1)

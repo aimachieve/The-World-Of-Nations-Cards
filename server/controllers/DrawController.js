@@ -7,9 +7,6 @@ const keys = require('../config/keys')
 var request = require('request')
 var qs = require('querystring')
 
-const { otplibAuthenticator } = require('../config/otplib')
-const { mailgunHelper } = require('../config/mailgun')
-
 const User = require('../models/User')
 const Winner = require('../models/Winner')
 const Avatar = require('../models/Avatar')
@@ -19,7 +16,7 @@ const SatelliteTicket = require('../models/SatelliteTicket')
 const Table = require('../models/Table')
 const Day = require('../models/Day')
 const Room = require('../models/Room')
-const { ADMIN_EMAIL, ADMIN_EMAIL_PASSWORD } = require('../utils/constants')
+const { MAILGUN_API, MAILGUN_DOMAIN } = require('../utils/constants')
 
 let otp
 let roomnames = [
@@ -51,12 +48,9 @@ let roomnames = [
   'Z',
 ]
 
-const transporter = nodemailer.createTransport({
-  service: 'GMail',
-  auth: {
-    user: ADMIN_EMAIL,
-    pass: ADMIN_EMAIL_PASSWORD,
-  },
+const mailGun = require('mailgun-js')({
+  domain: MAILGUN_DOMAIN,
+  apiKey: MAILGUN_API,
 })
 
 exports.getProducts = (req, res) => {
@@ -107,6 +101,7 @@ exports.getRandomTablesByUserId = async (req, res) => {
   let day = await Day.findOne({ event_id: event._id, daynumber: currentDay })
 
   const resTables = []
+
   const numberOfTables = (
     await Table.aggregate([
       { $unwind: '$seat' },
@@ -173,9 +168,7 @@ exports.getRandomTablesByUserId = async (req, res) => {
     })
     await resTables.push(table)
   }
-  return res
-    .status(200)
-    .json({ table: resTables, maxDay: currentDay })
+  return res.status(200).json({ table: resTables, maxDay: currentDay })
 }
 
 /**
@@ -564,13 +557,6 @@ exports.getTicketsByUserId = async (req, res) => {
  */
 exports.sendEmailToAdmin = (req, res) => {
   const { firstName, lastName, email, password, subject, message } = req.body
-  const transporter = nodemailer.createTransport({
-    service: 'GMail',
-    auth: {
-      user: email,
-      pass: password,
-    },
-  })
 
   var mailOptions = {
     from: email,
@@ -579,16 +565,16 @@ exports.sendEmailToAdmin = (req, res) => {
     text: message,
   }
 
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
+  mailGun
+    .messages()
+    .send(mailOptions)
+    .then((result) => {
+      console.log(result)
+    })
+    .catch((error) => {
       console.log(error)
-      // return res.status(200).send('Failed')
-      return res.status(200).send('Success')
-    } else {
-      console.log('Email sent: ' + info.response)
-      return res.status(200).send('Success')
-    }
-  })
+    })
+  return res.status(200).send('Success')
 }
 
 /*========================= Admin page =============================*/
