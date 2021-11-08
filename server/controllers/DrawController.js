@@ -107,7 +107,6 @@ exports.getRandomTablesByUserId = async (req, res) => {
   let day = await Day.findOne({ event_id: event._id, daynumber: currentDay })
 
   const resTables = []
-  const { userId } = req.params
 
   const numberOfTables = (
     await Table.aggregate([
